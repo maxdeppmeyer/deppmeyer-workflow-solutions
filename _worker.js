@@ -25,6 +25,8 @@ async function handleContactSubmission(request, env) {
   }
 
   const data = {
+    gender: clean(payload.gender),
+    firstName: clean(payload.firstName),
     name: clean(payload.name),
     company: clean(payload.company),
     email: clean(payload.email).toLowerCase(),
@@ -34,8 +36,16 @@ async function handleContactSubmission(request, env) {
     assessment: clean(payload.assessment)
   };
 
+  if (!data.gender || !['male', 'female', 'diverse'].includes(data.gender)) {
+    return json({ ok: false, message: 'Bitte eine gültige Anrede auswählen.' }, 400);
+  }
+
+  if (!data.firstName) {
+    return json({ ok: false, message: 'Bitte den Vornamen angeben.' }, 400);
+  }
+
   if (!data.name) {
-    return json({ ok: false, message: 'Bitte den Namen angeben.' }, 400);
+    return json({ ok: false, message: 'Bitte den Nachnamen angeben.' }, 400);
   }
 
   if (!isValidEmail(data.email)) {
@@ -51,7 +61,7 @@ async function handleContactSubmission(request, env) {
   const rateKey = `contact-rate:${ip}`;
   const lastSubmission = await env.CONTACT_FORMS.get(rateKey);
 
-  if (lastSubmission && Date.now() - Number(lastSubmission) < 60_000) {
+  if (lastSubmission && Date.now() - Number(lastSubmission) < 60000) {
     return json({ ok: false, message: 'Bitte warten Sie einen Moment, bevor Sie eine weitere Anfrage senden.' }, 429);
   }
 
