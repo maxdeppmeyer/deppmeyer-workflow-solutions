@@ -1,136 +1,351 @@
 <!DOCTYPE html>
-
-<html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>Kontakt | Deppmeyer Workflow Solutions</title><meta content="Kurze Kontaktaufnahme für Workflow-Automatisierung, Prozessunterstützung und unverbindliche Ersteinschätzung." name="description"/><link href="css/styles.css" rel="stylesheet"/><style>
-body[data-page="kontakt.html"] .kontakt-hero{padding:58px 0 16px}
-body[data-page="kontakt.html"] .kontakt-hero .page-hero-grid{max-width:900px;margin:0 auto;text-align:center}
-body[data-page="kontakt.html"] .kontakt-hero h1{margin:0 0 14px}
-body[data-page="kontakt.html"] .kontakt-hero .lead{max-width:46ch;margin:0 auto}
-body[data-page="kontakt.html"] .kontakt-points{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px}
-body[data-page="kontakt.html"] .kontakt-points .status-pill a{color:inherit;text-decoration:none}
-body[data-page="kontakt.html"] .contact-signal-strip{position:relative;height:88px;max-width:920px;margin:4px auto 4px}
-body[data-page="kontakt.html"] .contact-signal-strip::before{content:"";position:absolute;left:6%;right:6%;top:50%;height:2px;transform:translateY(-50%);background:linear-gradient(90deg, rgba(37,207,255,.12), rgba(47,124,255,.58), rgba(37,207,255,.12));border-radius:999px}
-body[data-page="kontakt.html"] .contact-signal-strip::after{content:"";position:absolute;left:12%;top:50%;width:18px;height:18px;border-radius:6px;transform:translate(-50%,-50%);background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(225,241,255,.94));border:1px solid rgba(74,132,209,.24);box-shadow:0 14px 28px rgba(27,111,210,.10);animation:contactSignalMove 8.2s ease-in-out infinite}
-body[data-page="kontakt.html"] .contact-signal-node{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle, rgba(255,255,255,.98) 0 26%, rgba(37,207,255,.88) 27% 64%, rgba(37,207,255,.12) 65% 100%);box-shadow:0 0 0 8px rgba(37,207,255,.05),0 0 20px rgba(37,207,255,.14)}
-body[data-page="kontakt.html"] .contact-signal-node.n1{left:18%}
-body[data-page="kontakt.html"] .contact-signal-node.n2{left:42%}
-body[data-page="kontakt.html"] .contact-signal-node.n3{left:66%}
-body[data-page="kontakt.html"] .contact-signal-node.n4{left:88%}
-@keyframes contactSignalMove{0%{left:12%}18%{left:18%}42%{left:42%}68%{left:66%}100%{left:88%}}
-body[data-page="kontakt.html"] .contact-help-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1120px;margin:0 auto 22px}
-body[data-page="kontakt.html"] .contact-help-card{height:100%;border-radius:28px;background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,251,255,.92));border:1px solid rgba(169,196,232,.42);box-shadow:0 18px 36px rgba(24,56,102,.08)}
-body[data-page="kontakt.html"] .contact-help-card .accordion-summary{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:18px 20px}
-body[data-page="kontakt.html"] .contact-help-card .accordion-text{width:100%}
-body[data-page="kontakt.html"] .contact-help-card .accordion-text h3{margin:0 0 8px;font-size:1.08rem;line-height:1.24}
-body[data-page="kontakt.html"] .contact-help-card .accordion-preview{margin:0;max-width:none;line-height:1.65}
-body[data-page="kontakt.html"] .contact-help-card .accordion-action{align-self:flex-start}
-body[data-page="kontakt.html"] .contact-help-card .accordion-content{padding:0 20px 20px;color:#4b6a91}
-body[data-page="kontakt.html"] .contact-help-card .detail-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}
-body[data-page="kontakt.html"] .contact-help-card .detail-list li{position:relative;padding-left:16px;line-height:1.62}
-body[data-page="kontakt.html"] .contact-help-card .detail-list li::before{content:"";position:absolute;left:0;top:.68em;width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg, rgba(37,207,255,.92), rgba(47,124,255,.84))}
-body[data-page="kontakt.html"] .contact-form-wrap{max-width:1060px;margin:0 auto}
-body[data-page="kontakt.html"] .contact-intro{text-align:center;max-width:760px;margin:0 auto 18px}
-body[data-page="kontakt.html"] .contact-intro .eyebrow{margin-left:auto;margin-right:auto}
-body[data-page="kontakt.html"] .contact-intro p{margin:0 auto;max-width:60ch}
-body[data-page="kontakt.html"] .contact-layout-single{display:block}
-body[data-page="kontakt.html"] .contact-form{max-width:960px;margin:0 auto}
-body[data-page="kontakt.html"] .contact-response{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
-body[data-page="kontakt.html"] .contact-response .note{line-height:1.55}
-body[data-page="kontakt.html"] .back-home-solo{display:flex;justify-content:center}
-body[data-page="kontakt.html"] .back-home-solo .btn{min-width:240px}
-@media (max-width: 980px){body[data-page="kontakt.html"] .contact-help-grid{grid-template-columns:1fr;max-width:760px}body[data-page="kontakt.html"] .contact-signal-strip{height:72px}}
-@media (max-width: 640px){body[data-page="kontakt.html"] .kontakt-hero{padding-top:50px}body[data-page="kontakt.html"] .contact-response{align-items:flex-start}}
-</style></head>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>Kontakt | Deppmeyer Workflow Solutions</title>
+  <meta content="Kurze Kontaktaufnahme für Workflow-Automatisierung, Prozessunterstützung und unverbindliche Ersteinschätzung." name="description"/>
+  <link href="css/styles.css" rel="stylesheet"/>
+  <style>
+    body[data-page="kontakt.html"] .kontakt-hero{padding:58px 0 16px}
+    body[data-page="kontakt.html"] .kontakt-hero .page-hero-grid{max-width:900px;margin:0 auto;text-align:center}
+    body[data-page="kontakt.html"] .kontakt-hero h1{margin:0 0 14px}
+    body[data-page="kontakt.html"] .kontakt-hero .lead{max-width:46ch;margin:0 auto}
+    body[data-page="kontakt.html"] .kontakt-points{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px}
+    body[data-page="kontakt.html"] .kontakt-points .status-pill a{color:inherit;text-decoration:none}
+    body[data-page="kontakt.html"] .contact-signal-strip{position:relative;height:88px;max-width:920px;margin:4px auto 4px}
+    body[data-page="kontakt.html"] .contact-signal-strip::before{content:"";position:absolute;left:6%;right:6%;top:50%;height:2px;transform:translateY(-50%);background:linear-gradient(90deg, rgba(37,207,255,.12), rgba(47,124,255,.58), rgba(37,207,255,.12));border-radius:999px}
+    body[data-page="kontakt.html"] .contact-signal-strip::after{content:"";position:absolute;left:12%;top:50%;width:18px;height:18px;border-radius:6px;transform:translate(-50%,-50%);background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(225,241,255,.94));border:1px solid rgba(74,132,209,.24);box-shadow:0 14px 28px rgba(27,111,210,.10);animation:contactSignalMove 8.2s ease-in-out infinite}
+    body[data-page="kontakt.html"] .contact-signal-node{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle, rgba(255,255,255,.98) 0 26%, rgba(37,207,255,.88) 27% 64%, rgba(37,207,255,.12) 65% 100%);box-shadow:0 0 0 8px rgba(37,207,255,.05),0 0 20px rgba(37,207,255,.14)}
+    body[data-page="kontakt.html"] .contact-signal-node.n1{left:18%}
+    body[data-page="kontakt.html"] .contact-signal-node.n2{left:42%}
+    body[data-page="kontakt.html"] .contact-signal-node.n3{left:66%}
+    body[data-page="kontakt.html"] .contact-signal-node.n4{left:88%}
+    @keyframes contactSignalMove{0%{left:12%}18%{left:18%}42%{left:42%}68%{left:66%}100%{left:88%}}
+    body[data-page="kontakt.html"] .contact-help-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1120px;margin:0 auto 22px}
+    body[data-page="kontakt.html"] .contact-help-card{height:100%;border-radius:28px;background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,251,255,.92));border:1px solid rgba(169,196,232,.42);box-shadow:0 18px 36px rgba(24,56,102,.08)}
+    body[data-page="kontakt.html"] .contact-help-card .accordion-summary{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:18px 20px}
+    body[data-page="kontakt.html"] .contact-help-card .accordion-text{width:100%}
+    body[data-page="kontakt.html"] .contact-help-card .accordion-text h3{margin:0 0 8px;font-size:1.08rem;line-height:1.24}
+    body[data-page="kontakt.html"] .contact-help-card .accordion-preview{margin:0;max-width:none;line-height:1.65}
+    body[data-page="kontakt.html"] .contact-help-card .accordion-action{align-self:flex-start}
+    body[data-page="kontakt.html"] .contact-help-card .accordion-content{padding:0 20px 20px;color:#4b6a91}
+    body[data-page="kontakt.html"] .contact-help-card .detail-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+    body[data-page="kontakt.html"] .contact-help-card .detail-list li{position:relative;padding-left:16px;line-height:1.62}
+    body[data-page="kontakt.html"] .contact-help-card .detail-list li::before{content:"";position:absolute;left:0;top:.68em;width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg, rgba(37,207,255,.92), rgba(47,124,255,.84))}
+    body[data-page="kontakt.html"] .contact-form-wrap{max-width:1060px;margin:0 auto}
+    body[data-page="kontakt.html"] .contact-intro{text-align:center;max-width:760px;margin:0 auto 18px}
+    body[data-page="kontakt.html"] .contact-intro .eyebrow{margin-left:auto;margin-right:auto}
+    body[data-page="kontakt.html"] .contact-intro p{margin:0 auto;max-width:60ch}
+    body[data-page="kontakt.html"] .contact-layout-single{display:block}
+    body[data-page="kontakt.html"] .contact-form{max-width:960px;margin:0 auto}
+    body[data-page="kontakt.html"] .contact-response{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+    body[data-page="kontakt.html"] .contact-response .note{line-height:1.55}
+    body[data-page="kontakt.html"] .back-home-solo{display:flex;justify-content:center}
+    body[data-page="kontakt.html"] .back-home-solo .btn{min-width:240px}
+    @media (max-width: 980px){body[data-page="kontakt.html"] .contact-help-grid{grid-template-columns:1fr;max-width:760px}body[data-page="kontakt.html"] .contact-signal-strip{height:72px}}
+    @media (max-width: 640px){body[data-page="kontakt.html"] .kontakt-hero{padding-top:50px}body[data-page="kontakt.html"] .contact-response{align-items:flex-start}}
+  </style>
+</head>
 <body class="page-shell" data-page="kontakt.html" data-theme="light">
-<script>try{const k='deppmeyer-theme';const saved=sessionStorage.getItem(k);const theme=saved||'light';document.body.setAttribute('data-theme',theme);document.documentElement.style.colorScheme=theme;}catch(e){}</script><div aria-hidden="true" class="scroll-progress"></div><div aria-hidden="true" class="cursor-glow"></div><header class="topbar"><div class="container nav"><a aria-label="Startseite" class="brand" href="index.html"><img alt="Deppmeyer Logo" class="brand-icon" src="assets/logo-icon.png"/><span class="brand-text"><span class="brand-name">Deppmeyer</span><span class="brand-sub">Workflow Solutions</span></span></a><nav aria-label="Hauptnavigation" class="nav-links"><a href="index.html">Start</a><a href="leistungen.html">Leistungen</a><a href="beispiele.html">Beispiele</a><a href="einsatzbereiche.html">Einsatzbereiche</a><a href="ueber-mich.html">Über mich</a><a class="active" href="kontakt.html">Kontakt</a></nav><div class="nav-actions"><div class="header-search search-shell" data-search-root="">
-<span class="search-icon">⌕</span>
-<input aria-label="Website durchsuchen" class="search-input" data-search-input="" placeholder="Suche" type="search"/>
-<div class="search-results hidden" data-search-results=""></div>
-</div><button aria-label="Zwischen Hellmodus und Dunkelmodus wechseln" class="theme-toggle" data-theme-toggle="" type="button"><span aria-hidden="true" class="theme-toggle-icon">☀</span><span class="theme-toggle-text">Hell</span></button><button aria-expanded="false" aria-label="Menü öffnen" class="mobile-toggle" data-mobile-toggle="">☰</button></div></div><div class="container mobile-panel" data-mobile-panel=""><div class="mobile-search search-shell" data-search-root="">
-<span class="search-icon">⌕</span>
-<input aria-label="Website durchsuchen" class="search-input" data-search-input="" placeholder="Suche" type="search"/>
-<div class="search-results hidden" data-search-results=""></div>
-</div><nav aria-label="Mobile Navigation" class="mobile-links"><a href="index.html">Start</a><a href="leistungen.html">Leistungen</a><a href="beispiele.html">Beispiele</a><a href="einsatzbereiche.html">Einsatzbereiche</a><a href="ueber-mich.html">Über mich</a><a href="kontakt.html">Kontakt</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav></div></header>
-<main>
-<section class="page-hero kontakt-hero">
-<div class="container page-hero-grid reveal">
-<div>
-<span class="eyebrow">Kontakt</span>
-<h1>Kurze Anfrage. Passender nächster Schritt.</h1>
-<p class="lead">Eine kurze Beschreibung reicht aus, um einzuschätzen, ob ein Ablauf sinnvoll verbessert werden kann. Für den Start genügen Problem, Ziel und die Stelle, an der im Alltag Zeit verloren geht.</p>
-<div class="kontakt-points hero-inline-points"><span class="status-pill">Antwort in der Regel innerhalb von 24 Stunden</span><span class="status-pill">E-Mail: <a data-config="email" href="mailto:kontakt@beispiel.de">kontakt@beispiel.de</a></span><span class="status-pill">Telefon: <a data-config="phone" href="tel:+490000000000">+49 000 0000000</a></span></div>
-</div>
-</div>
-</section>
-<section class="section section-tight">
-<div class="container reveal">
-<div aria-hidden="true" class="contact-signal-strip"><div class="contact-signal-node n1"></div><div class="contact-signal-node n2"></div><div class="contact-signal-node n3"></div><div class="contact-signal-node n4"></div></div>
-</div>
-</section>
-<section class="section anchor-offset" id="kontakt-info">
-<div class="container">
-<div class="contact-help-grid accordion-grid">
-<details class="accordion-card contact-help-card reveal">
-<summary class="accordion-summary">
-<span class="mini-label">Themen</span>
-<div class="accordion-text">
-<h3>Wobei Unterstützung sinnvoll sein kann</h3>
-<p class="accordion-preview">Typisch passend sind wiederkehrende Abläufe mit E-Mails, Anfragen, Dokumenten, Terminen oder internen Übergaben.</p>
-</div>
-<span class="accordion-action"></span>
-</summary>
-<div class="accordion-content"><ul class="detail-list">
-<li>Besonders passend sind wiederkehrende Abläufe, bei denen Informationen manuell geprüft, weitergegeben oder nachverfolgt werden.</li>
-<li>Dazu gehören gemeinsame Postfächer, Kontaktanfragen, Terminbestätigungen, Dokumentenwege oder interne Bearbeitungsprozesse.</li>
-<li>Auch kleinere organisatorische Engpässe können sinnvoll sein, wenn sie täglich Zeit kosten und immer wieder dieselben Zwischenschritte auslösen.</li>
-</ul></div>
-</details>
-<details class="accordion-card contact-help-card reveal reveal-delay-1">
-<summary class="accordion-summary">
-<span class="mini-label">Angaben</span>
-<div class="accordion-text">
-<h3>Welche Angaben für den Start reichen</h3>
-<p class="accordion-preview">Hilfreich sind der wiederkehrende Schritt, die beteiligten Stellen und die Stelle, an der im Alltag Zeit verloren geht.</p>
-</div>
-<span class="accordion-action"></span>
-</summary>
-<div class="accordion-content"><ul class="detail-list">
-<li>Oft reicht schon eine kurze Beschreibung des aktuellen Ablaufs und der Stelle, an der Rückfragen, Nacharbeit oder doppelte Schritte entstehen.</li>
-<li>Nützlich ist außerdem, welche Personen beteiligt sind, welche Eingänge genutzt werden und welches Ergebnis am Ende erreicht werden soll.</li>
-<li>Je klarer der Ausgangspunkt beschrieben ist, desto schneller lässt sich einschätzen, welche Form der Unterstützung sinnvoll ist.</li>
-</ul></div>
-</details>
-<details class="accordion-card contact-help-card reveal reveal-delay-2">
-<summary class="accordion-summary">
-<span class="mini-label">Nächster Schritt</span>
-<div class="accordion-text">
-<h3>Wie es nach der Anfrage weitergeht</h3>
-<p class="accordion-preview">Nach der ersten Nachricht folgt eine kurze Einschätzung, welcher Einstieg sinnvoll ist und wie es weitergehen kann.</p>
-</div>
-<span class="accordion-action"></span>
-</summary>
-<div class="accordion-content"><ul class="detail-list">
-<li>Nach der Anfrage erfolgt eine erste Rückmeldung mit Blick darauf, ob der beschriebene Ablauf grundsätzlich sinnvoll verbessert werden kann.</li>
-<li>Danach lässt sich gemeinsam klären, ob zunächst eine Analyse, eine direkte Umsetzung oder eine schrittweise Strukturierung der bessere Weg ist.</li>
-<li>So entsteht ein klarer erster Schritt, ohne unnötige Hürden oder lange Vorlaufzeit.</li>
-</ul></div>
-</details>
-</div>
-</div>
-</section>
-<section class="section section-tight anchor-offset" id="kontaktformular">
-<div class="container contact-form-wrap">
-<div class="contact-intro reveal">
-<span class="eyebrow">Anfrageformular</span>
-<h2>Anfrage direkt senden.</h2>
-<p>Eine kurze Beschreibung genügt. Die fachlichen Details lassen sich anschließend gemeinsam klären.</p>
-<p class="contact-form-note">Keine Vorbereitung nötig. Ein kurzer Überblick über den Ablauf reicht für den ersten Schritt aus.</p></div>
-<div class="contact-layout contact-layout-single">
-<div class="contact-form reveal"><form data-contact-form=""><div class="contact-prefill-note" data-contact-prefill="" hidden=""><div class="mini-label">Schnellcheck</div><p data-contact-prefill-text=""></p></div><div class="contact-fields"><div class="form-row"><div><label for="name">Name</label><input class="input" id="name" name="name" required=""/></div><div><label for="company">Unternehmen</label><input class="input" id="company" name="company"/></div></div><div class="form-row"><div><label for="email">E-Mail</label><input aria-describedby="email-feedback" autocomplete="email" class="input" id="email" inputmode="email" name="email" required="" type="email"/><div aria-live="polite" class="field-help" data-email-feedback="" id="email-feedback">Bitte eine gültige E-Mail-Adresse angeben.</div></div><div><label for="topic">Thema / Bereich</label><select class="select" id="topic" name="topic"><option>Allgemeine Prozessoptimierung</option><option>Automatische Kundenantworten</option><option>Automatische Terminbuchung</option><option>Angebots- und Antwortvorbereitung</option><option>E-Mail- und Postfachprozesse</option><option>Anfragebearbeitung und Kontaktwege</option><option>Dokumenten- und Dateiprozesse</option><option>Interne Weiterleitungen und Zuständigkeiten</option><option>Betreuung und Optimierung bestehender Workflows</option><option>Erste Analyse und Einschätzung</option></select></div></div><div><label for="message">Kurze Beschreibung</label><textarea id="message" name="message" placeholder="Beschreiben Sie hier kurz Ihr Anliegen, Ihre Frage, Ihre Anfrage oder Ihr Problem."></textarea></div><div class="consent-wrap"><label class="consent-check" for="consent"><input id="consent" name="consent" required="" type="checkbox"/><span>Die <a href="datenschutz.html">Datenschutzhinweise</a> wurden zur Kenntnis genommen. Es wird eingewilligt, dass die angegebenen Daten zur Bearbeitung der Anfrage verarbeitet werden dürfen.</span></label><div aria-live="polite" class="field-help" data-consent-feedback="">Bitte die Einwilligung zur Datenverarbeitung bestätigen.</div></div></div><div class="contact-response"><button class="btn" data-contact-submit="" type="submit">Anfrage absenden</button><span class="note" data-contact-note="" aria-live="polite">Eine kurze Beschreibung genügt. Die Details lassen sich anschließend gemeinsam klären.</span></div><div class="system-log" style="margin-top:18px;"><div class="mini-label">Zusammenfassung der Anfrage</div><div class="summary-list" data-contact-summary=""></div></div></form></div>
-</div>
-</div>
-</section>
-<section class="section section-tight section-back-home">
-<div class="container reveal"><div class="back-home-solo"><a class="btn ghost" href="index.html">Zurück zur Startseite</a></div></div>
-</section>
-</main><footer class="footer"><div class="container footer-grid"><div><a aria-label="Startseite" class="footer-brand" href="index.html"><img alt="Deppmeyer Logo" class="brand-icon" src="assets/logo-icon.png"/><span class="brand-text"><span class="brand-name">Deppmeyer</span><span class="brand-sub">Workflow Solutions</span></span></a><p class="footer-copy">Strukturierte Workflow-Lösungen für nachvollziehbare Abläufe im Alltag.</p></div><div><h3>Seiten</h3><div class="footer-links small"><a href="index.html">Start</a><a href="leistungen.html">Leistungen</a><a href="beispiele.html">Beispiele</a><a href="einsatzbereiche.html">Einsatzbereiche</a><a href="ueber-mich.html">Über mich</a><a href="kontakt.html">Kontakt</a></div></div><div><h3>Kontakt &amp; Rechtliches</h3><div class="footer-links small"><a data-config="email" href="mailto:kontakt@beispiel.de">kontakt@beispiel.de</a><a data-config="phone" href="tel:+490000000000">+49 000 0000000</a><span data-config="location">Hannover &amp; Umland</span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></div></div></footer>
-<script src="site-config.js"></script><script src="js/script.js"></script></body></html>
+  <script>
+    try{
+      const k='deppmeyer-theme';
+      const saved=sessionStorage.getItem(k);
+      const theme=saved||'light';
+      document.body.setAttribute('data-theme',theme);
+      document.documentElement.style.colorScheme=theme;
+    }catch(e){}
+  </script>
+
+  <div aria-hidden="true" class="scroll-progress"></div>
+  <div aria-hidden="true" class="cursor-glow"></div>
+
+  <header class="topbar">
+    <div class="container nav">
+      <a aria-label="Startseite" class="brand" href="index.html">
+        <img alt="Deppmeyer Logo" class="brand-icon" src="assets/logo-icon.png"/>
+        <span class="brand-text">
+          <span class="brand-name">Deppmeyer</span>
+          <span class="brand-sub">Workflow Solutions</span>
+        </span>
+      </a>
+
+      <nav aria-label="Hauptnavigation" class="nav-links">
+        <a href="index.html">Start</a>
+        <a href="leistungen.html">Leistungen</a>
+        <a href="beispiele.html">Beispiele</a>
+        <a href="einsatzbereiche.html">Einsatzbereiche</a>
+        <a href="ueber-mich.html">Über mich</a>
+        <a class="active" href="kontakt.html">Kontakt</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="header-search search-shell" data-search-root="">
+          <span class="search-icon">⌕</span>
+          <input aria-label="Website durchsuchen" class="search-input" data-search-input="" placeholder="Suche" type="search"/>
+          <div class="search-results hidden" data-search-results=""></div>
+        </div>
+        <button aria-label="Zwischen Hellmodus und Dunkelmodus wechseln" class="theme-toggle" data-theme-toggle="" type="button">
+          <span aria-hidden="true" class="theme-toggle-icon">☀</span>
+          <span class="theme-toggle-text">Hell</span>
+        </button>
+        <button aria-expanded="false" aria-label="Menü öffnen" class="mobile-toggle" data-mobile-toggle="">☰</button>
+      </div>
+    </div>
+
+    <div class="container mobile-panel" data-mobile-panel="">
+      <div class="mobile-search search-shell" data-search-root="">
+        <span class="search-icon">⌕</span>
+        <input aria-label="Website durchsuchen" class="search-input" data-search-input="" placeholder="Suche" type="search"/>
+        <div class="search-results hidden" data-search-results=""></div>
+      </div>
+
+      <nav aria-label="Mobile Navigation" class="mobile-links">
+        <a href="index.html">Start</a>
+        <a href="leistungen.html">Leistungen</a>
+        <a href="beispiele.html">Beispiele</a>
+        <a href="einsatzbereiche.html">Einsatzbereiche</a>
+        <a href="ueber-mich.html">Über mich</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero kontakt-hero">
+      <div class="container page-hero-grid reveal">
+        <div>
+          <span class="eyebrow">Kontakt</span>
+          <h1>Kurze Anfrage. Passender nächster Schritt.</h1>
+          <p class="lead">Eine kurze Beschreibung reicht aus, um einzuschätzen, ob ein Ablauf sinnvoll verbessert werden kann. Für den Start genügen Problem, Ziel und die Stelle, an der im Alltag Zeit verloren geht.</p>
+          <div class="kontakt-points hero-inline-points">
+            <span class="status-pill">Antwort in der Regel innerhalb von 24 Stunden</span>
+            <span class="status-pill">E-Mail: <a data-config="email" href="mailto:kontakt@beispiel.de">kontakt@beispiel.de</a></span>
+            <span class="status-pill">Telefon: <a data-config="phone" href="tel:+490000000000">+49 000 0000000</a></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container reveal">
+        <div aria-hidden="true" class="contact-signal-strip">
+          <div class="contact-signal-node n1"></div>
+          <div class="contact-signal-node n2"></div>
+          <div class="contact-signal-node n3"></div>
+          <div class="contact-signal-node n4"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section anchor-offset" id="kontakt-info">
+      <div class="container">
+        <div class="contact-help-grid accordion-grid">
+          <details class="accordion-card contact-help-card reveal">
+            <summary class="accordion-summary">
+              <span class="mini-label">Themen</span>
+              <div class="accordion-text">
+                <h3>Wobei Unterstützung sinnvoll sein kann</h3>
+                <p class="accordion-preview">Typisch passend sind wiederkehrende Abläufe mit E-Mails, Anfragen, Dokumenten, Terminen oder internen Übergaben.</p>
+              </div>
+              <span class="accordion-action"></span>
+            </summary>
+            <div class="accordion-content">
+              <ul class="detail-list">
+                <li>Besonders passend sind wiederkehrende Abläufe, bei denen Informationen manuell geprüft, weitergegeben oder nachverfolgt werden.</li>
+                <li>Dazu gehören gemeinsame Postfächer, Kontaktanfragen, Terminbestätigungen, Dokumentenwege oder interne Bearbeitungsprozesse.</li>
+                <li>Auch kleinere organisatorische Engpässe können sinnvoll sein, wenn sie täglich Zeit kosten und immer wieder dieselben Zwischenschritte auslösen.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="accordion-card contact-help-card reveal reveal-delay-1">
+            <summary class="accordion-summary">
+              <span class="mini-label">Angaben</span>
+              <div class="accordion-text">
+                <h3>Welche Angaben für den Start reichen</h3>
+                <p class="accordion-preview">Hilfreich sind der wiederkehrende Schritt, die beteiligten Stellen und die Stelle, an der im Alltag Zeit verloren geht.</p>
+              </div>
+              <span class="accordion-action"></span>
+            </summary>
+            <div class="accordion-content">
+              <ul class="detail-list">
+                <li>Oft reicht schon eine kurze Beschreibung des aktuellen Ablaufs und der Stelle, an der Rückfragen, Nacharbeit oder doppelte Schritte entstehen.</li>
+                <li>Nützlich ist außerdem, welche Personen beteiligt sind, welche Eingänge genutzt werden und welches Ergebnis am Ende erreicht werden soll.</li>
+                <li>Je klarer der Ausgangspunkt beschrieben ist, desto schneller lässt sich einschätzen, welche Form der Unterstützung sinnvoll ist.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="accordion-card contact-help-card reveal reveal-delay-2">
+            <summary class="accordion-summary">
+              <span class="mini-label">Nächster Schritt</span>
+              <div class="accordion-text">
+                <h3>Wie es nach der Anfrage weitergeht</h3>
+                <p class="accordion-preview">Nach der ersten Nachricht folgt eine kurze Einschätzung, welcher Einstieg sinnvoll ist und wie es weitergehen kann.</p>
+              </div>
+              <span class="accordion-action"></span>
+            </summary>
+            <div class="accordion-content">
+              <ul class="detail-list">
+                <li>Nach der Anfrage erfolgt eine erste Rückmeldung mit Blick darauf, ob der beschriebene Ablauf grundsätzlich sinnvoll verbessert werden kann.</li>
+                <li>Danach lässt sich gemeinsam klären, ob zunächst eine Analyse, eine direkte Umsetzung oder eine schrittweise Strukturierung der bessere Weg ist.</li>
+                <li>So entsteht ein klarer erster Schritt, ohne unnötige Hürden oder lange Vorlaufzeit.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight anchor-offset" id="kontaktformular">
+      <div class="container contact-form-wrap">
+        <div class="contact-intro reveal">
+          <span class="eyebrow">Anfrageformular</span>
+          <h2>Anfrage direkt senden.</h2>
+          <p>Eine kurze Beschreibung genügt. Die fachlichen Details lassen sich anschließend gemeinsam klären.</p>
+          <p class="contact-form-note">Keine Vorbereitung nötig. Ein kurzer Überblick über den Ablauf reicht für den ersten Schritt aus.</p>
+        </div>
+
+        <div class="contact-layout contact-layout-single">
+          <div class="contact-form reveal">
+            <form data-contact-form="">
+              <div class="contact-prefill-note" data-contact-prefill="" hidden="">
+                <div class="mini-label">Schnellcheck</div>
+                <p data-contact-prefill-text=""></p>
+              </div>
+
+              <div class="contact-fields">
+                <div class="form-row">
+                  <div>
+                    <label for="gender">Anrede</label>
+                    <select class="select" id="gender" name="gender" required="">
+                      <option value="">Bitte auswählen</option>
+                      <option value="male">Männlich</option>
+                      <option value="female">Weiblich</option>
+                      <option value="diverse">Divers</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="firstName">Vorname</label>
+                    <input class="input" id="firstName" name="firstName" required=""/>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div>
+                    <label for="name">Nachname</label>
+                    <input class="input" id="name" name="name" required=""/>
+                  </div>
+                  <div>
+                    <label for="company">Unternehmen</label>
+                    <input class="input" id="company" name="company"/>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div>
+                    <label for="email">E-Mail</label>
+                    <input aria-describedby="email-feedback" autocomplete="email" class="input" id="email" inputmode="email" name="email" required="" type="email"/>
+                    <div aria-live="polite" class="field-help" data-email-feedback="" id="email-feedback">Bitte eine gültige E-Mail-Adresse angeben.</div>
+                  </div>
+                  <div>
+                    <label for="topic">Thema / Bereich</label>
+                    <select class="select" id="topic" name="topic">
+                      <option>Allgemeine Prozessoptimierung</option>
+                      <option>Automatische Kundenantworten</option>
+                      <option>Automatische Terminbuchung</option>
+                      <option>Angebots- und Antwortvorbereitung</option>
+                      <option>E-Mail- und Postfachprozesse</option>
+                      <option>Anfragebearbeitung und Kontaktwege</option>
+                      <option>Dokumenten- und Dateiprozesse</option>
+                      <option>Interne Weiterleitungen und Zuständigkeiten</option>
+                      <option>Betreuung und Optimierung bestehender Workflows</option>
+                      <option>Erste Analyse und Einschätzung</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="message">Kurze Beschreibung</label>
+                  <textarea id="message" name="message" placeholder="Beschreiben Sie hier kurz Ihr Anliegen, Ihre Frage, Ihre Anfrage oder Ihr Problem."></textarea>
+                </div>
+
+                <div class="consent-wrap">
+                  <label class="consent-check" for="consent">
+                    <input id="consent" name="consent" required="" type="checkbox"/>
+                    <span>Die <a href="datenschutz.html">Datenschutzhinweise</a> wurden zur Kenntnis genommen. Es wird eingewilligt, dass die angegebenen Daten zur Bearbeitung der Anfrage verarbeitet werden dürfen.</span>
+                  </label>
+                  <div aria-live="polite" class="field-help" data-consent-feedback="">Bitte die Einwilligung zur Datenverarbeitung bestätigen.</div>
+                </div>
+              </div>
+
+              <div class="contact-response">
+                <button class="btn" data-contact-submit="" type="submit">Anfrage absenden</button>
+                <span class="note" data-contact-note="" aria-live="polite">Eine kurze Beschreibung genügt. Die Details lassen sich anschließend gemeinsam klären.</span>
+              </div>
+
+              <div class="system-log" style="margin-top:18px;">
+                <div class="mini-label">Zusammenfassung der Anfrage</div>
+                <div class="summary-list" data-contact-summary=""></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight section-back-home">
+      <div class="container reveal">
+        <div class="back-home-solo">
+          <a class="btn ghost" href="index.html">Zurück zur Startseite</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <a aria-label="Startseite" class="footer-brand" href="index.html">
+          <img alt="Deppmeyer Logo" class="brand-icon" src="assets/logo-icon.png"/>
+          <span class="brand-text">
+            <span class="brand-name">Deppmeyer</span>
+            <span class="brand-sub">Workflow Solutions</span>
+          </span>
+        </a>
+        <p class="footer-copy">Strukturierte Workflow-Lösungen für nachvollziehbare Abläufe im Alltag.</p>
+      </div>
+
+      <div>
+        <h3>Seiten</h3>
+        <div class="footer-links small">
+          <a href="index.html">Start</a>
+          <a href="leistungen.html">Leistungen</a>
+          <a href="beispiele.html">Beispiele</a>
+          <a href="einsatzbereiche.html">Einsatzbereiche</a>
+          <a href="ueber-mich.html">Über mich</a>
+          <a href="kontakt.html">Kontakt</a>
+        </div>
+      </div>
+
+      <div>
+        <h3>Kontakt &amp; Rechtliches</h3>
+        <div class="footer-links small">
+          <a data-config="email" href="mailto:kontakt@beispiel.de">kontakt@beispiel.de</a>
+          <a data-config="phone" href="tel:+490000000000">+49 000 0000000</a>
+          <span data-config="location">Hannover &amp; Umland</span>
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="site-config.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
