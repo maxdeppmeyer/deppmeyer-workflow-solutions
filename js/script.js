@@ -940,14 +940,16 @@
             'Accept': 'application/json'
           },
           body: JSON.stringify({
-            name: String(formData.get('name') || '').trim(),
-            company: String(formData.get('company') || '').trim(),
-            email: String(formData.get('email') || '').trim(),
-            topic: String(formData.get('topic') || '').trim(),
-            message: String(formData.get('message') || '').trim(),
-            consent: consentGiven,
-            assessment: (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '').trim()
-          })
+  gender: String(formData.get('gender') || '').trim(),
+  firstName: String(formData.get('firstName') || '').trim(),
+  name: String(formData.get('name') || '').trim(),
+  company: String(formData.get('company') || '').trim(),
+  email: String(formData.get('email') || '').trim(),
+  topic: String(formData.get('topic') || '').trim(),
+  message: String(formData.get('message') || '').trim(),
+  consent: consentGiven,
+  assessment: (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '').trim()
+})
         });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) {
