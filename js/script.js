@@ -812,169 +812,251 @@
   initWorkflowCheck();
 
   const contactForm = document.querySelector('[data-contact-form]');
-  if (contactForm) {
-    const summary = contactForm.querySelector('[data-contact-summary]');
-    const submitButton = contactForm.querySelector('[data-contact-submit]');
-    const responseNote = contactForm.querySelector('[data-contact-note]');
-    const defaultResponseNote = responseNote ? responseNote.textContent.trim() : '';
-    const emailInput = contactForm.querySelector('#email');
-    const emailFeedback = contactForm.querySelector('[data-email-feedback]');
-    const consentInput = contactForm.querySelector('#consent');
-    const consentFeedback = contactForm.querySelector('[data-consent-feedback]');
-    let isSubmitting = false;
-    const setResponseNote = (message) => {
-      if (!responseNote) return;
-      responseNote.textContent = message || defaultResponseNote;
-    };
-    const validateEmailValue = (value) => {
-      const trimmed = String(value || '').trim();
-      if (!trimmed) {
-        return { valid: false, state: 'empty', message: 'Bitte eine gültige E-Mail-Adresse angeben.' };
-      }
-      if (/\s/.test(trimmed)) {
-        return { valid: false, state: 'invalid', message: 'Die E-Mail-Adresse darf keine Leerzeichen enthalten.' };
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(trimmed)) {
-        return { valid: false, state: 'invalid', message: 'Bitte eine gültige E-Mail-Adresse eingeben.' };
-      }
-      return { valid: true, state: 'valid', message: 'E-Mail-Adresse sieht gültig aus.' };
-    };
-    const prefillBox = contactForm.querySelector('[data-contact-prefill]');
-    const prefillText = contactForm.querySelector('[data-contact-prefill-text]');
-    const applyAssessmentPrefill = () => {
-      const params = new URLSearchParams(window.location.search);
-      const resultTitle = params.get('assessment');
-      const resultSummary = params.get('summary');
-      const resultTopic = params.get('topic');
-      const messageField = contactForm.querySelector('#message');
-      const topicField = contactForm.querySelector('#topic');
-      if (!resultTitle || !resultSummary) return;
-      if (prefillBox && prefillText) {
-        prefillBox.hidden = false;
-        prefillText.textContent = `Übernommenes Schnellcheck-Ergebnis: ${resultTitle}. ${resultSummary}`;
-      }
-      if (messageField && !messageField.value.trim()) {
-        messageField.value = `Schnellcheck-Ergebnis: ${resultTitle}. ${resultSummary}`;
-      }
-      if (topicField && resultTopic) {
-        const normalizeTopic = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
-        const normalizedTopic = normalizeTopic(resultTopic);
-        const option = [...topicField.options].find((entry) => normalizeTopic(entry.textContent).includes(normalizedTopic) || normalizedTopic.includes(normalizeTopic(entry.textContent)));
-        if (option) topicField.value = option.value;
-      }
-    };
-    applyAssessmentPrefill();
-    const updateSummary = () => {
-      const formData = new FormData(contactForm);
-      const emailState = validateEmailValue(formData.get('email'));
-      const consentGiven = Boolean(formData.get('consent'));
-      const lines = [
-        ['Name', formData.get('name') || '—'],
-        ['Unternehmen', formData.get('company') || '—'],
-        ['E-Mail', formData.get('email') || '—'],
-        ['Thema', formData.get('topic') || '—'],
-        ['Beschreibung', formData.get('message') || '—'],
-        ['Schnellcheck', (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '') || '—'],
-        ['Einwilligung', consentGiven ? 'Bestätigt' : 'Ausstehend']
-      ];
-      if (summary) {
-        summary.innerHTML = lines.map(([label, value]) => `<div><strong>${label}:</strong> ${String(value).replace(/</g, '&lt;')}</div>`).join('');
-      }
-      if (emailInput) {
-        emailInput.classList.toggle('is-valid', emailState.valid);
-        emailInput.classList.toggle('is-invalid', !emailState.valid && emailState.state !== 'empty');
-        emailInput.setAttribute('aria-invalid', String(!emailState.valid && emailState.state !== 'empty'));
-        emailInput.setCustomValidity(emailState.valid || emailState.state === 'empty' ? '' : emailState.message);
-      }
-      if (emailFeedback) {
-        emailFeedback.textContent = emailState.message;
-        emailFeedback.classList.toggle('is-valid', emailState.valid);
-        emailFeedback.classList.toggle('is-invalid', !emailState.valid && emailState.state !== 'empty');
-      }
-      if (consentInput) {
-        consentInput.setCustomValidity(consentGiven ? '' : 'Bitte die Einwilligung zur Datenverarbeitung bestätigen.');
-        consentInput.setAttribute('aria-invalid', String(!consentGiven));
-      }
-      if (consentFeedback) {
-        consentFeedback.textContent = consentGiven
-          ? 'Einwilligung zur Datenverarbeitung bestätigt.'
-          : 'Bitte die Einwilligung zur Datenverarbeitung bestätigen.';
-        consentFeedback.classList.toggle('is-valid', consentGiven);
-        consentFeedback.classList.toggle('is-invalid', !consentGiven);
-      }
-      if (submitButton) {
-        const canProceed = emailState.valid && consentGiven && !isSubmitting;
-        submitButton.disabled = !canProceed;
-        submitButton.setAttribute('aria-disabled', String(!canProceed));
-        submitButton.classList.toggle('is-disabled', !canProceed);
-      }
-    };
-    contactForm.addEventListener('input', () => {
-      if (!isSubmitting) updateSummary();
-    });
-    contactForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const formData = new FormData(contactForm);
-      const emailState = validateEmailValue(formData.get('email'));
-      const consentGiven = Boolean(formData.get('consent'));
-      if (!emailState.valid || !consentGiven) {
-        updateSummary();
-        if (!emailState.valid && emailInput) emailInput.focus();
-        else if (consentInput) consentInput.focus();
-        return;
-      }
-      if (isSubmitting) return;
-      isSubmitting = true;
-      if (submitButton) {
-        submitButton.textContent = 'Wird gesendet...';
-        submitButton.disabled = true;
-        submitButton.setAttribute('aria-disabled', 'true');
-        submitButton.classList.add('is-disabled');
-      }
-      setResponseNote('Anfrage wird gesendet...');
-      try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({
-  gender: String(formData.get('gender') || '').trim(),
-  firstName: String(formData.get('firstName') || '').trim(),
-  name: String(formData.get('name') || '').trim(),
-  company: String(formData.get('company') || '').trim(),
-  email: String(formData.get('email') || '').trim(),
-  topic: String(formData.get('topic') || '').trim(),
-  message: String(formData.get('message') || '').trim(),
-  consent: consentGiven,
-  assessment: (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '').trim()
-})
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.ok) {
-          throw new Error(result.message || 'Die Anfrage konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.');
-        }
-        contactForm.reset();
-        applyAssessmentPrefill();
-        updateSummary();
-        setResponseNote(result.message || 'Anfrage erfolgreich gesendet.');
-      } catch (error) {
-        setResponseNote(error && error.message ? error.message : 'Die Anfrage konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.');
-      } finally {
-        isSubmitting = false;
-        if (submitButton) {
-          submitButton.textContent = 'Anfrage absenden';
-        }
-        updateSummary();
-      }
-    });
+if (contactForm) {
+  const summary = contactForm.querySelector('[data-contact-summary]');
+  const submitButton = contactForm.querySelector('[data-contact-submit]');
+  const responseNote = contactForm.querySelector('[data-contact-note]');
+  const defaultResponseNote = responseNote ? responseNote.textContent.trim() : '';
+
+  const genderInput = contactForm.querySelector('#gender');
+  const firstNameInput = contactForm.querySelector('#firstName');
+  const lastNameInput = contactForm.querySelector('#name');
+  const emailInput = contactForm.querySelector('#email');
+  const emailFeedback = contactForm.querySelector('[data-email-feedback]');
+  const consentInput = contactForm.querySelector('#consent');
+  const consentFeedback = contactForm.querySelector('[data-consent-feedback]');
+
+  let isSubmitting = false;
+
+  const setResponseNote = (message) => {
+    if (!responseNote) return;
+    responseNote.textContent = message || defaultResponseNote;
+  };
+
+  const validateEmailValue = (value) => {
+    const trimmed = String(value || '').trim();
+    if (!trimmed) {
+      return { valid: false, state: 'empty', message: 'Bitte eine gültige E-Mail-Adresse angeben.' };
+    }
+    if (/\s/.test(trimmed)) {
+      return { valid: false, state: 'invalid', message: 'Die E-Mail-Adresse darf keine Leerzeichen enthalten.' };
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(trimmed)) {
+      return { valid: false, state: 'invalid', message: 'Bitte eine gültige E-Mail-Adresse eingeben.' };
+    }
+    return { valid: true, state: 'valid', message: 'E-Mail-Adresse sieht gültig aus.' };
+  };
+
+  const prefillBox = contactForm.querySelector('[data-contact-prefill]');
+  const prefillText = contactForm.querySelector('[data-contact-prefill-text]');
+
+  const applyAssessmentPrefill = () => {
+    const params = new URLSearchParams(window.location.search);
+    const resultTitle = params.get('assessment');
+    const resultSummary = params.get('summary');
+    const resultTopic = params.get('topic');
+    const messageField = contactForm.querySelector('#message');
+    const topicField = contactForm.querySelector('#topic');
+
+    if (!resultTitle || !resultSummary) return;
+
+    if (prefillBox && prefillText) {
+      prefillBox.hidden = false;
+      prefillText.textContent = `Übernommenes Schnellcheck-Ergebnis: ${resultTitle}. ${resultSummary}`;
+    }
+
+    if (messageField && !messageField.value.trim()) {
+      messageField.value = `Schnellcheck-Ergebnis: ${resultTitle}. ${resultSummary}`;
+    }
+
+    if (topicField && resultTopic) {
+      const normalizeTopic = (value) => String(value || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ä/g, 'ae')
+        .replace(/ö/g, 'oe')
+        .replace(/ü/g, 'ue')
+        .replace(/ß/g, 'ss');
+
+      const normalizedTopic = normalizeTopic(resultTopic);
+      const option = [...topicField.options].find((entry) => {
+        const optionText = normalizeTopic(entry.textContent);
+        return optionText.includes(normalizedTopic) || normalizedTopic.includes(optionText);
+      });
+
+      if (option) topicField.value = option.value;
+    }
+  };
+
+  applyAssessmentPrefill();
+
+  const updateSummary = () => {
+    const formData = new FormData(contactForm);
+    const emailState = validateEmailValue(formData.get('email'));
+    const consentGiven = Boolean(formData.get('consent'));
+
+    const genderValue = String(formData.get('gender') || '').trim();
+    const genderLabel =
+      genderValue === 'male' ? 'Männlich' :
+      genderValue === 'female' ? 'Weiblich' :
+      genderValue === 'diverse' ? 'Divers' :
+      '—';
+
+    const firstNameValue = String(formData.get('firstName') || '').trim();
+    const lastNameValue = String(formData.get('name') || '').trim();
+    const genderValid = Boolean(genderValue);
+    const firstNameValid = Boolean(firstNameValue);
+    const lastNameValid = Boolean(lastNameValue);
+
+    const lines = [
+      ['Anrede', genderLabel],
+      ['Vorname', firstNameValue || '—'],
+      ['Nachname', lastNameValue || '—'],
+      ['Unternehmen', formData.get('company') || '—'],
+      ['E-Mail', formData.get('email') || '—'],
+      ['Thema', formData.get('topic') || '—'],
+      ['Beschreibung', formData.get('message') || '—'],
+      ['Schnellcheck', (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '') || '—'],
+      ['Einwilligung', consentGiven ? 'Bestätigt' : 'Ausstehend']
+    ];
+
+    if (summary) {
+      summary.innerHTML = lines.map(([label, value]) => `<div><strong>${label}:</strong> ${String(value).replace(/</g, '&lt;')}</div>`).join('');
+    }
+
+    if (genderInput) {
+      genderInput.setCustomValidity(genderValid ? '' : 'Bitte eine Anrede auswählen.');
+      genderInput.setAttribute('aria-invalid', String(!genderValid));
+    }
+
+    if (firstNameInput) {
+      firstNameInput.setCustomValidity(firstNameValid ? '' : 'Bitte den Vornamen angeben.');
+      firstNameInput.setAttribute('aria-invalid', String(!firstNameValid));
+    }
+
+    if (lastNameInput) {
+      lastNameInput.setCustomValidity(lastNameValid ? '' : 'Bitte den Nachnamen angeben.');
+      lastNameInput.setAttribute('aria-invalid', String(!lastNameValid));
+    }
+
+    if (emailInput) {
+      emailInput.classList.toggle('is-valid', emailState.valid);
+      emailInput.classList.toggle('is-invalid', !emailState.valid && emailState.state !== 'empty');
+      emailInput.setAttribute('aria-invalid', String(!emailState.valid && emailState.state !== 'empty'));
+      emailInput.setCustomValidity(emailState.valid || emailState.state === 'empty' ? '' : emailState.message);
+    }
+
+    if (emailFeedback) {
+      emailFeedback.textContent = emailState.message;
+      emailFeedback.classList.toggle('is-valid', emailState.valid);
+      emailFeedback.classList.toggle('is-invalid', !emailState.valid && emailState.state !== 'empty');
+    }
+
+    if (consentInput) {
+      consentInput.setCustomValidity(consentGiven ? '' : 'Bitte die Einwilligung zur Datenverarbeitung bestätigen.');
+      consentInput.setAttribute('aria-invalid', String(!consentGiven));
+    }
+
+    if (consentFeedback) {
+      consentFeedback.textContent = consentGiven
+        ? 'Einwilligung zur Datenverarbeitung bestätigt.'
+        : 'Bitte die Einwilligung zur Datenverarbeitung bestätigen.';
+      consentFeedback.classList.toggle('is-valid', consentGiven);
+      consentFeedback.classList.toggle('is-invalid', !consentGiven);
+    }
+
+    if (submitButton) {
+      const canProceed = genderValid && firstNameValid && lastNameValid && emailState.valid && consentGiven && !isSubmitting;
+      submitButton.disabled = !canProceed;
+      submitButton.setAttribute('aria-disabled', String(!canProceed));
+      submitButton.classList.toggle('is-disabled', !canProceed);
+    }
+  };
+
+  contactForm.addEventListener('input', () => {
+    if (!isSubmitting) updateSummary();
+  });
+
+  contactForm.addEventListener('change', () => {
+    if (!isSubmitting) updateSummary();
+  });
+
+  contactForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
     updateSummary();
-  }
 
+    if (!contactForm.reportValidity()) {
+      return;
+    }
 
+    const formData = new FormData(contactForm);
+    const emailState = validateEmailValue(formData.get('email'));
+    const consentGiven = Boolean(formData.get('consent'));
 
-  const initLeistungenNetwork = () => {
+    if (!emailState.valid || !consentGiven) {
+      updateSummary();
+      if (!emailState.valid && emailInput) emailInput.focus();
+      else if (consentInput) consentInput.focus();
+      return;
+    }
+
+    if (isSubmitting) return;
+    isSubmitting = true;
+
+    if (submitButton) {
+      submitButton.textContent = 'Wird gesendet...';
+      submitButton.disabled = true;
+      submitButton.setAttribute('aria-disabled', 'true');
+      submitButton.classList.add('is-disabled');
+    }
+
+    setResponseNote('Anfrage wird gesendet...');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          gender: String(formData.get('gender') || '').trim(),
+          firstName: String(formData.get('firstName') || '').trim(),
+          name: String(formData.get('name') || '').trim(),
+          company: String(formData.get('company') || '').trim(),
+          email: String(formData.get('email') || '').trim(),
+          topic: String(formData.get('topic') || '').trim(),
+          message: String(formData.get('message') || '').trim(),
+          consent: consentGiven,
+          assessment: (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '').trim()
+        })
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.message || 'Die Anfrage konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.');
+      }
+
+      contactForm.reset();
+      applyAssessmentPrefill();
+      updateSummary();
+      setResponseNote(result.message || 'Anfrage erfolgreich gesendet.');
+    } catch (error) {
+      setResponseNote(error && error.message ? error.message : 'Die Anfrage konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.');
+    } finally {
+      isSubmitting = false;
+      if (submitButton) {
+        submitButton.textContent = 'Anfrage absenden';
+      }
+      updateSummary();
+    }
+  });
+
+  updateSummary();
+}
     const root = document.querySelector('[data-logo-network="leistungen"]');
     if (!root) return;
     const svg = root.querySelector('svg');
