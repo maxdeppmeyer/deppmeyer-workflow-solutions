@@ -1,3 +1,5 @@
+const N8N_WEBHOOK_URL = 'https://maxde.app.n8n.cloud/webhook/cloudflare-contact';
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -48,6 +50,7 @@ async function handleContactSubmission(request, env) {
   const userAgent = request.headers.get('User-Agent') || '';
   const rateKey = `contact-rate:${ip}`;
   const lastSubmission = await env.CONTACT_FORMS.get(rateKey);
+
   if (lastSubmission && Date.now() - Number(lastSubmission) < 60_000) {
     return json({ ok: false, message: 'Bitte warten Sie einen Moment, bevor Sie eine weitere Anfrage senden.' }, 429);
   }
@@ -67,7 +70,34 @@ async function handleContactSubmission(request, env) {
     env.CONTACT_FORMS.put(rateKey, String(Date.now()), { expirationTtl: 120 })
   ]);
 
+  try {
+    await sendToN8N(record);
+  } catch {
+    return json(
+      {
+        ok: false,
+        message: 'Anfrage wurde gespeichert, aber die E-Mail-Weiterleitung hat nicht funktioniert.'
+      },
+      502
+    );
+  }
+
   return json({ ok: true, message: 'Anfrage erfolgreich abgesendet.' }, 200);
+}
+
+async function sendToN8N(record) {
+  const response = await fetch(N8N_WEBHOOK_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8'
+    },
+    body: JSON.stringify(record)
+  });
+
+  if (!response.ok) {
+    const text = await response.text().catch(() => '');
+    throw new Error(`n8n error ${response.status}: ${text}`);
+  }
 }
 
 function clean(value) {
