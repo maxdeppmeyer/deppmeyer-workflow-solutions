@@ -409,10 +409,18 @@
       if (trigger) trigger.textContent = 'Workflow starten';
     };
 
+    const isExampleDashboard = document.body?.getAttribute('data-page') === 'beispiele.html' && root.classList.contains('example-dashboard');
+
     const animateScrollTo = (targetTop, duration = 820) => {
+      const safeTargetTop = Math.max(targetTop, 0);
       const startTop = window.scrollY;
-      const delta = targetTop - startTop;
+      const delta = safeTargetTop - startTop;
       if (Math.abs(delta) < 6) return;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        window.scrollTo(0, safeTargetTop);
+        return;
+      }
       const startTime = performance.now();
       const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
       const step = (now) => {
@@ -424,17 +432,31 @@
       window.requestAnimationFrame(step);
     };
 
-    const maybeAutoScrollStep = (stepIndex) => {
-      const isMobileFlow = window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse)').matches;
-      if (!isMobileFlow) return;
-      const activeNode = nodes[Math.min(stepIndex, nodes.length - 1)];
-      const target = activeNode || currentBox || root;
+    const getHeaderOffset = () => {
+      const topbar = document.querySelector('.topbar');
+      const topbarHeight = topbar?.getBoundingClientRect().height || 0;
+      return Math.max(Math.round(topbarHeight + 18), 88);
+    };
+
+    const scrollTargetToViewportCenter = (target, duration = 780) => {
       if (!target) return;
       window.requestAnimationFrame(() => {
-        const headerOffset = 108;
-        const top = Math.max(target.getBoundingClientRect().top + window.scrollY - headerOffset, 0);
-        animateScrollTo(top, 980);
+        const rect = target.getBoundingClientRect();
+        const headerOffset = getHeaderOffset();
+        const viewportHeight = window.innerHeight;
+        const usableHeight = Math.max(viewportHeight - headerOffset - 28, 260);
+        const targetCenter = rect.top + window.scrollY + rect.height / 2;
+        const desiredTop = targetCenter - (headerOffset + usableHeight / 2);
+        animateScrollTo(desiredTop, duration);
       });
+    };
+
+    const maybeAutoScrollStep = (stepIndex) => {
+      if (!isExampleDashboard) return;
+      const isLastStep = stepIndex >= config.steps.length - 1;
+      const activeNode = nodes[Math.min(stepIndex, nodes.length - 1)];
+      const target = isLastStep ? (currentBox || activeNode || root) : (activeNode || currentBox || root);
+      scrollTargetToViewportCenter(target, window.matchMedia('(max-width: 900px)').matches ? 900 : 720);
     };
 
     const runStep = (stepIndex) => {
@@ -463,6 +485,10 @@
       clearTimer();
       nodes.forEach((node) => node.classList.remove('active', 'done'));
       if (trigger) trigger.textContent = 'Workflow läuft …';
+      if (isExampleDashboard) {
+        const startTarget = root.closest('[data-example-card]') || root;
+        scrollTargetToViewportCenter(startTarget, window.matchMedia('(max-width: 900px)').matches ? 900 : 720);
+      }
       runStep(0);
     };
 
