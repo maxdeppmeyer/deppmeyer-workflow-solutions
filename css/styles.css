@@ -3217,3 +3217,14 @@ body[data-theme="dark"][data-page="kontakt.html"] .contact-prefill-note{
   background:linear-gradient(180deg, rgba(13,22,42,.9), rgba(9,16,32,.78)) !important;
   border-color:rgba(126,164,220,.18) !important;
 }
+
+body[data-page="beispiele.html"] .example-card{scroll-margin-top:120px}
+
+@media (max-width: 900px){
+  body[data-page="beispiele.html"] .example-card,
+  body[data-page="beispiele.html"] .example-dashboard,
+  body[data-page="beispiele.html"] .workflow-current,
+  body[data-page="beispiele.html"] .workflow-node{max-width:100%}
+  body[data-page="beispiele.html"] .workflow-toolbar .btn,
+  body[data-page="beispiele.html"] .workflow-inline-action .btn{width:100%;min-width:0}
+}
