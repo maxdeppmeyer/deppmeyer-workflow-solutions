@@ -727,7 +727,9 @@
       currentStep = Math.max(0, Math.min(index, fieldsets.length - 1));
       fieldsets.forEach((field, fieldIndex) => { field.hidden = fieldIndex !== currentStep; });
       if (progress) progress.textContent = `Frage ${currentStep + 1} von ${fieldsets.length}`;
-      updateActionButtons();
+      if (prevButton) prevButton.hidden = currentStep === 0;
+      if (nextButton) nextButton.hidden = true;
+      if (evaluateButton) evaluateButton.hidden = true;
       if (resultBox && !options.keepResult) resultBox.hidden = true;
       if (options.scroll !== false) {
         requestAnimationFrame(() => {
@@ -758,15 +760,6 @@
     };
 
     const focusFirst = () => fieldsets[currentStep]?.querySelector('input')?.focus();
-
-    const updateActionButtons = () => {
-      const isLastStep = currentStep >= fieldsets.length - 1;
-      const answered = currentFieldAnswered();
-
-      if (prevButton) prevButton.hidden = currentStep === 0;
-      if (nextButton) nextButton.hidden = true;
-      if (evaluateButton) evaluateButton.hidden = !isLastStep || !answered;
-    };
 
     nextButton?.addEventListener('click', () => {
       if (!currentFieldAnswered()) {
@@ -822,13 +815,23 @@
       form.reset();
       closeCheck();
     });
-    form.addEventListener('change', () => {
+    form.addEventListener('change', (event) => {
       currentResult = null;
       if (resultBox && !resultBox.hidden) resultBox.hidden = true;
-      updateActionButtons();
-      if (currentFieldAnswered() && currentStep < fieldsets.length - 1) {
-        updateStep(currentStep + 1);
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement) || target.type !== 'radio') return;
+      const field = target.closest('fieldset');
+      const fieldIndex = fieldsets.indexOf(field);
+      if (fieldIndex === -1) return;
+      currentStep = fieldIndex;
+      if (!currentFieldAnswered()) return;
+      if (currentStep >= fieldsets.length - 1) {
+        evaluate();
+        return;
       }
+      window.setTimeout(() => {
+        if (fieldsets[currentStep] === field) updateStep(currentStep + 1);
+      }, 90);
     });
     form.addEventListener('reset', () => {
       setTimeout(() => {
