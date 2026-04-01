@@ -727,9 +727,7 @@
       currentStep = Math.max(0, Math.min(index, fieldsets.length - 1));
       fieldsets.forEach((field, fieldIndex) => { field.hidden = fieldIndex !== currentStep; });
       if (progress) progress.textContent = `Frage ${currentStep + 1} von ${fieldsets.length}`;
-      if (prevButton) prevButton.hidden = currentStep === 0;
-      if (nextButton) nextButton.hidden = currentStep >= fieldsets.length - 1;
-      if (evaluateButton) evaluateButton.hidden = currentStep < fieldsets.length - 1;
+      updateActionButtons();
       if (resultBox && !options.keepResult) resultBox.hidden = true;
       if (options.scroll !== false) {
         requestAnimationFrame(() => {
@@ -760,6 +758,15 @@
     };
 
     const focusFirst = () => fieldsets[currentStep]?.querySelector('input')?.focus();
+
+    const updateActionButtons = () => {
+      const isLastStep = currentStep >= fieldsets.length - 1;
+      const answered = currentFieldAnswered();
+
+      if (prevButton) prevButton.hidden = currentStep === 0;
+      if (nextButton) nextButton.hidden = isLastStep;
+      if (evaluateButton) evaluateButton.hidden = !isLastStep || !answered;
+    };
 
     nextButton?.addEventListener('click', () => {
       if (!currentFieldAnswered()) {
@@ -818,6 +825,7 @@
     form.addEventListener('change', () => {
       currentResult = null;
       if (resultBox && !resultBox.hidden) resultBox.hidden = true;
+      updateActionButtons();
     });
     form.addEventListener('reset', () => {
       setTimeout(() => {
