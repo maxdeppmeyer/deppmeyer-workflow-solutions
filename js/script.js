@@ -764,7 +764,7 @@
       const answered = currentFieldAnswered();
 
       if (prevButton) prevButton.hidden = currentStep === 0;
-      if (nextButton) nextButton.hidden = isLastStep;
+      if (nextButton) nextButton.hidden = true;
       if (evaluateButton) evaluateButton.hidden = !isLastStep || !answered;
     };
 
@@ -826,6 +826,9 @@
       currentResult = null;
       if (resultBox && !resultBox.hidden) resultBox.hidden = true;
       updateActionButtons();
+      if (currentFieldAnswered() && currentStep < fieldsets.length - 1) {
+        updateStep(currentStep + 1);
+      }
     });
     form.addEventListener('reset', () => {
       setTimeout(() => {
