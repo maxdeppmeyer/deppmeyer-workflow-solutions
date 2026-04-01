@@ -3198,3 +3198,22 @@ body[data-page="kontakt.html"] .contact-check-shell .workflow-check-result h3{
     padding:14px 14px 16px;
   }
 }
+
+/* v007g dark contact quickcheck intro fix */
+body[data-theme="dark"][data-page="kontakt.html"] .contact-check-entry.workflow-check-intro{
+  background:linear-gradient(180deg, rgba(13,22,42,.92), rgba(9,16,32,.82)) !important;
+  border-color:rgba(126,164,220,.18) !important;
+  box-shadow:0 18px 40px rgba(3,10,24,.28) !important;
+}
+body[data-theme="dark"][data-page="kontakt.html"] .contact-check-entry.workflow-check-intro .mini-label{
+  background:rgba(255,255,255,.05) !important;
+  border-color:rgba(126,164,220,.16) !important;
+}
+body[data-theme="dark"][data-page="kontakt.html"] .contact-check-entry.workflow-check-intro p{
+  color:rgba(231,240,255,.82) !important;
+}
+body[data-theme="dark"][data-page="kontakt.html"] .contact-check-shell,
+body[data-theme="dark"][data-page="kontakt.html"] .contact-prefill-note{
+  background:linear-gradient(180deg, rgba(13,22,42,.9), rgba(9,16,32,.78)) !important;
+  border-color:rgba(126,164,220,.18) !important;
+}
