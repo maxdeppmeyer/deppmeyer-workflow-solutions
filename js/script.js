@@ -886,11 +886,13 @@
     const prefillClearButton = contactForm.querySelector('[data-contact-prefill-clear]');
     const messageField = contactForm.querySelector('#message');
     const topicField = contactForm.querySelector('#topic');
+    const requiredControls = [...contactForm.querySelectorAll('[required]')];
     let isSubmitting = false;
 
-    const setResponseNote = (message) => {
+    const setResponseNote = (message, state = 'default') => {
       if (!responseNote) return;
       responseNote.textContent = message || defaultResponseNote;
+      responseNote.classList.toggle('is-error', state === 'error');
     };
 
     const validateEmailValue = (value) => {
@@ -907,7 +909,7 @@
       return { valid: true, state: 'valid', message: 'E-Mail-Adresse sieht gültig aus.' };
     };
 
-    const normalizeTopic = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
+    const normalizeTopic = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
 
     const applyTopicChoice = (resultTopic) => {
       if (!topicField || !resultTopic) return;
@@ -931,6 +933,97 @@
       const text = getAssessmentText();
       return text ? `Schnellcheck-Ergebnis: ${text}` : '';
     };
+
+    const getLabelText = (control) => {
+      if (control === consentInput) return 'Einwilligung zur Datenverarbeitung';
+      const label = control.id ? contactForm.querySelector(`label[for="${control.id}"]`) : null;
+      return label
+        ? label.textContent.replace(/\*/g, '').replace(/\s+/g, ' ').trim().replace(/:$/, '')
+        : 'Pflichtfeld';
+    };
+
+    const getMarkerHost = (control) => {
+      if (control === consentInput) return control.closest('.consent-wrap');
+      return control.id ? contactForm.querySelector(`label[for="${control.id}"]`) : null;
+    };
+
+    const getFieldWrap = (control) => {
+      if (control === consentInput) return control.closest('.consent-wrap');
+      return control.parentElement;
+    };
+
+    const isFilled = (control) => {
+      if (!control) return false;
+      if (control.type === 'checkbox') return control.checked;
+      return String(control.value || '').trim() !== '';
+    };
+
+    const getControlState = (control) => {
+      if (control === emailInput) {
+        const emailState = validateEmailValue(control.value);
+        return {
+          filled: isFilled(control),
+          valid: emailState.valid,
+          message: !isFilled(control)
+            ? 'Bitte E-Mail ausfüllen.'
+            : 'Bitte E-Mail korrekt ausfüllen.'
+        };
+      }
+      if (control === consentInput) {
+        return {
+          filled: control.checked,
+          valid: control.checked,
+          message: 'Bitte die Einwilligung zur Datenverarbeitung bestätigen.'
+        };
+      }
+      if (control.tagName === 'SELECT') {
+        return {
+          filled: isFilled(control),
+          valid: isFilled(control),
+          message: `Bitte ${getLabelText(control)} auswählen.`
+        };
+      }
+      return {
+        filled: isFilled(control),
+        valid: isFilled(control),
+        message: `Bitte ${getLabelText(control)} ausfüllen.`
+      };
+    };
+
+    const ensureRequiredMarkers = () => {
+      requiredControls.forEach((control) => {
+        const host = getMarkerHost(control);
+        if (!host) return;
+        host.classList.add('has-required-marker');
+        if (host.querySelector('.required-marker')) return;
+        const marker = document.createElement('span');
+        marker.className = 'required-marker';
+        marker.setAttribute('aria-hidden', 'true');
+        marker.textContent = '*';
+        host.append(marker);
+      });
+    };
+
+    const updateRequiredIndicators = () => {
+      requiredControls.forEach((control) => {
+        const state = getControlState(control);
+        const host = getMarkerHost(control);
+        const wrap = getFieldWrap(control);
+        const marker = host ? host.querySelector('.required-marker') : null;
+
+        if (marker) marker.hidden = state.filled;
+        if (host) {
+          host.classList.toggle('is-required-empty', !state.filled);
+          host.classList.toggle('is-required-filled', state.filled);
+        }
+        if (wrap) {
+          wrap.classList.toggle('is-required-empty', !state.filled);
+          wrap.classList.toggle('is-required-filled', state.filled);
+        }
+      });
+    };
+
+    const getFirstInvalidRequiredControl = () => requiredControls.find((control) => !getControlState(control).valid) || null;
 
     function updateSummary() {
       const formData = new FormData(contactForm);
@@ -970,11 +1063,14 @@
         consentFeedback.classList.toggle('is-valid', consentGiven);
         consentFeedback.classList.toggle('is-invalid', !consentGiven);
       }
+      updateRequiredIndicators();
       if (submitButton) {
-        const canProceed = emailState.valid && consentGiven && !isSubmitting;
-        submitButton.disabled = !canProceed;
-        submitButton.setAttribute('aria-disabled', String(!canProceed));
-        submitButton.classList.toggle('is-disabled', !canProceed);
+        submitButton.disabled = isSubmitting;
+        submitButton.setAttribute('aria-disabled', String(isSubmitting));
+        submitButton.classList.toggle('is-disabled', isSubmitting);
+      }
+      if (!isSubmitting && !getFirstInvalidRequiredControl() && responseNote?.classList.contains('is-error')) {
+        setResponseNote(defaultResponseNote);
       }
     }
 
@@ -1034,6 +1130,7 @@
       setResponseNote(defaultResponseNote);
     });
 
+    ensureRequiredMarkers();
     applyAssessmentPrefill();
 
     contactForm.addEventListener('input', () => {
@@ -1044,13 +1141,11 @@
     });
     contactForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const formData = new FormData(contactForm);
-      const emailState = validateEmailValue(formData.get('email'));
-      const consentGiven = Boolean(formData.get('consent'));
-      if (!emailState.valid || !consentGiven) {
-        updateSummary();
-        if (!emailState.valid && emailInput) emailInput.focus();
-        else if (consentInput) consentInput.focus();
+      updateSummary();
+      const firstInvalidControl = getFirstInvalidRequiredControl();
+      if (firstInvalidControl) {
+        setResponseNote(getControlState(firstInvalidControl).message, 'error');
+        firstInvalidControl.focus();
         return;
       }
       if (isSubmitting) return;
@@ -1063,6 +1158,7 @@
       }
       setResponseNote('Anfrage wird gesendet...');
       try {
+        const formData = new FormData(contactForm);
         const response = await fetch('/api/contact', {
           method: 'POST',
           headers: {
@@ -1077,7 +1173,7 @@
             email: String(formData.get('email') || '').trim(),
             topic: String(formData.get('topic') || '').trim(),
             message: String(formData.get('message') || '').trim(),
-            consent: consentGiven,
+            consent: Boolean(formData.get('consent')),
             assessment: getAssessmentText()
           })
         });
@@ -1091,7 +1187,7 @@
         updateSummary();
         setResponseNote(result.message || 'Anfrage erfolgreich gesendet.');
       } catch (error) {
-        setResponseNote(error && error.message ? error.message : 'Die Anfrage konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.');
+        setResponseNote(error && error.message ? error.message : 'Die Anfrage konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.', 'error');
       } finally {
         isSubmitting = false;
         if (submitButton) {
@@ -1102,7 +1198,6 @@
     });
     updateSummary();
   }
-
 
 
   const initLeistungenNetwork = () => {
