@@ -147,7 +147,11 @@
       button.setAttribute('aria-expanded', String(open));
       const sign = button.querySelector('span');
       if (sign) sign.textContent = open ? '–' : '+';
-      if (open) scrollTargetIntoView(item, { block: 'nearest', padding: isMobileViewport() ? 22 : 32, delay: 18 });
+      if (open) scrollTargetIntoView(item, {
+        block: 'center',
+        padding: isMobileViewport() ? 20 : 28,
+        delay: 0
+      });
     });
   });
 
@@ -185,8 +189,8 @@
       scrollTargetIntoView(topicBar || explorerHead || explorer, {
         block: 'center',
         force: true,
-        padding: isMobileViewport() ? 18 : 30,
-        delay: 18
+        padding: isMobileViewport() ? 16 : 26,
+        delay: 0
       });
     };
 
@@ -196,15 +200,15 @@
         scrollTargetIntoView(firstVisible, {
           block: 'center',
           force: true,
-          padding: isMobileViewport() ? 18 : 30,
-          delay: 18
+          padding: isMobileViewport() ? 16 : 26,
+          delay: 0
         });
       } else if (topicGrid) {
         scrollTargetIntoView(topicGrid, {
           block: 'center',
           force: true,
-          padding: isMobileViewport() ? 18 : 30,
-          delay: 18
+          padding: isMobileViewport() ? 16 : 26,
+          delay: 0
         });
       }
     };
@@ -242,17 +246,10 @@
   document.querySelectorAll('.accordion-card,.faq-more,.example-meta-toggle').forEach((details) => {
     const summary = details.querySelector(':scope > summary');
     const action = details.querySelector(':scope > summary .accordion-action');
-    const content = details.querySelector(':scope > .accordion-content, :scope > .example-meta-content');
-    const contentId = content && (content.id || `accordion-content-${Math.random().toString(36).slice(2, 10)}`);
-    if (content && contentId) content.id = contentId;
     const setAction = () => {
       if (!action) return;
       if (details.classList.contains('faq-more')) action.textContent = details.open ? 'Schließen' : 'Öffnen';
       else action.textContent = details.open ? 'Weniger' : 'Details';
-      if (summary) {
-        summary.setAttribute('aria-expanded', String(details.open));
-        if (contentId) summary.setAttribute('aria-controls', contentId);
-      }
     };
     setAction();
     details.addEventListener('toggle', () => {
@@ -516,14 +513,14 @@
     };
 
     const maybeAutoScrollStep = (stepIndex) => {
-      if (!isMobileViewport()) return;
       const activeNode = nodes[Math.min(stepIndex, nodes.length - 1)];
-      const target = activeNode || currentBox || root;
+      const target = root.classList.contains('example-dashboard') ? root : (activeNode || currentBox || root);
       if (!target) return;
       scrollTargetIntoView(target, {
-        block: activeNode ? 'center' : 'nearest',
-        padding: 20,
-        extraOffset: -4
+        block: 'center',
+        padding: isMobileViewport() ? 18 : 26,
+        extraOffset: -4,
+        delay: 0
       });
     };
 
@@ -911,7 +908,6 @@
     const emailFeedback = contactForm.querySelector('[data-email-feedback]');
     const consentInput = contactForm.querySelector('#consent');
     const consentFeedback = contactForm.querySelector('[data-consent-feedback]');
-    const honeypotInput = contactForm.querySelector('#website');
     let isSubmitting = false;
     const setResponseNote = (message) => {
       if (!responseNote) return;
@@ -1008,13 +1004,6 @@
       const formData = new FormData(contactForm);
       const emailState = validateEmailValue(formData.get('email'));
       const consentGiven = Boolean(formData.get('consent'));
-      if (honeypotInput && String(honeypotInput.value || '').trim()) {
-        contactForm.reset();
-        applyAssessmentPrefill();
-        updateSummary();
-        setResponseNote('Anfrage erfolgreich gesendet.');
-        return;
-      }
       if (!emailState.valid || !consentGiven) {
         updateSummary();
         if (!emailState.valid && emailInput) emailInput.focus();
@@ -1046,8 +1035,7 @@
   topic: String(formData.get('topic') || '').trim(),
   message: String(formData.get('message') || '').trim(),
   consent: consentGiven,
-  assessment: (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '').trim(),
-  website: String(formData.get('website') || '').trim()
+  assessment: (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '').trim()
 })
         });
         const result = await response.json().catch(() => ({}));
