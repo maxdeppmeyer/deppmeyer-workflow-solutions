@@ -97,46 +97,80 @@
 
   const queueViewportFocus = (() => {
     let pendingTimer = 0;
+    let pendingFrameA = 0;
+    let pendingFrameB = 0;
+
+    const clearPending = () => {
+      if (pendingTimer) {
+        window.clearTimeout(pendingTimer);
+        pendingTimer = 0;
+      }
+      if (pendingFrameA) {
+        window.cancelAnimationFrame(pendingFrameA);
+        pendingFrameA = 0;
+      }
+      if (pendingFrameB) {
+        window.cancelAnimationFrame(pendingFrameB);
+        pendingFrameB = 0;
+      }
+    };
+
     return (target, options = {}) => {
       if (!target) return;
-      if (pendingTimer) window.clearTimeout(pendingTimer);
+      clearPending();
       const {
         align = 'start',
         duration = 620,
-        delay = 70,
+        delay = 0,
         tolerance = 22,
         force = false,
         mobileAlign = 'start',
         desktopAlign = align,
       } = options;
-      pendingTimer = window.setTimeout(() => {
-        pendingTimer = 0;
-        if (!target.isConnected) return;
-        const isMobile = window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse)').matches;
-        const activeAlign = isMobile ? mobileAlign : desktopAlign;
-        const rect = target.getBoundingClientRect();
-        const headerOffset = getHeaderOffset();
-        const viewportHeight = window.innerHeight;
-        const currentTop = window.scrollY || window.pageYOffset || 0;
-        const comfortTop = headerOffset + 16;
-        const comfortBottom = viewportHeight - 24;
-        let desiredTop = currentTop;
 
-        if (activeAlign === 'center') {
-          const usableHeight = Math.max(viewportHeight - headerOffset - 32, 260);
-          const targetCenter = rect.top + currentTop + rect.height / 2;
-          desiredTop = targetCenter - (headerOffset + usableHeight / 2);
-        } else {
-          desiredTop = rect.top + currentTop - headerOffset - 14;
-        }
+      const runFocus = () => {
+        pendingFrameA = window.requestAnimationFrame(() => {
+          pendingFrameA = 0;
+          pendingFrameB = window.requestAnimationFrame(() => {
+            pendingFrameB = 0;
+            if (!target.isConnected) return;
+            const isMobile = window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse)').matches;
+            const activeAlign = isMobile ? mobileAlign : desktopAlign;
+            const rect = target.getBoundingClientRect();
+            const headerOffset = getHeaderOffset();
+            const viewportHeight = window.innerHeight;
+            const currentTop = window.scrollY || window.pageYOffset || 0;
+            const comfortTop = headerOffset + 16;
+            const comfortBottom = viewportHeight - 24;
+            let desiredTop = currentTop;
 
-        const outOfViewTop = rect.top < comfortTop - tolerance;
-        const outOfViewBottom = rect.bottom > comfortBottom + tolerance;
-        const centerDelta = Math.abs((rect.top + rect.height / 2) - (headerOffset + (viewportHeight - headerOffset) / 2));
-        const shouldScroll = force || (activeAlign === 'center' ? centerDelta > 72 || outOfViewTop || outOfViewBottom : outOfViewTop || outOfViewBottom);
-        if (!shouldScroll) return;
-        animateWindowScroll(desiredTop, duration);
-      }, delay);
+            if (activeAlign === 'center') {
+              const usableHeight = Math.max(viewportHeight - headerOffset - 32, 260);
+              const targetCenter = rect.top + currentTop + rect.height / 2;
+              desiredTop = targetCenter - (headerOffset + usableHeight / 2);
+            } else {
+              desiredTop = rect.top + currentTop - headerOffset - 14;
+            }
+
+            const outOfViewTop = rect.top < comfortTop - tolerance;
+            const outOfViewBottom = rect.bottom > comfortBottom + tolerance;
+            const centerDelta = Math.abs((rect.top + rect.height / 2) - (headerOffset + (viewportHeight - headerOffset) / 2));
+            const shouldScroll = force || (activeAlign === 'center' ? centerDelta > 72 || outOfViewTop || outOfViewBottom : outOfViewTop || outOfViewBottom);
+            if (!shouldScroll) return;
+            animateWindowScroll(desiredTop, duration);
+          });
+        });
+      };
+
+      const effectiveDelay = Math.min(Math.max(Number(delay) || 0, 0), 18);
+      if (effectiveDelay > 0) {
+        pendingTimer = window.setTimeout(() => {
+          pendingTimer = 0;
+          runFocus();
+        }, effectiveDelay);
+        return;
+      }
+      runFocus();
     };
   })();
 
@@ -180,7 +214,7 @@
       button.setAttribute('aria-expanded', String(open));
       const sign = button.querySelector('span');
       if (sign) sign.textContent = open ? '–' : '+';
-      if (open) queueViewportFocus(item, { desktopAlign: 'center', mobileAlign: 'start', duration: 560, delay: 90, tolerance: 18 });
+      if (open) queueViewportFocus(item, { desktopAlign: 'center', mobileAlign: 'start', duration: 500, delay: 0, tolerance: 18 });
     });
   });
 
@@ -226,7 +260,7 @@
       if (willOpen) {
         explorer.removeAttribute('hidden');
         toggle.textContent = 'Weniger Fragen';
-        queueViewportFocus(explorer, { desktopAlign: 'center', mobileAlign: 'start', duration: 620, delay: 90, force: true });
+        queueViewportFocus(explorer, { desktopAlign: 'center', mobileAlign: 'start', duration: 520, delay: 0, force: true });
       } else {
         explorer.setAttribute('hidden', '');
         toggle.textContent = 'Weitere Fragen';
@@ -255,7 +289,7 @@
         });
       }
       if (details.open) {
-        queueViewportFocus(details, { desktopAlign: 'center', mobileAlign: 'start', duration: 600, delay: 110, tolerance: 16 });
+        queueViewportFocus(details, { desktopAlign: 'center', mobileAlign: 'start', duration: 520, delay: 0, tolerance: 16 });
       }
     });
     if (summary) {
@@ -512,8 +546,8 @@
       queueViewportFocus(target, {
         desktopAlign: 'center',
         mobileAlign: 'center',
-        duration: window.matchMedia('(max-width: 900px)').matches ? 760 : 620,
-        delay: options.delay ?? 70,
+        duration: window.matchMedia('(max-width: 900px)').matches ? 560 : 460,
+        delay: options.delay ?? 0,
         tolerance: window.matchMedia('(max-width: 900px)').matches ? 34 : 22,
         force: Boolean(options.force),
       });
@@ -550,8 +584,8 @@
         queueViewportFocus(startTarget, {
           desktopAlign: 'center',
           mobileAlign: 'center',
-          duration: window.matchMedia('(max-width: 900px)').matches ? 760 : 620,
-          delay: 40,
+          duration: window.matchMedia('(max-width: 900px)').matches ? 560 : 460,
+          delay: 0,
           force: true,
         });
       }
@@ -829,7 +863,7 @@
           if (options.instant || prefersReducedMotion()) {
             target.scrollIntoView({ behavior: 'auto', block: 'nearest' });
           } else {
-            queueViewportFocus(target, { desktopAlign: 'center', mobileAlign: 'start', duration: 520, delay: 30, tolerance: 14 });
+            queueViewportFocus(target, { desktopAlign: 'center', mobileAlign: 'start', duration: 460, delay: 0, tolerance: 14 });
           }
         }
       }
@@ -839,7 +873,7 @@
       shell.hidden = false;
       toggle.textContent = toggleCloseLabel;
       updateStep(0, { instant: true });
-      if (isMobile()) queueViewportFocus(shell, { desktopAlign: 'start', mobileAlign: 'start', duration: 560, delay: 60, force: true });
+      if (isMobile()) queueViewportFocus(shell, { desktopAlign: 'start', mobileAlign: 'start', duration: 480, delay: 0, force: true });
     };
     const closeCheck = () => {
       shell.hidden = true;
@@ -895,7 +929,7 @@
       }
       if (exampleLink) exampleLink.href = result.examples;
       resultBox.hidden = false;
-      queueViewportFocus(resultBox, { desktopAlign: 'center', mobileAlign: 'start', duration: 620, delay: 90, force: true });
+      queueViewportFocus(resultBox, { desktopAlign: 'center', mobileAlign: 'start', duration: 520, delay: 0, force: true });
     };
 
     evaluateButton?.addEventListener('click', evaluate);
@@ -1192,7 +1226,7 @@
       const detail = event.detail || {};
       if (!detail.title || !detail.summary) return;
       setAssessmentPrefill({ title: detail.title, summary: detail.summary, topic: detail.topic || '' });
-      queueViewportFocus(contactForm, { desktopAlign: 'start', mobileAlign: 'start', duration: 620, delay: 80, force: true });
+      queueViewportFocus(contactForm, { desktopAlign: 'start', mobileAlign: 'start', duration: 520, delay: 0, force: true });
     });
 
     prefillClearButton?.addEventListener('click', () => {
