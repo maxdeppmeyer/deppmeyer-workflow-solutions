@@ -6,6 +6,8 @@
 <title>Leistungen | Deppmeyer Workflow Solutions</title>
 <meta content="Analyse, Beratung, Planung und Umsetzung, Übergabe und Optimierung sowie Betreuung von Workflows für wiederkehrende Abläufe." name="description"/>
 <link href="css/styles.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/>
+<link href="favicon.ico" rel="shortcut icon"/>
 <style>
 body[data-page="leistungen.html"] .leistungen-hero{padding:56px 0 6px;overflow:hidden}
 body[data-page="leistungen.html"] .leistungen-hero-grid{display:block;position:relative}
@@ -65,18 +67,19 @@ body[data-page="leistungen.html"] .forms-head p{margin:0 auto;max-width:62ch}
 body[data-page="leistungen.html"] .forms-head::after{display:none}
 
 body[data-page="leistungen.html"] .leistungen-service-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;align-items:stretch;max-width:1180px;margin:0 auto}
-body[data-page="leistungen.html"] .leistungen-service-grid > .accordion-card{grid-column:span 2;min-height:390px;height:100%;background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,251,255,.92));border:1px solid rgba(169,196,232,.42);box-shadow:0 18px 36px rgba(24,56,102,.08);border-radius:30px;overflow:hidden;transition:min-height .35s ease, box-shadow .35s ease}
+body[data-page="leistungen.html"] .leistungen-service-grid > .accordion-card{grid-column:span 2;min-height:346px;height:100%;background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,251,255,.92));border:1px solid rgba(169,196,232,.42);box-shadow:0 18px 36px rgba(24,56,102,.08);border-radius:30px;overflow:hidden;transition:min-height .35s ease, box-shadow .35s ease}
 body[data-page="leistungen.html"] .leistungen-service-grid > .accordion-card:nth-child(4){grid-column:2 / span 2}
 body[data-page="leistungen.html"] .leistungen-service-grid > .accordion-card:nth-child(5){grid-column:4 / span 2}
-body[data-page="leistungen.html"] .leist-card .accordion-summary{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:24px 24px 14px;cursor:pointer;list-style:none;background:transparent}
-body[data-page="leistungen.html"] .leist-card .accordion-text{display:grid;gap:8px;width:100%}
-body[data-page="leistungen.html"] .leist-card .accordion-text h3{margin:0;font-size:1.28rem;line-height:1.18;max-width:none;color:#17355e}
-body[data-page="leistungen.html"] .leist-card .accordion-preview{margin:0;max-width:none;font-size:1rem;line-height:1.62;color:#4b6a91}
-body[data-page="leistungen.html"] .leist-card .accordion-action{margin-top:auto;align-self:flex-start;background:rgba(255,255,255,.88);border-color:rgba(173,196,229,.66);color:#17355e;box-shadow:0 10px 20px rgba(24,56,102,.08)}
+body[data-page="leistungen.html"] .leist-card .accordion-summary{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:22px 24px 18px;cursor:pointer;list-style:none;background:transparent;height:100%}
+body[data-page="leistungen.html"] .leist-card .accordion-text{display:grid;gap:10px;width:100%;flex:1;align-content:start}
+body[data-page="leistungen.html"] .leist-card .accordion-text h3{margin:0;font-size:1.24rem;line-height:1.16;max-width:none;color:#17355e}
+body[data-page="leistungen.html"] .leist-card .accordion-preview{margin:0;max-width:none;font-size:.98rem;line-height:1.54;color:#4b6a91}
+body[data-page="leistungen.html"] .leist-card .card-result-line{margin:2px 0 0;font-size:.95rem;line-height:1.48;color:#436388}
+body[data-page="leistungen.html"] .leist-card .accordion-action{margin-top:0;align-self:flex-start;background:rgba(255,255,255,.88);border-color:rgba(173,196,229,.66);color:#17355e;box-shadow:0 10px 20px rgba(24,56,102,.08)}
 body[data-page="leistungen.html"] .leist-card[open] .accordion-action{background:rgba(221,244,255,.92);border-color:rgba(76,154,235,.28)}
 body[data-page="leistungen.html"] .leist-card .accordion-content{padding:0 24px 26px;max-height:0;overflow:hidden;transition:max-height .35s ease, opacity .35s ease;opacity:0}
-body[data-page="leistungen.html"] .leist-card[open]{min-height:560px;box-shadow:0 22px 42px rgba(24,56,102,.10)}
-body[data-page="leistungen.html"] .leist-card[open] .accordion-content{max-height:420px;opacity:1}
+body[data-page="leistungen.html"] .leist-card[open]{min-height:540px;box-shadow:0 22px 42px rgba(24,56,102,.10)}
+body[data-page="leistungen.html"] .leist-card[open] .accordion-content{max-height:none;opacity:1;overflow:visible}
 body[data-page="leistungen.html"] .detail-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}
 body[data-page="leistungen.html"] .detail-list li{position:relative;padding-left:16px;color:#4b6a91;line-height:1.58}
 body[data-page="leistungen.html"] .detail-list li::before{content:"";position:absolute;left:0;top:.68em;width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg, rgba(37,207,255,.92), rgba(47,124,255,.84))}
@@ -288,7 +291,7 @@ body[data-theme="dark"][data-page="leistungen.html"] .scope-list li{background:r
 <span class="mini-label">Planung &amp; Umsetzung</span>
 <div class="accordion-text">
 <h3>Aus einer Idee wird ein sauberer Workflow</h3>
-<p class="accordion-preview">Schritte, Auslöser, Datenwege und Tool-Verbindungen werden geplant und technisch so aufgebaut, dass Antworten, Termine oder Angebotsdaten im Alltag spürbar weniger Aufwand verursachen.</p>
+<p class="accordion-preview">Schritte, Datenwege und Tool-Verbindungen werden so geplant, dass Antworten, Termine oder Angebotsdaten im Alltag spürbar weniger Aufwand verursachen.</p>
 <p class="card-result-line">Ergebnis im Alltag: Weniger manuelle Schritte bei Antworten, Terminen und Angeboten.</p></div>
 <span class="accordion-action"></span>
 </summary>
