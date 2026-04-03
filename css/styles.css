@@ -3376,3 +3376,83 @@ body[data-page="index.html"] #probleme{
     height:700px;
   }
 }
+
+
+/* v012 smoother detail expansion */
+body[data-page="leistungen.html"] .service-grid,
+body[data-page="leistungen.html"] .three-grid,
+body[data-page="einsatzbereiche.html"] .service-grid,
+body[data-page="einsatzbereiche.html"] .sector-grid,
+body[data-page="ueber-mich.html"] .value-grid{
+  grid-auto-rows:auto !important;
+  align-items:start;
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card,
+body[data-page="leistungen.html"] .three-grid > .accordion-card,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card{
+  height:auto !important;
+  align-self:start;
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card > .accordion-summary,
+body[data-page="leistungen.html"] .three-grid > .accordion-card > .accordion-summary,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card > .accordion-summary,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card > .accordion-summary,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card > .accordion-summary{
+  min-height:clamp(188px, 19vw, 232px);
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card .accordion-content,
+body[data-page="leistungen.html"] .three-grid > .accordion-card .accordion-content,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card .accordion-content,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card .accordion-content,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card .accordion-content,
+body[data-page="beispiele.html"] .example-meta-toggle .accordion-content{
+  overflow:visible;
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card .detail-list,
+body[data-page="leistungen.html"] .three-grid > .accordion-card .detail-list,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card .detail-list,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card .detail-list,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card .detail-list{
+  margin:0;
+  padding:0;
+  list-style:none;
+  display:grid;
+  gap:12px;
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card .detail-list li,
+body[data-page="leistungen.html"] .three-grid > .accordion-card .detail-list li,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card .detail-list li,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card .detail-list li,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card .detail-list li{
+  position:relative;
+  margin:0;
+  padding-left:18px;
+  line-height:1.66;
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card .detail-list li::before,
+body[data-page="leistungen.html"] .three-grid > .accordion-card .detail-list li::before,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card .detail-list li::before,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card .detail-list li::before,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card .detail-list li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.72em;
+  transform:translateY(-50%);
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:linear-gradient(135deg, rgba(37,207,255,.95), rgba(47,124,255,.86));
+  box-shadow:0 0 12px rgba(37,207,255,.28);
+}
+@media (max-width: 760px){
+  body[data-page="leistungen.html"] .service-grid > .accordion-card > .accordion-summary,
+  body[data-page="leistungen.html"] .three-grid > .accordion-card > .accordion-summary,
+  body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card > .accordion-summary,
+  body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card > .accordion-summary,
+  body[data-page="ueber-mich.html"] .value-grid > .accordion-card > .accordion-summary{
+    min-height:auto;
+  }
+}
