@@ -3342,3 +3342,37 @@ body[data-theme="dark"][data-page="einsatzbereiche.html"] .einsatz-card .detail-
     line-height:1.06 !important;
   }
 }
+
+/* v011 start hero spacing cleanup */
+body[data-page="index.html"] .hero{
+  padding-bottom:18px;
+}
+body[data-page="index.html"] .hero-grid-clean{
+  min-height:520px;
+  padding-right:min(31vw, 380px);
+}
+body[data-page="index.html"] .hero-stream-wrap.hero-stream-naked{
+  top:0;
+  width:min(30vw, 350px);
+  min-height:760px;
+}
+body[data-page="index.html"] .hero-flow-canvas{
+  height:760px;
+}
+body[data-page="index.html"] #probleme{
+  padding-top:10px;
+}
+
+@media (max-width:1180px){
+  body[data-page="index.html"] .hero-grid-clean{
+    min-height:500px;
+    padding-right:min(30vw, 340px);
+  }
+  body[data-page="index.html"] .hero-stream-wrap.hero-stream-naked{
+    width:min(28vw, 320px);
+    min-height:700px;
+  }
+  body[data-page="index.html"] .hero-flow-canvas{
+    height:700px;
+  }
+}
