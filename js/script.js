@@ -242,10 +242,17 @@
   document.querySelectorAll('.accordion-card,.faq-more,.example-meta-toggle').forEach((details) => {
     const summary = details.querySelector(':scope > summary');
     const action = details.querySelector(':scope > summary .accordion-action');
+    const content = details.querySelector(':scope > .accordion-content, :scope > .example-meta-content');
+    const contentId = content && (content.id || `accordion-content-${Math.random().toString(36).slice(2, 10)}`);
+    if (content && contentId) content.id = contentId;
     const setAction = () => {
       if (!action) return;
       if (details.classList.contains('faq-more')) action.textContent = details.open ? 'Schließen' : 'Öffnen';
       else action.textContent = details.open ? 'Weniger' : 'Details';
+      if (summary) {
+        summary.setAttribute('aria-expanded', String(details.open));
+        if (contentId) summary.setAttribute('aria-controls', contentId);
+      }
     };
     setAction();
     details.addEventListener('toggle', () => {
@@ -904,6 +911,7 @@
     const emailFeedback = contactForm.querySelector('[data-email-feedback]');
     const consentInput = contactForm.querySelector('#consent');
     const consentFeedback = contactForm.querySelector('[data-consent-feedback]');
+    const honeypotInput = contactForm.querySelector('#website');
     let isSubmitting = false;
     const setResponseNote = (message) => {
       if (!responseNote) return;
@@ -1000,6 +1008,13 @@
       const formData = new FormData(contactForm);
       const emailState = validateEmailValue(formData.get('email'));
       const consentGiven = Boolean(formData.get('consent'));
+      if (honeypotInput && String(honeypotInput.value || '').trim()) {
+        contactForm.reset();
+        applyAssessmentPrefill();
+        updateSummary();
+        setResponseNote('Anfrage erfolgreich gesendet.');
+        return;
+      }
       if (!emailState.valid || !consentGiven) {
         updateSummary();
         if (!emailState.valid && emailInput) emailInput.focus();
@@ -1031,7 +1046,8 @@
   topic: String(formData.get('topic') || '').trim(),
   message: String(formData.get('message') || '').trim(),
   consent: consentGiven,
-  assessment: (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '').trim()
+  assessment: (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '').trim(),
+  website: String(formData.get('website') || '').trim()
 })
         });
         const result = await response.json().catch(() => ({}));
