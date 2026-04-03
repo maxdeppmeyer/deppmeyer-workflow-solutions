@@ -772,6 +772,46 @@
   });
 
 
+  const WORKFLOW_RESULT_STORAGE_KEY = 'deppmeyer-workflow-check-result';
+  const readStoredWorkflowResult = () => {
+    try {
+      const raw = window.sessionStorage.getItem(WORKFLOW_RESULT_STORAGE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== 'object') return null;
+      const title = String(parsed.title || '').trim();
+      const summary = String(parsed.summary || '').trim();
+      if (!title || !summary) return null;
+      return {
+        title,
+        summary,
+        topic: String(parsed.topic || '').trim(),
+        examples: String(parsed.examples || '').trim()
+      };
+    } catch (error) {
+      return null;
+    }
+  };
+  const writeStoredWorkflowResult = (result) => {
+    try {
+      if (!result || !result.title || !result.summary) {
+        window.sessionStorage.removeItem(WORKFLOW_RESULT_STORAGE_KEY);
+        return;
+      }
+      window.sessionStorage.setItem(WORKFLOW_RESULT_STORAGE_KEY, JSON.stringify({
+        title: String(result.title || '').trim(),
+        summary: String(result.summary || '').trim(),
+        topic: String(result.topic || '').trim(),
+        examples: String(result.examples || '').trim()
+      }));
+    } catch (error) {}
+  };
+  const clearStoredWorkflowResult = () => {
+    try {
+      window.sessionStorage.removeItem(WORKFLOW_RESULT_STORAGE_KEY);
+    } catch (error) {}
+  };
+
   const initWorkflowCheck = () => {
     const shell = document.querySelector('[data-workflow-check]');
     const toggle = document.querySelector('[data-workflow-check-toggle]');
@@ -918,6 +958,7 @@
       const winner = [...categoryScores].sort((a, b) => scores[b] - scores[a])[0] || 'mix';
       const result = resultMap[winner] || resultMap.mix;
       currentResult = { title: result.title, summary: result.copy, topic: result.topic, examples: result.examples };
+      writeStoredWorkflowResult(currentResult);
       resultTitle.textContent = result.title;
       resultCopy.textContent = result.copy;
       resultBullets.innerHTML = result.bullets.map((entry) => `<li>${entry}</li>`).join('');
@@ -933,6 +974,7 @@
     evaluateButton?.addEventListener('click', evaluate);
     applyButton?.addEventListener('click', () => {
       if (!currentResult) return;
+      writeStoredWorkflowResult(currentResult);
       shell.dispatchEvent(new CustomEvent('workflowcheck:apply', { bubbles: true, detail: currentResult }));
       currentResult = null;
       form.reset();
@@ -940,6 +982,7 @@
     });
     discardButton?.addEventListener('click', () => {
       currentResult = null;
+      clearStoredWorkflowResult();
       form.reset();
       closeCheck();
     });
@@ -1009,6 +1052,7 @@
     const prefillClearButton = contactForm.querySelector('[data-contact-prefill-clear]');
     const messageField = contactForm.querySelector('#message');
     const topicField = contactForm.querySelector('#topic');
+    let pendingStoredAssessment = readStoredWorkflowResult();
     const normalizeTopic = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
 
     const applyTopicChoice = (resultTopic) => {
@@ -1034,6 +1078,45 @@
       return text ? `Schnellcheck-Ergebnis: ${text}` : '';
     };
 
+    const syncAssessmentPrefillState = () => {
+      const assessmentText = getAssessmentText();
+      if (assessmentText) {
+        if (prefillBox && prefillText) {
+          prefillBox.hidden = false;
+          prefillText.textContent = `Übernommenes Schnellcheck-Ergebnis: ${assessmentText}`;
+        }
+        if (prefillClearButton) {
+          prefillClearButton.hidden = false;
+          prefillClearButton.textContent = 'Schnellcheck entfernen';
+          prefillClearButton.dataset.prefillMode = 'clear';
+        }
+        return;
+      }
+
+      if (pendingStoredAssessment?.title && pendingStoredAssessment?.summary) {
+        if (prefillBox && prefillText) {
+          prefillBox.hidden = false;
+          prefillText.textContent = `Gespeichertes Schnellcheck-Ergebnis verfügbar: ${pendingStoredAssessment.title}. ${pendingStoredAssessment.summary}`;
+        }
+        if (prefillClearButton) {
+          prefillClearButton.hidden = false;
+          prefillClearButton.textContent = 'Schnellcheck einfügen';
+          prefillClearButton.dataset.prefillMode = 'insert';
+        }
+        return;
+      }
+
+      if (prefillBox && prefillText) {
+        prefillBox.hidden = true;
+        prefillText.textContent = '';
+      }
+      if (prefillClearButton) {
+        prefillClearButton.hidden = true;
+        prefillClearButton.textContent = 'Schnellcheck entfernen';
+        prefillClearButton.dataset.prefillMode = '';
+      }
+    };
+
     const setAssessmentPrefill = ({ title = '', summary = '', topic = '' } = {}) => {
       const previousAutofill = String(contactForm.dataset.assessmentAutofillText || '');
       const nextTitle = String(title || '').trim();
@@ -1043,12 +1126,6 @@
       contactForm.dataset.assessmentTitle = nextTitle;
       contactForm.dataset.assessmentSummary = nextSummary;
       contactForm.dataset.assessmentTopic = nextTopic;
-
-      const assessmentText = getAssessmentText();
-      if (prefillBox && prefillText) {
-        prefillBox.hidden = !assessmentText;
-        prefillText.textContent = assessmentText ? `Übernommenes Schnellcheck-Ergebnis: ${assessmentText}` : '';
-      }
 
       if (nextTopic) applyTopicChoice(nextTopic);
 
@@ -1063,9 +1140,13 @@
           contactForm.dataset.assessmentAutofillText = '';
         }
       }
+
+      syncAssessmentPrefillState();
     };
 
     const clearAssessmentPrefill = () => {
+      pendingStoredAssessment = null;
+      clearStoredWorkflowResult();
       setAssessmentPrefill({});
       updateSummary();
     };
@@ -1075,15 +1156,22 @@
       const resultTitle = params.get('assessment');
       const resultSummary = params.get('summary');
       const resultTopic = params.get('topic');
-      if (!resultTitle || !resultSummary) return;
-      setAssessmentPrefill({ title: resultTitle, summary: resultSummary, topic: resultTopic });
+      if (resultTitle && resultSummary) {
+        pendingStoredAssessment = { title: resultTitle, summary: resultSummary, topic: String(resultTopic || '').trim() };
+        writeStoredWorkflowResult(pendingStoredAssessment);
+        setAssessmentPrefill(pendingStoredAssessment);
+        return;
+      }
+      syncAssessmentPrefillState();
     };
     applyAssessmentPrefill();
 
     document.addEventListener('workflowcheck:apply', (event) => {
       const detail = event.detail || {};
       if (!detail.title || !detail.summary) return;
-      setAssessmentPrefill({ title: detail.title, summary: detail.summary, topic: detail.topic || '' });
+      pendingStoredAssessment = { title: detail.title, summary: detail.summary, topic: detail.topic || '', examples: detail.examples || '' };
+      writeStoredWorkflowResult(pendingStoredAssessment);
+      setAssessmentPrefill(pendingStoredAssessment);
       updateSummary();
       requestAnimationFrame(() => {
         scrollTargetIntoView(contactForm, { block: 'center', force: true, padding: isMobileViewport() ? 18 : 28 });
@@ -1091,6 +1179,14 @@
     });
 
     prefillClearButton?.addEventListener('click', () => {
+      if (prefillClearButton.dataset.prefillMode === 'insert' && pendingStoredAssessment) {
+        setAssessmentPrefill(pendingStoredAssessment);
+        updateSummary();
+        requestAnimationFrame(() => {
+          scrollTargetIntoView(contactForm, { block: 'center', force: true, padding: isMobileViewport() ? 18 : 28 });
+        });
+        return;
+      }
       clearAssessmentPrefill();
       setResponseNote(defaultResponseNote);
     });
