@@ -49,131 +49,6 @@
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-
-  const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let scrollAnimationFrame = 0;
-  let scrollAnimationToken = 0;
-
-  const getHeaderOffset = () => {
-    const topbarHeight = topbar?.getBoundingClientRect().height || 0;
-    return Math.max(Math.round(topbarHeight + 18), 88);
-  };
-
-  const stopSmoothScroll = () => {
-    if (scrollAnimationFrame) {
-      window.cancelAnimationFrame(scrollAnimationFrame);
-      scrollAnimationFrame = 0;
-    }
-    scrollAnimationToken += 1;
-  };
-
-  const animateWindowScroll = (targetTop, duration = 620) => {
-    const safeTargetTop = Math.max(Math.round(targetTop), 0);
-    const startTop = window.scrollY || window.pageYOffset || 0;
-    const delta = safeTargetTop - startTop;
-    if (Math.abs(delta) < 4) return;
-    if (prefersReducedMotion()) {
-      stopSmoothScroll();
-      window.scrollTo(0, safeTargetTop);
-      return;
-    }
-    stopSmoothScroll();
-    const token = scrollAnimationToken;
-    const startTime = performance.now();
-    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-    const step = (now) => {
-      if (token !== scrollAnimationToken) return;
-      const progress = Math.min((now - startTime) / duration, 1);
-      const eased = easeOutCubic(progress);
-      window.scrollTo(0, startTop + delta * eased);
-      if (progress < 1) {
-        scrollAnimationFrame = window.requestAnimationFrame(step);
-      } else {
-        scrollAnimationFrame = 0;
-      }
-    };
-    scrollAnimationFrame = window.requestAnimationFrame(step);
-  };
-
-  const queueViewportFocus = (() => {
-    let pendingTimer = 0;
-    let pendingFrameA = 0;
-    let pendingFrameB = 0;
-
-    const clearPending = () => {
-      if (pendingTimer) {
-        window.clearTimeout(pendingTimer);
-        pendingTimer = 0;
-      }
-      if (pendingFrameA) {
-        window.cancelAnimationFrame(pendingFrameA);
-        pendingFrameA = 0;
-      }
-      if (pendingFrameB) {
-        window.cancelAnimationFrame(pendingFrameB);
-        pendingFrameB = 0;
-      }
-    };
-
-    return (target, options = {}) => {
-      if (!target) return;
-      clearPending();
-      const {
-        align = 'start',
-        duration = 620,
-        delay = 0,
-        tolerance = 22,
-        force = false,
-        mobileAlign = 'start',
-        desktopAlign = align,
-      } = options;
-
-      const runFocus = () => {
-        pendingFrameA = window.requestAnimationFrame(() => {
-          pendingFrameA = 0;
-          pendingFrameB = window.requestAnimationFrame(() => {
-            pendingFrameB = 0;
-            if (!target.isConnected) return;
-            const isMobile = window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse)').matches;
-            const activeAlign = isMobile ? mobileAlign : desktopAlign;
-            const rect = target.getBoundingClientRect();
-            const headerOffset = getHeaderOffset();
-            const viewportHeight = window.innerHeight;
-            const currentTop = window.scrollY || window.pageYOffset || 0;
-            const comfortTop = headerOffset + 16;
-            const comfortBottom = viewportHeight - 24;
-            let desiredTop = currentTop;
-
-            if (activeAlign === 'center') {
-              const usableHeight = Math.max(viewportHeight - headerOffset - 32, 260);
-              const targetCenter = rect.top + currentTop + rect.height / 2;
-              desiredTop = targetCenter - (headerOffset + usableHeight / 2);
-            } else {
-              desiredTop = rect.top + currentTop - headerOffset - 14;
-            }
-
-            const outOfViewTop = rect.top < comfortTop - tolerance;
-            const outOfViewBottom = rect.bottom > comfortBottom + tolerance;
-            const centerDelta = Math.abs((rect.top + rect.height / 2) - (headerOffset + (viewportHeight - headerOffset) / 2));
-            const shouldScroll = force || (activeAlign === 'center' ? centerDelta > 72 || outOfViewTop || outOfViewBottom : outOfViewTop || outOfViewBottom);
-            if (!shouldScroll) return;
-            animateWindowScroll(desiredTop, duration);
-          });
-        });
-      };
-
-      const effectiveDelay = Math.min(Math.max(Number(delay) || 0, 0), 18);
-      if (effectiveDelay > 0) {
-        pendingTimer = window.setTimeout(() => {
-          pendingTimer = 0;
-          runFocus();
-        }, effectiveDelay);
-        return;
-      }
-      runFocus();
-    };
-  })();
-
   if (cursorGlow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     window.addEventListener('pointermove', (event) => {
       cursorGlow.style.transform = `translate(${event.clientX - cursorGlow.offsetWidth / 2}px, ${event.clientY - cursorGlow.offsetHeight / 2}px)`;
@@ -206,6 +81,64 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach((node) => revealObserver.observe(node));
 
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobileViewport = () => window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse)').matches;
+  const getHeaderOffset = () => {
+    const stored = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--topbar-offset'));
+    if (Number.isFinite(stored) && stored > 0) return stored;
+    return topbar ? Math.ceil(topbar.offsetHeight + 8) : 92;
+  };
+
+  const scrollTargetIntoView = (target, options = {}) => {
+    if (!target) return;
+    const {
+      block = 'center',
+      force = false,
+      padding = isMobileViewport() ? 28 : 44,
+      extraOffset = 0,
+      delay = 0,
+      instant = false
+    } = options;
+
+    const run = () => {
+      const rect = target.getBoundingClientRect();
+      const headerOffset = getHeaderOffset() + extraOffset;
+      const viewTop = headerOffset + padding;
+      const viewBottom = window.innerHeight - padding;
+      const targetTop = rect.top;
+      const targetBottom = rect.bottom;
+      const targetCenter = rect.top + (rect.height / 2);
+      const comfortablyVisible = targetTop >= viewTop && targetBottom <= viewBottom;
+
+      if (!force) {
+        if (block === 'center') {
+          const centerSlack = Math.max(isMobileViewport() ? 120 : 160, rect.height * 0.2);
+          const viewportCenter = viewTop + ((viewBottom - viewTop) / 2);
+          if (comfortablyVisible && Math.abs(targetCenter - viewportCenter) <= centerSlack) return;
+        } else if (comfortablyVisible) {
+          return;
+        }
+      }
+
+      let top = window.scrollY;
+      if (block === 'start') {
+        top = Math.max(window.scrollY + targetTop - headerOffset, 0);
+      } else if (block === 'nearest') {
+        if (targetTop < viewTop) top = Math.max(window.scrollY + targetTop - headerOffset, 0);
+        else if (targetBottom > viewBottom) top = Math.max(window.scrollY + targetBottom - window.innerHeight + padding, 0);
+        else return;
+      } else {
+        const visibleHeight = Math.max(window.innerHeight - viewTop - padding, 220);
+        top = Math.max(window.scrollY + targetCenter - headerOffset - (visibleHeight / 2), 0);
+      }
+
+      window.scrollTo({ top, behavior: instant || prefersReducedMotion ? 'auto' : 'smooth' });
+    };
+
+    if (delay > 0) window.setTimeout(run, delay);
+    else window.requestAnimationFrame(run);
+  };
+
   document.querySelectorAll('.faq-item').forEach((item) => {
     const button = item.querySelector('.faq-question');
     if (!button) return;
@@ -214,7 +147,7 @@
       button.setAttribute('aria-expanded', String(open));
       const sign = button.querySelector('span');
       if (sign) sign.textContent = open ? '–' : '+';
-      if (open) queueViewportFocus(item, { desktopAlign: 'center', mobileAlign: 'start', duration: 500, delay: 0, tolerance: 18 });
+      if (open) scrollTargetIntoView(item, { block: 'nearest', padding: isMobileViewport() ? 22 : 32, delay: 18 });
     });
   });
 
@@ -227,6 +160,9 @@
     const chips = [...explorer.querySelectorAll('[data-faq-topic]')];
     const items = [...explorer.querySelectorAll('[data-faq-topic-item]')];
     const input = explorer.querySelector('[data-faq-search]');
+    const topicBar = explorer.querySelector('.faq-topic-bar');
+    const topicGrid = explorer.querySelector('[data-faq-topic-grid]');
+    const explorerHead = explorer.querySelector('.faq-explorer-head');
     let activeTopic = chips[0]?.getAttribute('data-faq-topic') || '';
 
     const apply = () => {
@@ -242,6 +178,35 @@
         if (visible) visibleCount += 1;
       });
       explorer.setAttribute('data-visible-count', String(visibleCount));
+      return items.find((item) => !item.classList.contains('is-hidden')) || null;
+    };
+
+    const centerTopicPicker = () => {
+      scrollTargetIntoView(topicBar || explorerHead || explorer, {
+        block: 'center',
+        force: true,
+        padding: isMobileViewport() ? 18 : 30,
+        delay: 18
+      });
+    };
+
+    const centerVisibleFaqs = () => {
+      const firstVisible = apply();
+      if (firstVisible) {
+        scrollTargetIntoView(firstVisible, {
+          block: 'center',
+          force: true,
+          padding: isMobileViewport() ? 18 : 30,
+          delay: 18
+        });
+      } else if (topicGrid) {
+        scrollTargetIntoView(topicGrid, {
+          block: 'center',
+          force: true,
+          padding: isMobileViewport() ? 18 : 30,
+          delay: 18
+        });
+      }
     };
 
     chips.forEach((chip) => chip.addEventListener('click', () => {
@@ -251,16 +216,19 @@
         entry.classList.toggle('is-active', isActive);
         entry.setAttribute('aria-selected', String(isActive));
       });
-      apply();
+      centerVisibleFaqs();
     }));
 
-    input?.addEventListener('input', apply);
+    input?.addEventListener('input', () => {
+      apply();
+    });
     toggle.addEventListener('click', () => {
       const willOpen = explorer.hasAttribute('hidden');
       if (willOpen) {
         explorer.removeAttribute('hidden');
         toggle.textContent = 'Weniger Fragen';
-        queueViewportFocus(explorer, { desktopAlign: 'center', mobileAlign: 'start', duration: 520, delay: 0, force: true });
+        apply();
+        centerTopicPicker();
       } else {
         explorer.setAttribute('hidden', '');
         toggle.textContent = 'Weitere Fragen';
@@ -289,7 +257,11 @@
         });
       }
       if (details.open) {
-        queueViewportFocus(details, { desktopAlign: 'center', mobileAlign: 'start', duration: 520, delay: 0, tolerance: 16 });
+        scrollTargetIntoView(details, {
+          block: details.classList.contains('example-meta-toggle') ? 'nearest' : 'center',
+          padding: isMobileViewport() ? 20 : 34,
+          delay: 18
+        });
       }
     });
     if (summary) {
@@ -536,20 +508,15 @@
       if (trigger) trigger.textContent = 'Workflow starten';
     };
 
-    const isExampleDashboard = document.body?.getAttribute('data-page') === 'beispiele.html' && root.classList.contains('example-dashboard');
-
-    const maybeAutoScrollStep = (stepIndex, options = {}) => {
-      if (!isExampleDashboard) return;
-      const isLastStep = stepIndex >= config.steps.length - 1;
+    const maybeAutoScrollStep = (stepIndex) => {
+      if (!isMobileViewport()) return;
       const activeNode = nodes[Math.min(stepIndex, nodes.length - 1)];
-      const target = isLastStep ? (currentBox || activeNode || root) : (activeNode || currentBox || root);
-      queueViewportFocus(target, {
-        desktopAlign: 'center',
-        mobileAlign: 'center',
-        duration: window.matchMedia('(max-width: 900px)').matches ? 560 : 460,
-        delay: options.delay ?? 0,
-        tolerance: window.matchMedia('(max-width: 900px)').matches ? 34 : 22,
-        force: Boolean(options.force),
+      const target = activeNode || currentBox || root;
+      if (!target) return;
+      scrollTargetIntoView(target, {
+        block: activeNode ? 'center' : 'nearest',
+        padding: 20,
+        extraOffset: -4
       });
     };
 
@@ -579,16 +546,6 @@
       clearTimer();
       nodes.forEach((node) => node.classList.remove('active', 'done'));
       if (trigger) trigger.textContent = 'Workflow läuft …';
-      if (isExampleDashboard) {
-        const startTarget = root.closest('[data-example-card]') || root;
-        queueViewportFocus(startTarget, {
-          desktopAlign: 'center',
-          mobileAlign: 'center',
-          duration: window.matchMedia('(max-width: 900px)').matches ? 560 : 460,
-          delay: 0,
-          force: true,
-        });
-      }
       runStep(0);
     };
 
@@ -787,8 +744,6 @@
     const shell = document.querySelector('[data-workflow-check]');
     const toggle = document.querySelector('[data-workflow-check-toggle]');
     if (!shell || !toggle) return;
-    const toggleOpenLabel = toggle.getAttribute('data-workflow-check-open-label') || 'Schnellcheck öffnen';
-    const toggleCloseLabel = toggle.getAttribute('data-workflow-check-close-label') || 'Schnellcheck schließen';
     const form = shell.querySelector('[data-workflow-check-form]');
     const fieldsets = [...form.querySelectorAll('fieldset')];
     const progress = form.querySelector('[data-workflow-check-progress]');
@@ -800,14 +755,11 @@
     const resultBullets = shell.querySelector('[data-workflow-check-bullets]');
     const contactLink = shell.querySelector('[data-workflow-check-contact-link]');
     const exampleLink = shell.querySelector('[data-workflow-check-example-link]');
-    const applyButton = shell.querySelector('[data-workflow-check-apply]');
-    const discardButton = shell.querySelector('[data-workflow-check-discard]');
     const prevButton = shell.querySelector('[data-workflow-check-prev]');
     const nextButton = shell.querySelector('[data-workflow-check-next]');
     const evaluateButton = shell.querySelector('[data-workflow-check-evaluate]');
     const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
     let currentStep = 0;
-    let currentResult = null;
 
     const resultMap = {
       email: {
@@ -854,30 +806,26 @@
       fieldsets.forEach((field, fieldIndex) => { field.hidden = fieldIndex !== currentStep; });
       if (progress) progress.textContent = `Frage ${currentStep + 1} von ${fieldsets.length}`;
       if (prevButton) prevButton.hidden = currentStep === 0;
-      if (nextButton) nextButton.hidden = true;
-      if (evaluateButton) evaluateButton.hidden = true;
+      if (nextButton) nextButton.hidden = currentStep >= fieldsets.length - 1;
+      if (evaluateButton) evaluateButton.hidden = currentStep < fieldsets.length - 1;
       if (resultBox && !options.keepResult) resultBox.hidden = true;
       if (options.scroll !== false) {
-        const target = fieldsets[currentStep];
-        if (target) {
-          if (options.instant || prefersReducedMotion()) {
-            target.scrollIntoView({ behavior: 'auto', block: 'nearest' });
-          } else {
-            queueViewportFocus(target, { desktopAlign: 'center', mobileAlign: 'start', duration: 460, delay: 0, tolerance: 14 });
-          }
-        }
+        requestAnimationFrame(() => {
+          const target = fieldsets[currentStep];
+          if (target) scrollTargetIntoView(target, { block: 'nearest', force: Boolean(options.instant), instant: Boolean(options.instant), padding: isMobileViewport() ? 18 : 26 });
+        });
       }
     };
 
     const openCheck = () => {
       shell.hidden = false;
-      toggle.textContent = toggleCloseLabel;
+      toggle.textContent = 'Schnellcheck schließen';
       updateStep(0, { instant: true });
-      if (isMobile()) queueViewportFocus(shell, { desktopAlign: 'start', mobileAlign: 'start', duration: 480, delay: 0, force: true });
+      if (isMobile()) scrollTargetIntoView(shell, { block: 'start', force: true, padding: 16, delay: 18 });
     };
     const closeCheck = () => {
       shell.hidden = true;
-      toggle.textContent = toggleOpenLabel;
+      toggle.textContent = 'Schnellcheck öffnen';
       if (resultBox) resultBox.hidden = true;
     };
     toggle.addEventListener('click', () => shell.hidden ? openCheck() : closeCheck());
@@ -919,7 +867,6 @@
       scores.dokumente += Math.round((scores.formular || 0) * 0.5);
       const winner = [...categoryScores].sort((a, b) => scores[b] - scores[a])[0] || 'mix';
       const result = resultMap[winner] || resultMap.mix;
-      currentResult = { title: result.title, summary: result.copy, topic: result.topic, examples: result.examples };
       resultTitle.textContent = result.title;
       resultCopy.textContent = result.copy;
       resultBullets.innerHTML = result.bullets.map((entry) => `<li>${entry}</li>`).join('');
@@ -929,43 +876,15 @@
       }
       if (exampleLink) exampleLink.href = result.examples;
       resultBox.hidden = false;
-      queueViewportFocus(resultBox, { desktopAlign: 'center', mobileAlign: 'start', duration: 520, delay: 0, force: true });
+      scrollTargetIntoView(resultBox, { block: 'nearest', force: true, padding: isMobileViewport() ? 18 : 26, delay: 18 });
     };
 
     evaluateButton?.addEventListener('click', evaluate);
-    applyButton?.addEventListener('click', () => {
-      if (!currentResult) return;
-      shell.dispatchEvent(new CustomEvent('workflowcheck:apply', { bubbles: true, detail: currentResult }));
-      currentResult = null;
-      form.reset();
-      closeCheck();
-    });
-    discardButton?.addEventListener('click', () => {
-      currentResult = null;
-      form.reset();
-      closeCheck();
-    });
-    form.addEventListener('change', (event) => {
-      currentResult = null;
+    form.addEventListener('change', () => {
       if (resultBox && !resultBox.hidden) resultBox.hidden = true;
-      const target = event.target;
-      if (!(target instanceof HTMLInputElement) || target.type !== 'radio') return;
-      const field = target.closest('fieldset');
-      const fieldIndex = fieldsets.indexOf(field);
-      if (fieldIndex === -1) return;
-      currentStep = fieldIndex;
-      if (!currentFieldAnswered()) return;
-      if (currentStep >= fieldsets.length - 1) {
-        evaluate();
-        return;
-      }
-      window.setTimeout(() => {
-        if (fieldsets[currentStep] === field) updateStep(currentStep + 1);
-      }, 90);
     });
     form.addEventListener('reset', () => {
       setTimeout(() => {
-        currentResult = null;
         if (resultBox) resultBox.hidden = true;
         updateStep(0, { instant: true, scroll: false });
       }, 0);
@@ -985,20 +904,11 @@
     const emailFeedback = contactForm.querySelector('[data-email-feedback]');
     const consentInput = contactForm.querySelector('#consent');
     const consentFeedback = contactForm.querySelector('[data-consent-feedback]');
-    const prefillBox = contactForm.querySelector('[data-contact-prefill]');
-    const prefillText = contactForm.querySelector('[data-contact-prefill-text]');
-    const prefillClearButton = contactForm.querySelector('[data-contact-prefill-clear]');
-    const messageField = contactForm.querySelector('#message');
-    const topicField = contactForm.querySelector('#topic');
-    const requiredControls = [...contactForm.querySelectorAll('[required]')];
     let isSubmitting = false;
-
-    const setResponseNote = (message, state = 'default') => {
+    const setResponseNote = (message) => {
       if (!responseNote) return;
       responseNote.textContent = message || defaultResponseNote;
-      responseNote.classList.toggle('is-error', state === 'error');
     };
-
     const validateEmailValue = (value) => {
       const trimmed = String(value || '').trim();
       if (!trimmed) {
@@ -1012,124 +922,32 @@
       }
       return { valid: true, state: 'valid', message: 'E-Mail-Adresse sieht gültig aus.' };
     };
-
-    const normalizeTopic = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
-
-    const applyTopicChoice = (resultTopic) => {
-      if (!topicField || !resultTopic) return;
-      const normalizedTopic = normalizeTopic(resultTopic);
-      const option = [...topicField.options].find((entry) => normalizeTopic(entry.textContent).includes(normalizedTopic) || normalizedTopic.includes(normalizeTopic(entry.textContent)));
-      if (option) topicField.value = option.value;
-    };
-
-    const getAssessmentState = () => ({
-      title: String(contactForm.dataset.assessmentTitle || '').trim(),
-      summary: String(contactForm.dataset.assessmentSummary || '').trim(),
-      topic: String(contactForm.dataset.assessmentTopic || '').trim()
-    });
-
-    const getAssessmentText = () => {
-      const state = getAssessmentState();
-      return state.title && state.summary ? `${state.title}. ${state.summary}` : '';
-    };
-
-    const getAssessmentMessage = () => {
-      const text = getAssessmentText();
-      return text ? `Schnellcheck-Ergebnis: ${text}` : '';
-    };
-
-    const getLabelText = (control) => {
-      if (control === consentInput) return 'Einwilligung zur Datenverarbeitung';
-      const label = control.id ? contactForm.querySelector(`label[for="${control.id}"]`) : null;
-      return label
-        ? label.textContent.replace(/\*/g, '').replace(/\s+/g, ' ').trim().replace(/:$/, '')
-        : 'Pflichtfeld';
-    };
-
-    const getMarkerHost = (control) => {
-      if (control === consentInput) return control.closest('.consent-wrap');
-      return control.id ? contactForm.querySelector(`label[for="${control.id}"]`) : null;
-    };
-
-    const getFieldWrap = (control) => {
-      if (control === consentInput) return control.closest('.consent-wrap');
-      return control.parentElement;
-    };
-
-    const isFilled = (control) => {
-      if (!control) return false;
-      if (control.type === 'checkbox') return control.checked;
-      return String(control.value || '').trim() !== '';
-    };
-
-    const getControlState = (control) => {
-      if (control === emailInput) {
-        const emailState = validateEmailValue(control.value);
-        return {
-          filled: isFilled(control),
-          valid: emailState.valid,
-          message: !isFilled(control)
-            ? 'Bitte E-Mail ausfüllen.'
-            : 'Bitte E-Mail korrekt ausfüllen.'
-        };
+    const prefillBox = contactForm.querySelector('[data-contact-prefill]');
+    const prefillText = contactForm.querySelector('[data-contact-prefill-text]');
+    const applyAssessmentPrefill = () => {
+      const params = new URLSearchParams(window.location.search);
+      const resultTitle = params.get('assessment');
+      const resultSummary = params.get('summary');
+      const resultTopic = params.get('topic');
+      const messageField = contactForm.querySelector('#message');
+      const topicField = contactForm.querySelector('#topic');
+      if (!resultTitle || !resultSummary) return;
+      if (prefillBox && prefillText) {
+        prefillBox.hidden = false;
+        prefillText.textContent = `Übernommenes Schnellcheck-Ergebnis: ${resultTitle}. ${resultSummary}`;
       }
-      if (control === consentInput) {
-        return {
-          filled: control.checked,
-          valid: control.checked,
-          message: 'Bitte die Einwilligung zur Datenverarbeitung bestätigen.'
-        };
+      if (messageField && !messageField.value.trim()) {
+        messageField.value = `Schnellcheck-Ergebnis: ${resultTitle}. ${resultSummary}`;
       }
-      if (control.tagName === 'SELECT') {
-        return {
-          filled: isFilled(control),
-          valid: isFilled(control),
-          message: `Bitte ${getLabelText(control)} auswählen.`
-        };
+      if (topicField && resultTopic) {
+        const normalizeTopic = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
+        const normalizedTopic = normalizeTopic(resultTopic);
+        const option = [...topicField.options].find((entry) => normalizeTopic(entry.textContent).includes(normalizedTopic) || normalizedTopic.includes(normalizeTopic(entry.textContent)));
+        if (option) topicField.value = option.value;
       }
-      return {
-        filled: isFilled(control),
-        valid: isFilled(control),
-        message: `Bitte ${getLabelText(control)} ausfüllen.`
-      };
     };
-
-    const ensureRequiredMarkers = () => {
-      requiredControls.forEach((control) => {
-        const host = getMarkerHost(control);
-        if (!host) return;
-        host.classList.add('has-required-marker');
-        if (host.querySelector('.required-marker')) return;
-        const marker = document.createElement('span');
-        marker.className = 'required-marker';
-        marker.setAttribute('aria-hidden', 'true');
-        marker.textContent = '*';
-        host.append(marker);
-      });
-    };
-
-    const updateRequiredIndicators = () => {
-      requiredControls.forEach((control) => {
-        const state = getControlState(control);
-        const host = getMarkerHost(control);
-        const wrap = getFieldWrap(control);
-        const marker = host ? host.querySelector('.required-marker') : null;
-
-        if (marker) marker.hidden = state.filled;
-        if (host) {
-          host.classList.toggle('is-required-empty', !state.filled);
-          host.classList.toggle('is-required-filled', state.filled);
-        }
-        if (wrap) {
-          wrap.classList.toggle('is-required-empty', !state.filled);
-          wrap.classList.toggle('is-required-filled', state.filled);
-        }
-      });
-    };
-
-    const getFirstInvalidRequiredControl = () => requiredControls.find((control) => !getControlState(control).valid) || null;
-
-    function updateSummary() {
+    applyAssessmentPrefill();
+    const updateSummary = () => {
       const formData = new FormData(contactForm);
       const emailState = validateEmailValue(formData.get('email'));
       const consentGiven = Boolean(formData.get('consent'));
@@ -1139,7 +957,7 @@
         ['E-Mail', formData.get('email') || '—'],
         ['Thema', formData.get('topic') || '—'],
         ['Beschreibung', formData.get('message') || '—'],
-        ['Schnellcheck', getAssessmentText() || '—'],
+        ['Schnellcheck', (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '') || '—'],
         ['Einwilligung', consentGiven ? 'Bestätigt' : 'Ausstehend']
       ];
       if (summary) {
@@ -1167,89 +985,25 @@
         consentFeedback.classList.toggle('is-valid', consentGiven);
         consentFeedback.classList.toggle('is-invalid', !consentGiven);
       }
-      updateRequiredIndicators();
       if (submitButton) {
-        submitButton.disabled = isSubmitting;
-        submitButton.setAttribute('aria-disabled', String(isSubmitting));
-        submitButton.classList.toggle('is-disabled', isSubmitting);
+        const canProceed = emailState.valid && consentGiven && !isSubmitting;
+        submitButton.disabled = !canProceed;
+        submitButton.setAttribute('aria-disabled', String(!canProceed));
+        submitButton.classList.toggle('is-disabled', !canProceed);
       }
-      if (!isSubmitting && !getFirstInvalidRequiredControl() && responseNote?.classList.contains('is-error')) {
-        setResponseNote(defaultResponseNote);
-      }
-    }
-
-    function setAssessmentPrefill({ title = '', summary = '', topic = '' } = {}) {
-      const previousAutofill = String(contactForm.dataset.assessmentAutofillText || '');
-      const nextTitle = String(title || '').trim();
-      const nextSummary = String(summary || '').trim();
-      const nextTopic = String(topic || '').trim();
-
-      contactForm.dataset.assessmentTitle = nextTitle;
-      contactForm.dataset.assessmentSummary = nextSummary;
-      contactForm.dataset.assessmentTopic = nextTopic;
-
-      const assessmentText = getAssessmentText();
-      if (prefillBox && prefillText) {
-        prefillBox.hidden = !assessmentText;
-        prefillText.textContent = assessmentText ? `Übernommenes Schnellcheck-Ergebnis: ${assessmentText}` : '';
-      }
-
-      if (nextTopic) applyTopicChoice(nextTopic);
-
-      const nextAutofill = getAssessmentMessage();
-      if (messageField) {
-        const messageTrimmed = messageField.value.trim();
-        const canReplaceAutofill = Boolean(previousAutofill) && messageTrimmed === previousAutofill.trim();
-        if (!messageTrimmed || canReplaceAutofill) {
-          messageField.value = nextAutofill;
-          contactForm.dataset.assessmentAutofillText = nextAutofill;
-        } else if (!nextAutofill) {
-          contactForm.dataset.assessmentAutofillText = '';
-        }
-      }
-
-      updateSummary();
-    }
-
-    const clearAssessmentPrefill = () => setAssessmentPrefill({});
-
-    const applyAssessmentPrefill = () => {
-      const params = new URLSearchParams(window.location.search);
-      const resultTitle = params.get('assessment');
-      const resultSummary = params.get('summary');
-      const resultTopic = params.get('topic');
-      if (!resultTitle || !resultSummary) return;
-      setAssessmentPrefill({ title: resultTitle, summary: resultSummary, topic: resultTopic });
     };
-
-    document.addEventListener('workflowcheck:apply', (event) => {
-      const detail = event.detail || {};
-      if (!detail.title || !detail.summary) return;
-      setAssessmentPrefill({ title: detail.title, summary: detail.summary, topic: detail.topic || '' });
-      queueViewportFocus(contactForm, { desktopAlign: 'start', mobileAlign: 'start', duration: 520, delay: 0, force: true });
-    });
-
-    prefillClearButton?.addEventListener('click', () => {
-      clearAssessmentPrefill();
-      setResponseNote(defaultResponseNote);
-    });
-
-    ensureRequiredMarkers();
-    applyAssessmentPrefill();
-
     contactForm.addEventListener('input', () => {
-      if (!isSubmitting) updateSummary();
-    });
-    contactForm.addEventListener('change', () => {
       if (!isSubmitting) updateSummary();
     });
     contactForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      updateSummary();
-      const firstInvalidControl = getFirstInvalidRequiredControl();
-      if (firstInvalidControl) {
-        setResponseNote(getControlState(firstInvalidControl).message, 'error');
-        firstInvalidControl.focus();
+      const formData = new FormData(contactForm);
+      const emailState = validateEmailValue(formData.get('email'));
+      const consentGiven = Boolean(formData.get('consent'));
+      if (!emailState.valid || !consentGiven) {
+        updateSummary();
+        if (!emailState.valid && emailInput) emailInput.focus();
+        else if (consentInput) consentInput.focus();
         return;
       }
       if (isSubmitting) return;
@@ -1262,7 +1016,6 @@
       }
       setResponseNote('Anfrage wird gesendet...');
       try {
-        const formData = new FormData(contactForm);
         const response = await fetch('/api/contact', {
           method: 'POST',
           headers: {
@@ -1270,28 +1023,27 @@
             'Accept': 'application/json'
           },
           body: JSON.stringify({
-            gender: String(formData.get('gender') || '').trim(),
-            firstName: String(formData.get('firstName') || '').trim(),
-            name: String(formData.get('name') || '').trim(),
-            company: String(formData.get('company') || '').trim(),
-            email: String(formData.get('email') || '').trim(),
-            topic: String(formData.get('topic') || '').trim(),
-            message: String(formData.get('message') || '').trim(),
-            consent: Boolean(formData.get('consent')),
-            assessment: getAssessmentText()
-          })
+  gender: String(formData.get('gender') || '').trim(),
+  firstName: String(formData.get('firstName') || '').trim(),
+  name: String(formData.get('name') || '').trim(),
+  company: String(formData.get('company') || '').trim(),
+  email: String(formData.get('email') || '').trim(),
+  topic: String(formData.get('topic') || '').trim(),
+  message: String(formData.get('message') || '').trim(),
+  consent: consentGiven,
+  assessment: (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '').trim()
+})
         });
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) {
           throw new Error(result.message || 'Die Anfrage konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.');
         }
         contactForm.reset();
-        clearAssessmentPrefill();
         applyAssessmentPrefill();
         updateSummary();
         setResponseNote(result.message || 'Anfrage erfolgreich gesendet.');
       } catch (error) {
-        setResponseNote(error && error.message ? error.message : 'Die Anfrage konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.', 'error');
+        setResponseNote(error && error.message ? error.message : 'Die Anfrage konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.');
       } finally {
         isSubmitting = false;
         if (submitButton) {
@@ -1302,6 +1054,7 @@
     });
     updateSummary();
   }
+
 
 
   const initLeistungenNetwork = () => {
