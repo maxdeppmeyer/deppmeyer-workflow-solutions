@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
 <meta charset="utf-8"/>
@@ -57,15 +58,15 @@ body[data-page="kontakt.html"] .contact-prefill-note-row p{margin:0;flex:1 1 420
 body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-height:auto}
 @media (max-width: 640px){body[data-page="kontakt.html"] .contact-check-entry{padding:20px 18px}}
 </style>
-<meta content="#101b3e" name="theme-color"/><meta content="website" property="og:type"/><meta content="de_DE" property="og:locale"/><meta content="Deppmeyer Workflow Solutions" property="og:site_name"/><meta content="Kontakt | Deppmeyer Workflow Solutions" property="og:title"/><meta content="Kurze Kontaktaufnahme für Workflow-Automatisierung, Prozessunterstützung und unverbindliche Ersteinschätzung." property="og:description"/><meta content="summary" name="twitter:card"/><meta content="Kontakt | Deppmeyer Workflow Solutions" name="twitter:title"/><meta content="Kurze Kontaktaufnahme für Workflow-Automatisierung, Prozessunterstützung und unverbindliche Ersteinschätzung." name="twitter:description"/></head>
-<body class="page-shell" data-page="kontakt.html" data-theme="light"><a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+</head>
+<body class="page-shell" data-page="kontakt.html" data-theme="light">
 <script>try{const k='deppmeyer-theme';const saved=sessionStorage.getItem(k);const theme=saved||'light';document.body.setAttribute('data-theme',theme);document.documentElement.style.colorScheme=theme;}catch(e){}</script>
 <div aria-hidden="true" class="scroll-progress"></div>
 <div aria-hidden="true" class="cursor-glow"></div>
 <header class="topbar">
 <div class="container nav">
 <a aria-label="Startseite" class="brand" href="index.html">
-<img alt="Deppmeyer Logo" class="brand-icon" decoding="async" src="assets/logo-icon.png"/>
+<img alt="Deppmeyer Logo" class="brand-icon" src="assets/logo-icon.png"/>
 <span class="brand-text">
 <span class="brand-name">Deppmeyer</span>
 <span class="brand-sub">Workflow Solutions</span>
@@ -110,7 +111,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 </nav>
 </div>
 </header>
-<main id="main-content" tabindex="-1">
+<main>
 <section class="page-hero kontakt-hero">
 <div class="container page-hero-grid reveal">
 <div>
@@ -129,6 +130,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <div class="container contact-form-wrap">
 <div class="contact-layout contact-layout-single">
 <div class="contact-form reveal">
+
 <div class="contact-check-entry workflow-check-intro reveal">
 <div class="mini-label">Schnellcheck</div>
 <h3>Unsicher, welcher Ablauf zuerst sinnvoll ist?</h3>
@@ -158,8 +160,8 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <div class="contact-prefill-note" data-contact-prefill="" hidden=""><div class="mini-label">Schnellcheck</div><div class="contact-prefill-note-row"><p data-contact-prefill-text=""></p><button class="btn ghost contact-prefill-clear" data-contact-prefill-clear="" type="button">Schnellcheck entfernen</button></div></div>
 <div class="contact-fields">
 <div class="form-row">
-<div class="field-shell field-required">
-<label for="gender">Anrede<span aria-hidden="true" class="required-marker">*</span></label>
+<div data-required-field="" data-required-name="Anrede">
+<label for="gender">Anrede</label>
 <select class="select" id="gender" name="gender" required="">
 <option value="">Bitte auswählen</option>
 <option value="male">Männlich</option>
@@ -167,24 +169,24 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <option value="diverse">Divers</option>
 </select>
 </div>
-<div class="field-shell field-required">
-<label for="firstName">Vorname<span aria-hidden="true" class="required-marker">*</span></label>
-<input autocomplete="given-name" class="input" id="firstName" name="firstName" required=""/>
+<div data-required-field="" data-required-name="Vorname">
+<label for="firstName">Vorname</label>
+<input class="input" id="firstName" name="firstName" required=""/>
 </div>
 </div>
 <div class="form-row">
-<div class="field-shell field-required">
-<label for="name">Nachname<span aria-hidden="true" class="required-marker">*</span></label>
-<input autocomplete="family-name" class="input" id="name" name="name" required=""/>
+<div data-required-field="" data-required-name="Nachname">
+<label for="name">Nachname</label>
+<input class="input" id="name" name="name" required=""/>
 </div>
 <div>
 <label for="company">Unternehmen</label>
-<input autocomplete="organization" class="input" id="company" name="company"/>
+<input class="input" id="company" name="company"/>
 </div>
 </div>
 <div class="form-row">
-<div class="field-shell field-required">
-<label for="email">E-Mail<span aria-hidden="true" class="required-marker">*</span></label>
+<div data-required-field="" data-required-name="E-Mail">
+<label for="email">E-Mail</label>
 <input aria-describedby="email-feedback" autocomplete="email" class="input" id="email" inputmode="email" name="email" required="" type="email"/>
 <div aria-live="polite" class="field-help" data-email-feedback="" id="email-feedback">Bitte eine gültige E-Mail-Adresse angeben.</div>
 </div>
@@ -208,7 +210,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <label for="message">Kurze Beschreibung</label>
 <textarea id="message" name="message" placeholder="Beschreiben Sie hier kurz Ihr Anliegen, Ihre Frage, Ihre Anfrage oder Ihr Problem."></textarea>
 </div>
-<div class="consent-wrap field-required"><span aria-hidden="true" class="required-marker">*</span>
+<div class="consent-wrap" data-required-field="" data-required-name="Datenschutz-Einwilligung">
 <label class="consent-check" for="consent">
 <input id="consent" name="consent" required="" type="checkbox"/>
 <span>Die <a href="datenschutz.html">Datenschutzhinweise</a> wurden zur Kenntnis genommen. Es wird eingewilligt, dass die angegebenen Daten zur Bearbeitung der Anfrage verarbeitet werden dürfen.</span>
@@ -218,7 +220,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 </div>
 <div class="contact-response">
 <button class="btn" data-contact-submit="" type="submit">Anfrage absenden</button>
-<span aria-live="polite" class="note" data-contact-note="" role="status">Eine kurze Beschreibung genügt. Die Details lassen sich anschließend gemeinsam klären.</span>
+<span aria-live="polite" class="note" data-contact-note="">Eine kurze Beschreibung genügt. Die Details lassen sich anschließend gemeinsam klären.</span>
 </div>
 <div class="system-log" style="margin-top:18px;">
 <div class="mini-label">Zusammenfassung der Anfrage</div>
@@ -307,7 +309,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <div class="container footer-grid">
 <div>
 <a aria-label="Startseite" class="footer-brand" href="index.html">
-<img alt="Deppmeyer Logo" class="brand-icon" decoding="async" src="assets/logo-icon.png"/>
+<img alt="Deppmeyer Logo" class="brand-icon" src="assets/logo-icon.png"/>
 <span class="brand-text">
 <span class="brand-name">Deppmeyer</span>
 <span class="brand-sub">Workflow Solutions</span>
