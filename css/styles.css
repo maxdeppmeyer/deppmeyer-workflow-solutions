@@ -3582,3 +3582,12 @@ body[data-page="kontakt.html"] .contact-help-card .detail-list li{
     align-self:flex-start;
   }
 }
+
+
+/* targeted request only: saved quickcheck insert unaffected; einsatzbereiche detail button spacing */
+body[data-page="einsatzbereiche.html"] .einsatz-card .accordion-summary{
+  padding-bottom: 20px !important;
+}
+body[data-page="einsatzbereiche.html"] .einsatz-card .accordion-action{
+  margin-bottom: 4px;
+}
