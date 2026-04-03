@@ -101,6 +101,28 @@
     return topbar ? Math.ceil(topbar.offsetHeight + 8) : 92;
   };
 
+  const isTargetComfortablyVisible = (target, options = {}) => {
+    if (!target) return true;
+    const {
+      padding = isMobileViewport() ? 28 : 44,
+      extraOffset = 0,
+      centerSlack = null
+    } = options;
+    const rect = target.getBoundingClientRect();
+    const headerOffset = getHeaderOffset() + extraOffset;
+    const viewTop = headerOffset + padding;
+    const viewBottom = window.innerHeight - padding;
+    const comfortablyVisible = rect.top >= viewTop && rect.bottom <= viewBottom;
+    if (!comfortablyVisible) return false;
+    if (centerSlack === false) return true;
+    const targetCenter = rect.top + (rect.height / 2);
+    const viewportCenter = viewTop + ((viewBottom - viewTop) / 2);
+    const slack = typeof centerSlack === 'number'
+      ? centerSlack
+      : Math.max(isMobileViewport() ? 120 : 160, rect.height * 0.2);
+    return Math.abs(targetCenter - viewportCenter) <= slack;
+  };
+
   const scrollTargetIntoView = (target, options = {}) => {
     if (!target) return;
     const {
@@ -120,14 +142,11 @@
       const targetTop = rect.top;
       const targetBottom = rect.bottom;
       const targetCenter = rect.top + (rect.height / 2);
-      const comfortablyVisible = targetTop >= viewTop && targetBottom <= viewBottom;
 
       if (!force) {
         if (block === 'center') {
-          const centerSlack = Math.max(isMobileViewport() ? 120 : 160, rect.height * 0.2);
-          const viewportCenter = viewTop + ((viewBottom - viewTop) / 2);
-          if (comfortablyVisible && Math.abs(targetCenter - viewportCenter) <= centerSlack) return;
-        } else if (comfortablyVisible) {
+          if (isTargetComfortablyVisible(target, { padding, extraOffset })) return;
+        } else if (isTargetComfortablyVisible(target, { padding, extraOffset, centerSlack: false })) {
           return;
         }
       }
@@ -159,7 +178,17 @@
       button.setAttribute('aria-expanded', String(open));
       const sign = button.querySelector('span');
       if (sign) sign.textContent = open ? '–' : '+';
-      if (open) scrollTargetIntoView(item, { block: 'nearest', padding: isMobileViewport() ? 22 : 32, delay: 18 });
+      if (open && !isTargetComfortablyVisible(item, {
+        padding: isMobileViewport() ? 20 : 28,
+        centerSlack: isMobileViewport() ? 96 : 128
+      })) {
+        scrollTargetIntoView(item, {
+          block: 'center',
+          force: true,
+          padding: isMobileViewport() ? 20 : 28,
+          delay: 0
+        });
+      }
     });
   });
 
@@ -197,8 +226,8 @@
       scrollTargetIntoView(topicBar || explorerHead || explorer, {
         block: 'center',
         force: true,
-        padding: isMobileViewport() ? 18 : 30,
-        delay: 18
+        padding: isMobileViewport() ? 16 : 26,
+        delay: 0
       });
     };
 
@@ -208,15 +237,15 @@
         scrollTargetIntoView(firstVisible, {
           block: 'center',
           force: true,
-          padding: isMobileViewport() ? 18 : 30,
-          delay: 18
+          padding: isMobileViewport() ? 16 : 26,
+          delay: 0
         });
       } else if (topicGrid) {
         scrollTargetIntoView(topicGrid, {
           block: 'center',
           force: true,
-          padding: isMobileViewport() ? 18 : 30,
-          delay: 18
+          padding: isMobileViewport() ? 16 : 26,
+          delay: 0
         });
       }
     };
@@ -269,11 +298,19 @@
         });
       }
       if (details.open) {
-        scrollTargetIntoView(details, {
-          block: details.classList.contains('example-meta-toggle') ? 'nearest' : 'center',
-          padding: isMobileViewport() ? 20 : 34,
-          delay: 18
-        });
+        const detailPadding = isMobileViewport() ? 20 : 34;
+        const detailBlock = details.classList.contains('example-meta-toggle') ? 'nearest' : 'center';
+        if (!isTargetComfortablyVisible(details, {
+          padding: detailPadding,
+          centerSlack: detailBlock === 'center' ? (isMobileViewport() ? 92 : 130) : false
+        })) {
+          scrollTargetIntoView(details, {
+            block: detailBlock,
+            force: true,
+            padding: detailPadding,
+            delay: 0
+          });
+        }
       }
     });
     if (summary) {
@@ -521,14 +558,15 @@
     };
 
     const maybeAutoScrollStep = (stepIndex) => {
-      if (!isMobileViewport()) return;
       const activeNode = nodes[Math.min(stepIndex, nodes.length - 1)];
-      const target = activeNode || currentBox || root;
+      const target = currentBox || activeNode || root;
       if (!target) return;
       scrollTargetIntoView(target, {
-        block: activeNode ? 'center' : 'nearest',
-        padding: 20,
-        extraOffset: -4
+        block: 'center',
+        force: true,
+        padding: isMobileViewport() ? 18 : 26,
+        extraOffset: -4,
+        delay: 0
       });
     };
 
