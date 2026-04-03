@@ -3521,9 +3521,120 @@ body[data-page="kontakt.html"] .contact-help-card .detail-list li{
 }
 
 
-/* Safe accessibility + form protection additions */
-.skip-link{position:fixed;left:16px;top:14px;z-index:1200;padding:12px 16px;border-radius:14px;background:linear-gradient(135deg, rgba(39,164,255,.96), rgba(64,218,255,.88));color:#071225;font-weight:800;text-decoration:none;box-shadow:0 18px 36px rgba(14,41,90,.24);transform:translateY(-150%);transition:transform .22s ease,box-shadow .22s ease}
-.skip-link:focus-visible{transform:translateY(0);box-shadow:0 20px 40px rgba(14,41,90,.28)}
-.form-honeypot{position:absolute !important;left:-9999px !important;top:auto !important;width:1px !important;height:1px !important;overflow:hidden !important;opacity:0 !important;pointer-events:none !important}
-:focus-visible{outline:2px solid rgba(39,164,255,.95);outline-offset:3px}
-summary:focus-visible,.btn:focus-visible,.input:focus-visible,.select:focus-visible,textarea:focus-visible,.search-input:focus-visible,.theme-toggle:focus-visible,.mobile-toggle:focus-visible,.faq-topic-chip:focus-visible,.workflow-option:focus-within{box-shadow:0 0 0 4px rgba(39,164,255,.16)}
+/* v007 card alignment + compact previews */
+body[data-page="leistungen.html"] .leistungen-service-grid,
+body[data-page="einsatzbereiche.html"] .einsatz-grid,
+body[data-page="ueber-mich.html"] .about-grid,
+body[data-page="kontakt.html"] .contact-help-grid{
+  align-items:stretch !important;
+}
+body[data-page="leistungen.html"] .leistungen-service-grid > .accordion-card,
+body[data-page="einsatzbereiche.html"] .einsatz-grid > .accordion-card,
+body[data-page="ueber-mich.html"] .about-grid > .accordion-card,
+body[data-page="kontakt.html"] .contact-help-grid > .accordion-card{
+  height:100%;
+}
+body[data-page="leistungen.html"] .leist-card > .accordion-summary,
+body[data-page="einsatzbereiche.html"] .einsatz-card > .accordion-summary,
+body[data-page="ueber-mich.html"] .about-card > .accordion-summary,
+body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  gap:12px !important;
+  box-sizing:border-box;
+}
+body[data-page="leistungen.html"] .leist-card .accordion-text,
+body[data-page="einsatzbereiche.html"] .einsatz-card .accordion-text,
+body[data-page="ueber-mich.html"] .about-card .accordion-text,
+body[data-page="kontakt.html"] .contact-help-card .accordion-text{
+  display:grid !important;
+  gap:8px !important;
+  width:100% !important;
+  flex:1 1 auto;
+}
+body[data-page="leistungen.html"] .leist-card .accordion-action,
+body[data-page="einsatzbereiche.html"] .einsatz-card .accordion-action,
+body[data-page="ueber-mich.html"] .about-card .accordion-action,
+body[data-page="kontakt.html"] .contact-help-card .accordion-action{
+  margin-top:auto !important;
+  align-self:flex-start !important;
+}
+body[data-page="leistungen.html"] .leist-card > .accordion-summary{
+  min-height:286px !important;
+}
+body[data-page="leistungen.html"] .leist-card .accordion-text h3{
+  font-size:1.24rem !important;
+  line-height:1.16 !important;
+}
+body[data-page="leistungen.html"] .leist-card .accordion-preview{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  min-height:calc(1.55em * 2);
+}
+body[data-page="leistungen.html"] .leist-card .card-result-line{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:1;
+  overflow:hidden;
+  min-height:1.5em;
+}
+body[data-page="leistungen.html"] .leist-card[open] .accordion-preview,
+body[data-page="leistungen.html"] .leist-card[open] .card-result-line{
+  display:block !important;
+  -webkit-line-clamp:unset !important;
+  overflow:visible !important;
+  min-height:0 !important;
+}
+body[data-page="einsatzbereiche.html"] .einsatz-card > .accordion-summary{
+  min-height:258px !important;
+}
+body[data-page="einsatzbereiche.html"] .einsatz-card .accordion-text h3{
+  font-size:1.28rem !important;
+  line-height:1.15 !important;
+}
+body[data-page="einsatzbereiche.html"] .einsatz-card .accordion-preview{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  min-height:calc(1.65em * 2);
+}
+body[data-page="einsatzbereiche.html"] .einsatz-card[open] .accordion-preview,
+body[data-page="ueber-mich.html"] .about-card[open] .accordion-preview,
+body[data-page="kontakt.html"] .contact-help-card[open] .accordion-preview{
+  display:block !important;
+  -webkit-line-clamp:unset !important;
+  overflow:visible !important;
+  min-height:0 !important;
+}
+body[data-page="ueber-mich.html"] .about-card > .accordion-summary{
+  min-height:248px !important;
+}
+body[data-page="ueber-mich.html"] .about-card .accordion-preview{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:3 !important;
+  overflow:hidden !important;
+  min-height:calc(1.62em * 3);
+}
+body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+  min-height:216px !important;
+}
+body[data-page="kontakt.html"] .contact-help-card .accordion-preview{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:3 !important;
+  overflow:hidden !important;
+  min-height:calc(1.65em * 3);
+}
+@media (max-width: 980px){
+  body[data-page="leistungen.html"] .leist-card > .accordion-summary,
+  body[data-page="einsatzbereiche.html"] .einsatz-card > .accordion-summary,
+  body[data-page="ueber-mich.html"] .about-card > .accordion-summary,
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+    min-height:0 !important;
+  }
+}
