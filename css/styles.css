@@ -3456,3 +3456,66 @@ body[data-page="ueber-mich.html"] .value-grid > .accordion-card .detail-list li:
     min-height:auto;
   }
 }
+
+/* v013 force full detail content visibility */
+body[data-page="leistungen.html"] .service-grid > .accordion-card,
+body[data-page="leistungen.html"] .three-grid > .accordion-card,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card,
+body[data-page="kontakt.html"] .contact-help-card{
+  display:flex !important;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:flex-start;
+  height:auto !important;
+  min-height:0 !important;
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card > .accordion-summary,
+body[data-page="leistungen.html"] .three-grid > .accordion-card > .accordion-summary,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card > .accordion-summary,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card > .accordion-summary,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card > .accordion-summary,
+body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+  flex:0 0 auto;
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card > .accordion-content,
+body[data-page="leistungen.html"] .three-grid > .accordion-card > .accordion-content,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card > .accordion-content,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card > .accordion-content,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card > .accordion-content,
+body[data-page="kontakt.html"] .contact-help-card > .accordion-content,
+body[data-page="beispiele.html"] .example-meta-toggle > .accordion-content{
+  display:block !important;
+  flex:0 0 auto;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  overflow:visible !important;
+  padding-bottom:24px !important;
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card[open],
+body[data-page="leistungen.html"] .three-grid > .accordion-card[open],
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card[open],
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card[open],
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card[open],
+body[data-page="kontakt.html"] .contact-help-card[open]{
+  overflow:visible;
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card .detail-list,
+body[data-page="leistungen.html"] .three-grid > .accordion-card .detail-list,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card .detail-list,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card .detail-list,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card .detail-list,
+body[data-page="kontakt.html"] .contact-help-card .detail-list{
+  gap:14px !important;
+}
+body[data-page="leistungen.html"] .service-grid > .accordion-card .detail-list li,
+body[data-page="leistungen.html"] .three-grid > .accordion-card .detail-list li,
+body[data-page="einsatzbereiche.html"] .service-grid > .accordion-card .detail-list li,
+body[data-page="einsatzbereiche.html"] .sector-grid > .accordion-card .detail-list li,
+body[data-page="ueber-mich.html"] .value-grid > .accordion-card .detail-list li,
+body[data-page="kontakt.html"] .contact-help-card .detail-list li{
+  padding-bottom:0 !important;
+  margin-bottom:0 !important;
+}
