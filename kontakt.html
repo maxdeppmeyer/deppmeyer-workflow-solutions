@@ -156,10 +156,10 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <div class="workflow-check-result" data-workflow-check-result="" hidden=""><div class="mini-label">Auswertung</div><h3 data-workflow-check-title=""></h3><p data-workflow-check-copy=""></p><ul class="workflow-check-bullets" data-workflow-check-bullets=""></ul><div class="btn-row"><button class="btn" data-workflow-check-apply="" type="button">Zur Anfrage hinzufügen</button><button class="btn ghost" data-workflow-check-discard="" type="button">Verwerfen</button></div></div>
 </div><form data-contact-form="">
 <div class="contact-prefill-note" data-contact-prefill="" hidden=""><div class="mini-label">Schnellcheck</div><div class="contact-prefill-note-row"><p data-contact-prefill-text=""></p><button class="btn ghost contact-prefill-clear" data-contact-prefill-clear="" type="button">Schnellcheck entfernen</button></div></div>
-<div aria-hidden="true" class="form-honeypot"><label for="website">Website</label><input autocomplete="off" id="website" name="website" tabindex="-1" type="text"/></div><div class="contact-fields">
+<div class="contact-fields">
 <div class="form-row">
-<div>
-<label for="gender">Anrede</label>
+<div class="field-shell field-required">
+<label for="gender">Anrede<span aria-hidden="true" class="required-marker">*</span></label>
 <select class="select" id="gender" name="gender" required="">
 <option value="">Bitte auswählen</option>
 <option value="male">Männlich</option>
@@ -167,14 +167,14 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <option value="diverse">Divers</option>
 </select>
 </div>
-<div>
-<label for="firstName">Vorname</label>
+<div class="field-shell field-required">
+<label for="firstName">Vorname<span aria-hidden="true" class="required-marker">*</span></label>
 <input autocomplete="given-name" class="input" id="firstName" name="firstName" required=""/>
 </div>
 </div>
 <div class="form-row">
-<div>
-<label for="name">Nachname</label>
+<div class="field-shell field-required">
+<label for="name">Nachname<span aria-hidden="true" class="required-marker">*</span></label>
 <input autocomplete="family-name" class="input" id="name" name="name" required=""/>
 </div>
 <div>
@@ -183,8 +183,8 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 </div>
 </div>
 <div class="form-row">
-<div>
-<label for="email">E-Mail</label>
+<div class="field-shell field-required">
+<label for="email">E-Mail<span aria-hidden="true" class="required-marker">*</span></label>
 <input aria-describedby="email-feedback" autocomplete="email" class="input" id="email" inputmode="email" name="email" required="" type="email"/>
 <div aria-live="polite" class="field-help" data-email-feedback="" id="email-feedback">Bitte eine gültige E-Mail-Adresse angeben.</div>
 </div>
@@ -208,7 +208,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <label for="message">Kurze Beschreibung</label>
 <textarea id="message" name="message" placeholder="Beschreiben Sie hier kurz Ihr Anliegen, Ihre Frage, Ihre Anfrage oder Ihr Problem."></textarea>
 </div>
-<div class="consent-wrap">
+<div class="consent-wrap field-required"><span aria-hidden="true" class="required-marker">*</span>
 <label class="consent-check" for="consent">
 <input id="consent" name="consent" required="" type="checkbox"/>
 <span>Die <a href="datenschutz.html">Datenschutzhinweise</a> wurden zur Kenntnis genommen. Es wird eingewilligt, dass die angegebenen Daten zur Bearbeitung der Anfrage verarbeitet werden dürfen.</span>
