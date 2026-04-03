@@ -49,7 +49,7 @@
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  if (cursorGlow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !window.matchMedia('(max-width: 1024px)').matches && !window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+  if (cursorGlow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     window.addEventListener('pointermove', (event) => {
       cursorGlow.style.transform = `translate(${event.clientX - cursorGlow.offsetWidth / 2}px, ${event.clientY - cursorGlow.offsetHeight / 2}px)`;
     }, { passive: true });
@@ -74,53 +74,19 @@
     });
   }
 
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((node) => revealObserver.observe(node));
+
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isCompactViewport = () => window.matchMedia('(max-width: 1024px)').matches || window.matchMedia('(hover: none) and (pointer: coarse)').matches;
   const isMobileViewport = () => window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse)').matches;
-
-  const syncCompactUiState = () => {
-    body.classList.toggle('compact-ui', isCompactViewport());
-  };
-  syncCompactUiState();
-  window.addEventListener('resize', syncCompactUiState);
-
-  const revealNodes = [...document.querySelectorAll('.reveal')];
-  if (isCompactViewport() || prefersReducedMotion) {
-    revealNodes.forEach((node) => node.classList.add('visible'));
-  } else {
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.15 });
-    revealNodes.forEach((node) => revealObserver.observe(node));
-  }
   const getHeaderOffset = () => {
     const stored = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--topbar-offset'));
     if (Number.isFinite(stored) && stored > 0) return stored;
     return topbar ? Math.ceil(topbar.offsetHeight + 8) : 92;
-  };
-
-  const isTargetComfortablyVisible = (target, options = {}) => {
-    if (!target) return true;
-    const {
-      padding = isMobileViewport() ? 28 : 44,
-      extraOffset = 0,
-      centerSlack = null
-    } = options;
-    const rect = target.getBoundingClientRect();
-    const headerOffset = getHeaderOffset() + extraOffset;
-    const viewTop = headerOffset + padding;
-    const viewBottom = window.innerHeight - padding;
-    const comfortablyVisible = rect.top >= viewTop && rect.bottom <= viewBottom;
-    if (!comfortablyVisible) return false;
-    if (centerSlack === false) return true;
-    const targetCenter = rect.top + (rect.height / 2);
-    const viewportCenter = viewTop + ((viewBottom - viewTop) / 2);
-    const slack = typeof centerSlack === 'number'
-      ? centerSlack
-      : Math.max(isMobileViewport() ? 120 : 160, rect.height * 0.2);
-    return Math.abs(targetCenter - viewportCenter) <= slack;
   };
 
   const scrollTargetIntoView = (target, options = {}) => {
@@ -142,11 +108,14 @@
       const targetTop = rect.top;
       const targetBottom = rect.bottom;
       const targetCenter = rect.top + (rect.height / 2);
+      const comfortablyVisible = targetTop >= viewTop && targetBottom <= viewBottom;
 
       if (!force) {
         if (block === 'center') {
-          if (isTargetComfortablyVisible(target, { padding, extraOffset })) return;
-        } else if (isTargetComfortablyVisible(target, { padding, extraOffset, centerSlack: false })) {
+          const centerSlack = Math.max(isMobileViewport() ? 120 : 160, rect.height * 0.2);
+          const viewportCenter = viewTop + ((viewBottom - viewTop) / 2);
+          if (comfortablyVisible && Math.abs(targetCenter - viewportCenter) <= centerSlack) return;
+        } else if (comfortablyVisible) {
           return;
         }
       }
@@ -178,17 +147,7 @@
       button.setAttribute('aria-expanded', String(open));
       const sign = button.querySelector('span');
       if (sign) sign.textContent = open ? '–' : '+';
-      if (open && !isTargetComfortablyVisible(item, {
-        padding: isMobileViewport() ? 20 : 28,
-        centerSlack: isMobileViewport() ? 96 : 128
-      })) {
-        scrollTargetIntoView(item, {
-          block: 'center',
-          force: true,
-          padding: isMobileViewport() ? 20 : 28,
-          delay: 0
-        });
-      }
+      if (open) scrollTargetIntoView(item, { block: 'center', padding: isMobileViewport() ? 22 : 32, delay: 18 });
     });
   });
 
@@ -226,8 +185,8 @@
       scrollTargetIntoView(topicBar || explorerHead || explorer, {
         block: 'center',
         force: true,
-        padding: isMobileViewport() ? 16 : 26,
-        delay: 0
+        padding: isMobileViewport() ? 18 : 30,
+        delay: 18
       });
     };
 
@@ -237,15 +196,15 @@
         scrollTargetIntoView(firstVisible, {
           block: 'center',
           force: true,
-          padding: isMobileViewport() ? 16 : 26,
-          delay: 0
+          padding: isMobileViewport() ? 18 : 30,
+          delay: 18
         });
       } else if (topicGrid) {
         scrollTargetIntoView(topicGrid, {
           block: 'center',
           force: true,
-          padding: isMobileViewport() ? 16 : 26,
-          delay: 0
+          padding: isMobileViewport() ? 18 : 30,
+          delay: 18
         });
       }
     };
@@ -298,19 +257,14 @@
         });
       }
       if (details.open) {
-        const detailPadding = isMobileViewport() ? 20 : 34;
-        const detailBlock = details.classList.contains('example-meta-toggle') ? 'nearest' : 'center';
-        if (!isTargetComfortablyVisible(details, {
-          padding: detailPadding,
-          centerSlack: detailBlock === 'center' ? (isMobileViewport() ? 92 : 130) : false
-        })) {
-          scrollTargetIntoView(details, {
-            block: detailBlock,
-            force: true,
-            padding: detailPadding,
-            delay: 0
-          });
-        }
+        const target = details.classList.contains('example-meta-toggle')
+          ? (details.querySelector('.accordion-content') || details)
+          : details;
+        scrollTargetIntoView(target, {
+          block: details.classList.contains('example-meta-toggle') ? 'start' : 'center',
+          padding: isMobileViewport() ? 20 : 34,
+          delay: 18
+        });
       }
     });
     if (summary) {
@@ -337,7 +291,13 @@
     const chips = [...document.querySelectorAll('[data-example-chip]')];
     const cards = [...document.querySelectorAll('[data-example-card]')];
     if (!cards.length) return;
+
     let activeChip = 'all';
+    const getFirstVisibleCard = () => cards.find((card) => !card.classList.contains('is-filter-hidden')) || null;
+    const stopActiveWorkflow = () => {
+      window.dispatchEvent(new CustomEvent('workflow:stop-active'));
+    };
+
     const applyFilter = () => {
       const query = input ? (input.value || '').trim().toLowerCase() : '';
       cards.forEach((card) => {
@@ -347,13 +307,25 @@
         const queryMatches = !query || text.includes(query);
         card.classList.toggle('is-filter-hidden', !(chipMatches && queryMatches));
       });
+      return getFirstVisibleCard();
     };
+
     if (input) input.addEventListener('input', applyFilter);
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
         activeChip = chip.getAttribute('data-example-chip') || 'all';
         chips.forEach((item) => item.classList.toggle('is-active', item === chip));
-        applyFilter();
+        stopActiveWorkflow();
+        const firstVisible = applyFilter();
+        if (firstVisible) {
+          requestAnimationFrame(() => {
+            scrollTargetIntoView(firstVisible, {
+              block: 'start',
+              force: true,
+              padding: isMobileViewport() ? 18 : 28
+            });
+          });
+        }
       });
     });
     applyFilter();
@@ -452,6 +424,8 @@
       ]
     }
   };
+
+  let activeWorkflowController = null;
 
   const initWorkflow = (root) => {
     const workflowId = root.getAttribute('data-workflow');
@@ -555,18 +529,17 @@
       if (descriptionText) descriptionText.textContent = 'Starte den Workflow, um den Ablauf Schritt für Schritt zu sehen.';
       if (progressText) progressText.textContent = `0 / ${config.steps.length}`;
       if (trigger) trigger.textContent = 'Workflow starten';
+      if (activeWorkflowController === controller) activeWorkflowController = null;
     };
 
     const maybeAutoScrollStep = (stepIndex) => {
       const activeNode = nodes[Math.min(stepIndex, nodes.length - 1)];
-      const target = currentBox || activeNode || root;
+      const target = activeNode || currentBox || root;
       if (!target) return;
       scrollTargetIntoView(target, {
-        block: 'center',
-        force: true,
-        padding: isMobileViewport() ? 18 : 26,
-        extraOffset: -4,
-        delay: 0
+        block: activeNode ? 'center' : 'nearest',
+        padding: isMobileViewport() ? 20 : 34,
+        extraOffset: isMobileViewport() ? -4 : 0
       });
     };
 
@@ -592,7 +565,13 @@
       timer = setTimeout(() => runStep(stepIndex + 1), mobileDelay);
     };
 
+    const controller = { root, stop: reset };
+
     const run = () => {
+      if (activeWorkflowController && activeWorkflowController.root !== root) {
+        activeWorkflowController.stop();
+      }
+      activeWorkflowController = controller;
       clearTimer();
       nodes.forEach((node) => node.classList.remove('active', 'done'));
       if (trigger) trigger.textContent = 'Workflow läuft …';
@@ -600,6 +579,9 @@
     };
 
     if (trigger) trigger.addEventListener('click', run);
+    window.addEventListener('workflow:stop-active', () => {
+      if (activeWorkflowController && activeWorkflowController.root === root) reset();
+    });
     reset();
   };
   document.querySelectorAll('[data-workflow]').forEach(initWorkflow);
@@ -794,6 +776,8 @@
     const shell = document.querySelector('[data-workflow-check]');
     const toggle = document.querySelector('[data-workflow-check-toggle]');
     if (!shell || !toggle) return;
+    const toggleOpenLabel = toggle.getAttribute('data-workflow-check-open-label') || 'Schnellcheck öffnen';
+    const toggleCloseLabel = toggle.getAttribute('data-workflow-check-close-label') || 'Schnellcheck schließen';
     const form = shell.querySelector('[data-workflow-check-form]');
     const fieldsets = [...form.querySelectorAll('fieldset')];
     const progress = form.querySelector('[data-workflow-check-progress]');
@@ -805,11 +789,14 @@
     const resultBullets = shell.querySelector('[data-workflow-check-bullets]');
     const contactLink = shell.querySelector('[data-workflow-check-contact-link]');
     const exampleLink = shell.querySelector('[data-workflow-check-example-link]');
+    const applyButton = shell.querySelector('[data-workflow-check-apply]');
+    const discardButton = shell.querySelector('[data-workflow-check-discard]');
     const prevButton = shell.querySelector('[data-workflow-check-prev]');
     const nextButton = shell.querySelector('[data-workflow-check-next]');
     const evaluateButton = shell.querySelector('[data-workflow-check-evaluate]');
     const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
     let currentStep = 0;
+    let currentResult = null;
 
     const resultMap = {
       email: {
@@ -851,41 +838,54 @@
 
     const categoryScores = ['email','termine','dokumente','intern','mix'];
 
-    const updateStep = (index = 0, options = {}) => {
-      currentStep = Math.max(0, Math.min(index, fieldsets.length - 1));
-      fieldsets.forEach((field, fieldIndex) => { field.hidden = fieldIndex !== currentStep; });
-      if (progress) progress.textContent = `Frage ${currentStep + 1} von ${fieldsets.length}`;
-      if (prevButton) prevButton.hidden = currentStep === 0;
-      if (nextButton) nextButton.hidden = currentStep >= fieldsets.length - 1;
-      if (evaluateButton) evaluateButton.hidden = currentStep < fieldsets.length - 1;
-      if (resultBox && !options.keepResult) resultBox.hidden = true;
-      if (options.scroll !== false) {
-        requestAnimationFrame(() => {
-          const target = fieldsets[currentStep];
-          if (target) scrollTargetIntoView(target, { block: 'nearest', force: Boolean(options.instant), instant: Boolean(options.instant), padding: isMobileViewport() ? 18 : 26 });
-        });
-      }
-    };
-
-    const openCheck = () => {
-      shell.hidden = false;
-      toggle.textContent = 'Schnellcheck schließen';
-      updateStep(0, { instant: true });
-      if (isMobile()) scrollTargetIntoView(shell, { block: 'start', force: true, padding: 16, delay: 18 });
-    };
-    const closeCheck = () => {
-      shell.hidden = true;
-      toggle.textContent = 'Schnellcheck öffnen';
-      if (resultBox) resultBox.hidden = true;
-    };
-    toggle.addEventListener('click', () => shell.hidden ? openCheck() : closeCheck());
-
     const currentFieldAnswered = () => {
       const field = fieldsets[currentStep];
       if (!field) return true;
       const name = field.querySelector('input[type="radio"]')?.name;
       return name ? Boolean(form.querySelector(`input[name="${name}"]:checked`)) : true;
     };
+
+    const updateActionButtons = () => {
+      const isLastStep = currentStep >= fieldsets.length - 1;
+      const answered = currentFieldAnswered();
+      if (prevButton) prevButton.hidden = currentStep === 0;
+      if (nextButton) nextButton.hidden = true;
+      if (evaluateButton) evaluateButton.hidden = !isLastStep || !answered;
+    };
+
+    const updateStep = (index = 0, options = {}) => {
+      currentStep = Math.max(0, Math.min(index, fieldsets.length - 1));
+      fieldsets.forEach((field, fieldIndex) => { field.hidden = fieldIndex !== currentStep; });
+      if (progress) progress.textContent = `Frage ${currentStep + 1} von ${fieldsets.length}`;
+      updateActionButtons();
+      if (resultBox && !options.keepResult) resultBox.hidden = true;
+      if (options.scroll !== false) {
+        requestAnimationFrame(() => {
+          const target = fieldsets[currentStep];
+          if (target) {
+            scrollTargetIntoView(target, {
+              block: 'nearest',
+              force: Boolean(options.instant),
+              instant: Boolean(options.instant),
+              padding: isMobileViewport() ? 18 : 26
+            });
+          }
+        });
+      }
+    };
+
+    const openCheck = () => {
+      shell.hidden = false;
+      toggle.textContent = toggleCloseLabel;
+      updateStep(0, { instant: true });
+      if (isMobile()) scrollTargetIntoView(shell, { block: 'start', force: true, padding: 16, delay: 18 });
+    };
+    const closeCheck = () => {
+      shell.hidden = true;
+      toggle.textContent = toggleOpenLabel;
+      if (resultBox) resultBox.hidden = true;
+    };
+    toggle.addEventListener('click', () => shell.hidden ? openCheck() : closeCheck());
 
     const focusFirst = () => fieldsets[currentStep]?.querySelector('input')?.focus();
 
@@ -917,6 +917,7 @@
       scores.dokumente += Math.round((scores.formular || 0) * 0.5);
       const winner = [...categoryScores].sort((a, b) => scores[b] - scores[a])[0] || 'mix';
       const result = resultMap[winner] || resultMap.mix;
+      currentResult = { title: result.title, summary: result.copy, topic: result.topic, examples: result.examples };
       resultTitle.textContent = result.title;
       resultCopy.textContent = result.copy;
       resultBullets.innerHTML = result.bullets.map((entry) => `<li>${entry}</li>`).join('');
@@ -926,15 +927,46 @@
       }
       if (exampleLink) exampleLink.href = result.examples;
       resultBox.hidden = false;
-      scrollTargetIntoView(resultBox, { block: 'nearest', force: true, padding: isMobileViewport() ? 18 : 26, delay: 18 });
+      scrollTargetIntoView(resultBox, { block: 'center', force: true, padding: isMobileViewport() ? 18 : 28, delay: 18 });
     };
 
     evaluateButton?.addEventListener('click', evaluate);
-    form.addEventListener('change', () => {
+    applyButton?.addEventListener('click', () => {
+      if (!currentResult) return;
+      shell.dispatchEvent(new CustomEvent('workflowcheck:apply', { bubbles: true, detail: currentResult }));
+      currentResult = null;
+      form.reset();
+      closeCheck();
+    });
+    discardButton?.addEventListener('click', () => {
+      currentResult = null;
+      form.reset();
+      closeCheck();
+    });
+    form.addEventListener('change', (event) => {
+      currentResult = null;
       if (resultBox && !resultBox.hidden) resultBox.hidden = true;
+      updateActionButtons();
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement) || target.type !== 'radio') return;
+      const field = target.closest('fieldset');
+      const fieldIndex = fieldsets.indexOf(field);
+      if (fieldIndex === -1) return;
+      currentStep = fieldIndex;
+      if (!currentFieldAnswered()) return;
+      if (currentStep >= fieldsets.length - 1) {
+        window.setTimeout(() => {
+          if (fieldsets[currentStep] === field) evaluate();
+        }, 60);
+        return;
+      }
+      window.setTimeout(() => {
+        if (fieldsets[currentStep] === field) updateStep(currentStep + 1);
+      }, 60);
     });
     form.addEventListener('reset', () => {
       setTimeout(() => {
+        currentResult = null;
         if (resultBox) resultBox.hidden = true;
         updateStep(0, { instant: true, scroll: false });
       }, 0);
@@ -954,36 +986,7 @@
     const emailFeedback = contactForm.querySelector('[data-email-feedback]');
     const consentInput = contactForm.querySelector('#consent');
     const consentFeedback = contactForm.querySelector('[data-consent-feedback]');
-    const requiredWrappers = [...contactForm.querySelectorAll('[data-required-field]')];
     let isSubmitting = false;
-
-    requiredWrappers.forEach((wrapper) => {
-      let marker = wrapper.querySelector('.required-marker');
-      if (!marker) {
-        marker = document.createElement('span');
-        marker.className = 'required-marker';
-        marker.setAttribute('aria-hidden', 'true');
-        marker.textContent = '*';
-        wrapper.appendChild(marker);
-      }
-    });
-
-    const fieldHasValue = (field) => {
-      if (!field) return false;
-      if (field.type === 'checkbox' || field.type === 'radio') return field.checked;
-      return String(field.value || '').trim().length > 0;
-    };
-
-    const updateRequiredMarkers = () => {
-      requiredWrappers.forEach((wrapper) => {
-        const field = wrapper.querySelector('[required]');
-        const marker = wrapper.querySelector('.required-marker');
-        if (!field || !marker) return;
-        const filled = fieldHasValue(field);
-        wrapper.classList.toggle('is-complete', filled);
-        marker.classList.toggle('is-hidden', filled);
-      });
-    };
     const setResponseNote = (message) => {
       if (!responseNote) return;
       responseNote.textContent = message || defaultResponseNote;
@@ -1003,29 +1006,94 @@
     };
     const prefillBox = contactForm.querySelector('[data-contact-prefill]');
     const prefillText = contactForm.querySelector('[data-contact-prefill-text]');
+    const prefillClearButton = contactForm.querySelector('[data-contact-prefill-clear]');
+    const messageField = contactForm.querySelector('#message');
+    const topicField = contactForm.querySelector('#topic');
+    const normalizeTopic = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
+
+    const applyTopicChoice = (resultTopic) => {
+      if (!topicField || !resultTopic) return;
+      const normalizedTopic = normalizeTopic(resultTopic);
+      const option = [...topicField.options].find((entry) => normalizeTopic(entry.textContent).includes(normalizedTopic) || normalizedTopic.includes(normalizeTopic(entry.textContent)));
+      if (option) topicField.value = option.value;
+    };
+
+    const getAssessmentState = () => ({
+      title: String(contactForm.dataset.assessmentTitle || '').trim(),
+      summary: String(contactForm.dataset.assessmentSummary || '').trim(),
+      topic: String(contactForm.dataset.assessmentTopic || '').trim()
+    });
+
+    const getAssessmentText = () => {
+      const state = getAssessmentState();
+      return state.title && state.summary ? `${state.title}. ${state.summary}` : '';
+    };
+
+    const getAssessmentMessage = () => {
+      const text = getAssessmentText();
+      return text ? `Schnellcheck-Ergebnis: ${text}` : '';
+    };
+
+    const setAssessmentPrefill = ({ title = '', summary = '', topic = '' } = {}) => {
+      const previousAutofill = String(contactForm.dataset.assessmentAutofillText || '');
+      const nextTitle = String(title || '').trim();
+      const nextSummary = String(summary || '').trim();
+      const nextTopic = String(topic || '').trim();
+
+      contactForm.dataset.assessmentTitle = nextTitle;
+      contactForm.dataset.assessmentSummary = nextSummary;
+      contactForm.dataset.assessmentTopic = nextTopic;
+
+      const assessmentText = getAssessmentText();
+      if (prefillBox && prefillText) {
+        prefillBox.hidden = !assessmentText;
+        prefillText.textContent = assessmentText ? `Übernommenes Schnellcheck-Ergebnis: ${assessmentText}` : '';
+      }
+
+      if (nextTopic) applyTopicChoice(nextTopic);
+
+      const nextAutofill = getAssessmentMessage();
+      if (messageField) {
+        const messageTrimmed = messageField.value.trim();
+        const canReplaceAutofill = Boolean(previousAutofill) && messageTrimmed === previousAutofill.trim();
+        if (!messageTrimmed || canReplaceAutofill) {
+          messageField.value = nextAutofill;
+          contactForm.dataset.assessmentAutofillText = nextAutofill;
+        } else if (!nextAutofill) {
+          contactForm.dataset.assessmentAutofillText = '';
+        }
+      }
+    };
+
+    const clearAssessmentPrefill = () => {
+      setAssessmentPrefill({});
+      updateSummary();
+    };
+
     const applyAssessmentPrefill = () => {
       const params = new URLSearchParams(window.location.search);
       const resultTitle = params.get('assessment');
       const resultSummary = params.get('summary');
       const resultTopic = params.get('topic');
-      const messageField = contactForm.querySelector('#message');
-      const topicField = contactForm.querySelector('#topic');
       if (!resultTitle || !resultSummary) return;
-      if (prefillBox && prefillText) {
-        prefillBox.hidden = false;
-        prefillText.textContent = `Übernommenes Schnellcheck-Ergebnis: ${resultTitle}. ${resultSummary}`;
-      }
-      if (messageField && !messageField.value.trim()) {
-        messageField.value = `Schnellcheck-Ergebnis: ${resultTitle}. ${resultSummary}`;
-      }
-      if (topicField && resultTopic) {
-        const normalizeTopic = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
-        const normalizedTopic = normalizeTopic(resultTopic);
-        const option = [...topicField.options].find((entry) => normalizeTopic(entry.textContent).includes(normalizedTopic) || normalizedTopic.includes(normalizeTopic(entry.textContent)));
-        if (option) topicField.value = option.value;
-      }
+      setAssessmentPrefill({ title: resultTitle, summary: resultSummary, topic: resultTopic });
     };
     applyAssessmentPrefill();
+
+    document.addEventListener('workflowcheck:apply', (event) => {
+      const detail = event.detail || {};
+      if (!detail.title || !detail.summary) return;
+      setAssessmentPrefill({ title: detail.title, summary: detail.summary, topic: detail.topic || '' });
+      updateSummary();
+      requestAnimationFrame(() => {
+        scrollTargetIntoView(contactForm, { block: 'center', force: true, padding: isMobileViewport() ? 18 : 28 });
+      });
+    });
+
+    prefillClearButton?.addEventListener('click', () => {
+      clearAssessmentPrefill();
+      setResponseNote(defaultResponseNote);
+    });
     const updateSummary = () => {
       const formData = new FormData(contactForm);
       const emailState = validateEmailValue(formData.get('email'));
@@ -1036,7 +1104,7 @@
         ['E-Mail', formData.get('email') || '—'],
         ['Thema', formData.get('topic') || '—'],
         ['Beschreibung', formData.get('message') || '—'],
-        ['Schnellcheck', (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '') || '—'],
+        ['Schnellcheck', getAssessmentText() || '—'],
         ['Einwilligung', consentGiven ? 'Bestätigt' : 'Ausstehend']
       ];
       if (summary) {
@@ -1064,7 +1132,6 @@
         consentFeedback.classList.toggle('is-valid', consentGiven);
         consentFeedback.classList.toggle('is-invalid', !consentGiven);
       }
-      updateRequiredMarkers();
       if (submitButton) {
         const canProceed = emailState.valid && consentGiven && !isSubmitting;
         submitButton.disabled = !canProceed;
@@ -1111,7 +1178,7 @@
   topic: String(formData.get('topic') || '').trim(),
   message: String(formData.get('message') || '').trim(),
   consent: consentGiven,
-  assessment: (contactForm.querySelector('[data-contact-prefill-text]')?.textContent || '').replace('Übernommenes Schnellcheck-Ergebnis: ', '').trim()
+  assessment: getAssessmentText()
 })
         });
         const result = await response.json().catch(() => ({}));
@@ -1135,6 +1202,22 @@
     updateSummary();
   }
 
+  document.querySelectorAll('a.btn[href="kontakt.html"]').forEach((link) => {
+    link.setAttribute('href', 'kontakt.html#kontaktformular');
+  });
+
+  if (body.dataset.page === 'kontakt.html' && window.location.hash === '#kontaktformular') {
+    window.setTimeout(() => {
+      const contactSection = document.getElementById('kontaktformular');
+      if (contactSection) {
+        scrollTargetIntoView(contactSection, {
+          block: 'center',
+          force: true,
+          padding: isMobileViewport() ? 18 : 28
+        });
+      }
+    }, 80);
+  }
 
 
   const initLeistungenNetwork = () => {
