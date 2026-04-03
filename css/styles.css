@@ -3520,215 +3520,65 @@ body[data-page="kontakt.html"] .contact-help-card .detail-list li{
   margin-bottom:0 !important;
 }
 
-
-/* final responsive + contact polish */
-.skip-link,
-.skip-link:focus,
-.skip-link:focus-visible{display:none !important;}
-
-body[data-page="kontakt.html"] [data-required-field]{position:relative;}
-body[data-page="kontakt.html"] [data-required-field] > .required-marker{
-  position:absolute;
-  right:14px;
-  top:36px;
-  color:#ff5a6f;
-  font-size:1rem;
-  font-weight:800;
-  line-height:1;
-  pointer-events:none;
-  opacity:1;
-  transform:scale(1);
-  transition:opacity .18s ease, transform .18s ease;
-  z-index:2;
-}
-body[data-page="kontakt.html"] .consent-wrap > .required-marker{
-  top:10px;
-  right:12px;
-}
-body[data-page="kontakt.html"] [data-required-field].is-complete > .required-marker,
-body[data-page="kontakt.html"] [data-required-field] > .required-marker.is-hidden{
-  opacity:0;
-  transform:scale(.82);
-}
-body[data-page="kontakt.html"] .contact-fields label.has-required-marker,
-body[data-page="kontakt.html"] .consent-wrap.has-required-marker{padding-right:0;}
-
-@media (max-width: 1024px), (hover: none) and (pointer: coarse){
-  .cursor-glow,
-  .scroll-progress,
-  .page-accent,
-  .contact-signal-strip,
-  .hero-system-visual,
-  .hero-flow-wrap,
-  .hero-loop-card,
-  .loop-visual,
-  .problem-side,
-  .compare-visual,
-  .stream-visual,
-  .hero-visual,
-  .page-hero-visual,
-  .network-visual,
-  .savings-signal,
-  .savings-orbit,
-  .savings-track,
-  .orbit-ring,
-  .orbit-dot,
-  .flow-node,
-  .flow-pulse,
-  .stream-node,
-  .loop-node-badge{
-    display:none !important;
+/* targeted fixes: example/details scroll + equal teaser card heights */
+@media (min-width: 761px){
+  body[data-page="einsatzbereiche.html"] .einsatz-grid{
+    align-items:stretch;
   }
-
-  .reveal{
-    opacity:1 !important;
-    transform:none !important;
-    transition:none !important;
+  body[data-page="einsatzbereiche.html"] .einsatz-card{
+    display:flex !important;
+    flex-direction:column;
+    align-self:stretch;
+    min-height:0 !important;
   }
-
-  .page-hero-grid,
-  .hero-grid,
-  .hero-system-grid,
-  .hero-notes,
-  .usage-grid,
-  .problem-grid,
-  .compare-grid,
-  .service-grid,
-  .grid-4,
-  .benefit-grid,
-  .value-grid,
-  .three-grid,
-  .footer-grid,
-  .kicker-grid,
-  .metric-grid,
-  .example-meta,
-  .overview-grid,
-  .sector-grid,
-  .faq-grid,
-  .workflow-layout,
-  .example-dashboard,
-  .contact-help-grid,
-  .hero-simple-grid{
-    grid-template-columns:1fr !important;
+  body[data-page="einsatzbereiche.html"] .einsatz-card > .accordion-summary{
+    display:flex !important;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
+    min-height:224px !important;
+    height:224px !important;
+    padding:18px 20px !important;
   }
-
-  .section-head,
-  .page-hero-grid > div,
-  .hero-copy,
-  .workflow-check-head,
-  .contact-intro,
-  .faq-explorer-head,
-  .hero-simple-copy,
-  .hero-loop-copy,
-  .hero-system-copy,
-  .hero,
-  .page-hero{
-    text-align:center !important;
-    justify-items:center;
+  body[data-page="einsatzbereiche.html"] .einsatz-card[open] > .accordion-summary{
+    height:auto !important;
   }
-
-  .section-head > .eyebrow,
-  .page-hero .eyebrow,
-  .hero .eyebrow,
-  .workflow-check-head .eyebrow,
-  .contact-intro .eyebrow,
-  .faq-explorer-head .eyebrow{
-    margin-left:auto !important;
-    margin-right:auto !important;
+  body[data-page="einsatzbereiche.html"] .einsatz-card > .accordion-summary .accordion-text{
+    width:100%;
   }
-
-  .section-head::after{
-    margin-left:auto;
-    margin-right:auto;
-  }
-
-  .section-head p,
-  .page-hero p,
-  .hero p,
-  .workflow-check-head p,
-  .contact-intro p,
-  .faq-explorer-head p{
-    margin-left:auto !important;
-    margin-right:auto !important;
-  }
-
-  .btn-row,
-  .tag-row,
-  .hero-inline-points,
-  .kontakt-points,
-  .workflow-check-toggle-row,
-  .contact-prefill-note-row,
-  .contact-response{
-    justify-content:center !important;
-  }
-
-  .contact-response{
-    align-items:center !important;
-    text-align:center !important;
-  }
-
-  .page-hero-grid,
-  .hero-grid,
-  .page-hero-copy,
-  .hero-copy,
-  .contact-form,
-  .contact-form-wrap,
-  .contact-help-grid,
-  .workflow-check-shell,
-  .workflow-check-intro{
-    max-width:760px;
-    margin-left:auto !important;
-    margin-right:auto !important;
-  }
-
-  .accordion-summary,
-  .accordion-text,
-  .faq-question,
-  .faq-answer-inner,
-  .detail-list,
-  .detail-list li,
-  .workflow-node,
-  .workflow-node p,
-  .workflow-node strong,
-  .contact-fields label,
-  .consent-wrap label,
-  .field-help,
-  .summary-list,
-  .summary-list div{
-    text-align:left !important;
-  }
-
-  body[data-page="kontakt.html"] .contact-fields,
-  body[data-page="kontakt.html"] .form-row{
-    grid-template-columns:1fr !important;
+  body[data-page="einsatzbereiche.html"] .einsatz-card > .accordion-summary .accordion-action{
+    margin-top:auto !important;
+    align-self:flex-start;
   }
 }
 
-@media (max-width: 760px), (hover: none) and (pointer: coarse){
-  .container{
-    width:min(100% - 24px, 1120px);
+@media (min-width: 981px){
+  body[data-page="kontakt.html"] .contact-help-grid{
+    align-items:stretch;
   }
-
-  .section,
-  .page-hero{
-    padding-left:0;
-    padding-right:0;
+  body[data-page="kontakt.html"] .contact-help-card{
+    display:flex !important;
+    flex-direction:column;
+    align-self:stretch;
+    min-height:0 !important;
   }
-
-  .hero h1,
-  .page-hero h1,
-  .section-head h2{
-    text-wrap:balance;
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+    display:flex !important;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
+    min-height:206px !important;
+    height:206px !important;
+    padding:18px 20px !important;
   }
-
-  .btn-row .btn,
-  .contact-response .btn{
-    width:auto;
-    min-width:min(280px, 100%);
+  body[data-page="kontakt.html"] .contact-help-card[open] > .accordion-summary{
+    height:auto !important;
   }
-
-  body[data-page="kontakt.html"] [data-required-field] > .required-marker{
-    top:34px;
-    right:12px;
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-text{
+    width:100%;
+  }
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-action{
+    margin-top:auto !important;
+    align-self:flex-start;
   }
 }
