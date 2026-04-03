@@ -33,8 +33,13 @@ async function handleContactSubmission(request, env) {
     topic: clean(payload.topic),
     message: clean(payload.message),
     consent: payload.consent === true,
-    assessment: clean(payload.assessment)
+    assessment: clean(payload.assessment),
+    website: clean(payload.website)
   };
+
+  if (data.website) {
+    return json({ ok: true, message: 'Anfrage erfolgreich abgesendet.' }, 202);
+  }
 
   if (!data.gender || !['male', 'female', 'diverse'].includes(data.gender)) {
     return json({ ok: false, message: 'Bitte eine gültige Anrede auswählen.' }, 400);
