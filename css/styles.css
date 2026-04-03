@@ -3521,61 +3521,214 @@ body[data-page="kontakt.html"] .contact-help-card .detail-list li{
 }
 
 
-/* Safe accessibility + form protection additions */
-.skip-link{position:fixed;left:16px;top:14px;z-index:1200;padding:12px 16px;border-radius:14px;background:linear-gradient(135deg, rgba(39,164,255,.96), rgba(64,218,255,.88));color:#071225;font-weight:800;text-decoration:none;box-shadow:0 18px 36px rgba(14,41,90,.24);transform:translateY(-150%);transition:transform .22s ease,box-shadow .22s ease}
-.skip-link:focus-visible{transform:translateY(0);box-shadow:0 20px 40px rgba(14,41,90,.28)}
-.form-honeypot{position:absolute !important;left:-9999px !important;top:auto !important;width:1px !important;height:1px !important;overflow:hidden !important;opacity:0 !important;pointer-events:none !important}
-:focus-visible{outline:2px solid rgba(39,164,255,.95);outline-offset:3px}
-summary:focus-visible,.btn:focus-visible,.input:focus-visible,.select:focus-visible,textarea:focus-visible,.search-input:focus-visible,.theme-toggle:focus-visible,.mobile-toggle:focus-visible,.faq-topic-chip:focus-visible,.workflow-option:focus-within{box-shadow:0 0 0 4px rgba(39,164,255,.16)}
-
-
-/* final small cleanup: hide skip link globally, keep honeypot invisible, restore contact required markers */
+/* final responsive + contact polish */
 .skip-link,
 .skip-link:focus,
-.skip-link:focus-visible{
-  display:none !important;
-}
-.form-honeypot,
-.form-honeypot *{
-  display:none !important;
-  visibility:hidden !important;
-}
-body[data-page="kontakt.html"] .field-shell.field-required,
-body[data-page="kontakt.html"] .consent-wrap.field-required{
-  position:relative;
-}
-body[data-page="kontakt.html"] .field-shell.field-required label{
-  display:inline-block;
-  position:relative;
-  padding-right:16px;
-}
-body[data-page="kontakt.html"] .field-shell.field-required .required-marker,
-body[data-page="kontakt.html"] .consent-wrap.field-required > .required-marker{
+.skip-link:focus-visible{display:none !important;}
+
+body[data-page="kontakt.html"] [data-required-field]{position:relative;}
+body[data-page="kontakt.html"] [data-required-field] > .required-marker{
   position:absolute;
-  top:0;
-  right:0;
+  right:14px;
+  top:36px;
   color:#ff5a6f;
   font-size:1rem;
   font-weight:800;
   line-height:1;
   pointer-events:none;
+  opacity:1;
+  transform:scale(1);
+  transition:opacity .18s ease, transform .18s ease;
+  z-index:2;
 }
-body[data-page="kontakt.html"] .field-shell.field-required:has(> input[required]:valid) .required-marker,
-body[data-page="kontakt.html"] .field-shell.field-required:has(> select[required]:valid) .required-marker,
-body[data-page="kontakt.html"] .field-shell.field-required:has(> textarea[required]:valid) .required-marker,
-body[data-page="kontakt.html"] .consent-wrap.field-required:has(#consent:checked) > .required-marker{
+body[data-page="kontakt.html"] .consent-wrap > .required-marker{
+  top:10px;
+  right:12px;
+}
+body[data-page="kontakt.html"] [data-required-field].is-complete > .required-marker,
+body[data-page="kontakt.html"] [data-required-field] > .required-marker.is-hidden{
   opacity:0;
+  transform:scale(.82);
 }
-body[data-page="kontakt.html"] .consent-wrap.field-required{
-  padding-top:4px;
+body[data-page="kontakt.html"] .contact-fields label.has-required-marker,
+body[data-page="kontakt.html"] .consent-wrap.has-required-marker{padding-right:0;}
+
+@media (max-width: 1024px), (hover: none) and (pointer: coarse){
+  .cursor-glow,
+  .scroll-progress,
+  .page-accent,
+  .contact-signal-strip,
+  .hero-system-visual,
+  .hero-flow-wrap,
+  .hero-loop-card,
+  .loop-visual,
+  .problem-side,
+  .compare-visual,
+  .stream-visual,
+  .hero-visual,
+  .page-hero-visual,
+  .network-visual,
+  .savings-signal,
+  .savings-orbit,
+  .savings-track,
+  .orbit-ring,
+  .orbit-dot,
+  .flow-node,
+  .flow-pulse,
+  .stream-node,
+  .loop-node-badge{
+    display:none !important;
+  }
+
+  .reveal{
+    opacity:1 !important;
+    transform:none !important;
+    transition:none !important;
+  }
+
+  .page-hero-grid,
+  .hero-grid,
+  .hero-system-grid,
+  .hero-notes,
+  .usage-grid,
+  .problem-grid,
+  .compare-grid,
+  .service-grid,
+  .grid-4,
+  .benefit-grid,
+  .value-grid,
+  .three-grid,
+  .footer-grid,
+  .kicker-grid,
+  .metric-grid,
+  .example-meta,
+  .overview-grid,
+  .sector-grid,
+  .faq-grid,
+  .workflow-layout,
+  .example-dashboard,
+  .contact-help-grid,
+  .hero-simple-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .section-head,
+  .page-hero-grid > div,
+  .hero-copy,
+  .workflow-check-head,
+  .contact-intro,
+  .faq-explorer-head,
+  .hero-simple-copy,
+  .hero-loop-copy,
+  .hero-system-copy,
+  .hero,
+  .page-hero{
+    text-align:center !important;
+    justify-items:center;
+  }
+
+  .section-head > .eyebrow,
+  .page-hero .eyebrow,
+  .hero .eyebrow,
+  .workflow-check-head .eyebrow,
+  .contact-intro .eyebrow,
+  .faq-explorer-head .eyebrow{
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  .section-head::after{
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .section-head p,
+  .page-hero p,
+  .hero p,
+  .workflow-check-head p,
+  .contact-intro p,
+  .faq-explorer-head p{
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  .btn-row,
+  .tag-row,
+  .hero-inline-points,
+  .kontakt-points,
+  .workflow-check-toggle-row,
+  .contact-prefill-note-row,
+  .contact-response{
+    justify-content:center !important;
+  }
+
+  .contact-response{
+    align-items:center !important;
+    text-align:center !important;
+  }
+
+  .page-hero-grid,
+  .hero-grid,
+  .page-hero-copy,
+  .hero-copy,
+  .contact-form,
+  .contact-form-wrap,
+  .contact-help-grid,
+  .workflow-check-shell,
+  .workflow-check-intro{
+    max-width:760px;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  .accordion-summary,
+  .accordion-text,
+  .faq-question,
+  .faq-answer-inner,
+  .detail-list,
+  .detail-list li,
+  .workflow-node,
+  .workflow-node p,
+  .workflow-node strong,
+  .contact-fields label,
+  .consent-wrap label,
+  .field-help,
+  .summary-list,
+  .summary-list div{
+    text-align:left !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-fields,
+  body[data-page="kontakt.html"] .form-row{
+    grid-template-columns:1fr !important;
+  }
 }
-body[data-page="kontakt.html"] .consent-wrap.field-required > .required-marker{
-  top:12px;
-  right:14px;
-}
-@supports not selector(:has(*)){
-  body[data-page="kontakt.html"] .field-shell.field-required .required-marker,
-  body[data-page="kontakt.html"] .consent-wrap.field-required > .required-marker{
-    opacity:1;
+
+@media (max-width: 760px), (hover: none) and (pointer: coarse){
+  .container{
+    width:min(100% - 24px, 1120px);
+  }
+
+  .section,
+  .page-hero{
+    padding-left:0;
+    padding-right:0;
+  }
+
+  .hero h1,
+  .page-hero h1,
+  .section-head h2{
+    text-wrap:balance;
+  }
+
+  .btn-row .btn,
+  .contact-response .btn{
+    width:auto;
+    min-width:min(280px, 100%);
+  }
+
+  body[data-page="kontakt.html"] [data-required-field] > .required-marker{
+    top:34px;
+    right:12px;
   }
 }
