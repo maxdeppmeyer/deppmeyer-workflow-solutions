@@ -49,7 +49,7 @@
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  if (cursorGlow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (cursorGlow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !window.matchMedia('(max-width: 1024px)').matches && !window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
     window.addEventListener('pointermove', (event) => {
       cursorGlow.style.transform = `translate(${event.clientX - cursorGlow.offsetWidth / 2}px, ${event.clientY - cursorGlow.offsetHeight / 2}px)`;
     }, { passive: true });
@@ -74,41 +74,31 @@
     });
   }
 
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) entry.target.classList.add('visible');
-    });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach((node) => revealObserver.observe(node));
-
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isCompactViewport = () => window.matchMedia('(max-width: 1024px)').matches || window.matchMedia('(hover: none) and (pointer: coarse)').matches;
   const isMobileViewport = () => window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse)').matches;
+
+  const syncCompactUiState = () => {
+    body.classList.toggle('compact-ui', isCompactViewport());
+  };
+  syncCompactUiState();
+  window.addEventListener('resize', syncCompactUiState);
+
+  const revealNodes = [...document.querySelectorAll('.reveal')];
+  if (isCompactViewport() || prefersReducedMotion) {
+    revealNodes.forEach((node) => node.classList.add('visible'));
+  } else {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+    revealNodes.forEach((node) => revealObserver.observe(node));
+  }
   const getHeaderOffset = () => {
     const stored = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--topbar-offset'));
     if (Number.isFinite(stored) && stored > 0) return stored;
     return topbar ? Math.ceil(topbar.offsetHeight + 8) : 92;
-  };
-
-  const isTargetComfortablyVisible = (target, options = {}) => {
-    if (!target) return true;
-    const {
-      padding = isMobileViewport() ? 28 : 44,
-      extraOffset = 0,
-      centerSlack = null
-    } = options;
-    const rect = target.getBoundingClientRect();
-    const headerOffset = getHeaderOffset() + extraOffset;
-    const viewTop = headerOffset + padding;
-    const viewBottom = window.innerHeight - padding;
-    const comfortablyVisible = rect.top >= viewTop && rect.bottom <= viewBottom;
-    if (!comfortablyVisible) return false;
-    if (centerSlack === false) return true;
-    const targetCenter = rect.top + (rect.height / 2);
-    const viewportCenter = viewTop + ((viewBottom - viewTop) / 2);
-    const slack = typeof centerSlack === 'number'
-      ? centerSlack
-      : Math.max(isMobileViewport() ? 120 : 160, rect.height * 0.2);
-    return Math.abs(targetCenter - viewportCenter) <= slack;
   };
 
   const scrollTargetIntoView = (target, options = {}) => {
@@ -130,11 +120,14 @@
       const targetTop = rect.top;
       const targetBottom = rect.bottom;
       const targetCenter = rect.top + (rect.height / 2);
+      const comfortablyVisible = targetTop >= viewTop && targetBottom <= viewBottom;
 
       if (!force) {
         if (block === 'center') {
-          if (isTargetComfortablyVisible(target, { padding, extraOffset })) return;
-        } else if (isTargetComfortablyVisible(target, { padding, extraOffset, centerSlack: false })) {
+          const centerSlack = Math.max(isMobileViewport() ? 120 : 160, rect.height * 0.2);
+          const viewportCenter = viewTop + ((viewBottom - viewTop) / 2);
+          if (comfortablyVisible && Math.abs(targetCenter - viewportCenter) <= centerSlack) return;
+        } else if (comfortablyVisible) {
           return;
         }
       }
@@ -166,17 +159,7 @@
       button.setAttribute('aria-expanded', String(open));
       const sign = button.querySelector('span');
       if (sign) sign.textContent = open ? '–' : '+';
-      if (open && !isTargetComfortablyVisible(item, {
-        padding: isMobileViewport() ? 20 : 28,
-        centerSlack: isMobileViewport() ? 96 : 128
-      })) {
-        scrollTargetIntoView(item, {
-          block: 'center',
-          force: true,
-          padding: isMobileViewport() ? 20 : 28,
-          delay: 0
-        });
-      }
+      if (open) scrollTargetIntoView(item, { block: 'nearest', padding: isMobileViewport() ? 22 : 32, delay: 18 });
     });
   });
 
@@ -214,8 +197,8 @@
       scrollTargetIntoView(topicBar || explorerHead || explorer, {
         block: 'center',
         force: true,
-        padding: isMobileViewport() ? 16 : 26,
-        delay: 0
+        padding: isMobileViewport() ? 18 : 30,
+        delay: 18
       });
     };
 
@@ -225,15 +208,15 @@
         scrollTargetIntoView(firstVisible, {
           block: 'center',
           force: true,
-          padding: isMobileViewport() ? 16 : 26,
-          delay: 0
+          padding: isMobileViewport() ? 18 : 30,
+          delay: 18
         });
       } else if (topicGrid) {
         scrollTargetIntoView(topicGrid, {
           block: 'center',
           force: true,
-          padding: isMobileViewport() ? 16 : 26,
-          delay: 0
+          padding: isMobileViewport() ? 18 : 30,
+          delay: 18
         });
       }
     };
@@ -286,19 +269,11 @@
         });
       }
       if (details.open) {
-        const detailPadding = isMobileViewport() ? 20 : 34;
-        const detailBlock = details.classList.contains('example-meta-toggle') ? 'nearest' : 'center';
-        if (!isTargetComfortablyVisible(details, {
-          padding: detailPadding,
-          centerSlack: detailBlock === 'center' ? (isMobileViewport() ? 92 : 130) : false
-        })) {
-          scrollTargetIntoView(details, {
-            block: detailBlock,
-            force: true,
-            padding: detailPadding,
-            delay: 0
-          });
-        }
+        scrollTargetIntoView(details, {
+          block: details.classList.contains('example-meta-toggle') ? 'nearest' : 'center',
+          padding: isMobileViewport() ? 20 : 34,
+          delay: 18
+        });
       }
     });
     if (summary) {
@@ -546,15 +521,14 @@
     };
 
     const maybeAutoScrollStep = (stepIndex) => {
+      if (!isMobileViewport()) return;
       const activeNode = nodes[Math.min(stepIndex, nodes.length - 1)];
-      const target = currentBox || activeNode || root;
+      const target = activeNode || currentBox || root;
       if (!target) return;
       scrollTargetIntoView(target, {
-        block: 'center',
-        force: true,
-        padding: isMobileViewport() ? 18 : 26,
-        extraOffset: -4,
-        delay: 0
+        block: activeNode ? 'center' : 'nearest',
+        padding: 20,
+        extraOffset: -4
       });
     };
 
@@ -942,7 +916,36 @@
     const emailFeedback = contactForm.querySelector('[data-email-feedback]');
     const consentInput = contactForm.querySelector('#consent');
     const consentFeedback = contactForm.querySelector('[data-consent-feedback]');
+    const requiredWrappers = [...contactForm.querySelectorAll('[data-required-field]')];
     let isSubmitting = false;
+
+    requiredWrappers.forEach((wrapper) => {
+      let marker = wrapper.querySelector('.required-marker');
+      if (!marker) {
+        marker = document.createElement('span');
+        marker.className = 'required-marker';
+        marker.setAttribute('aria-hidden', 'true');
+        marker.textContent = '*';
+        wrapper.appendChild(marker);
+      }
+    });
+
+    const fieldHasValue = (field) => {
+      if (!field) return false;
+      if (field.type === 'checkbox' || field.type === 'radio') return field.checked;
+      return String(field.value || '').trim().length > 0;
+    };
+
+    const updateRequiredMarkers = () => {
+      requiredWrappers.forEach((wrapper) => {
+        const field = wrapper.querySelector('[required]');
+        const marker = wrapper.querySelector('.required-marker');
+        if (!field || !marker) return;
+        const filled = fieldHasValue(field);
+        wrapper.classList.toggle('is-complete', filled);
+        marker.classList.toggle('is-hidden', filled);
+      });
+    };
     const setResponseNote = (message) => {
       if (!responseNote) return;
       responseNote.textContent = message || defaultResponseNote;
@@ -1023,6 +1026,7 @@
         consentFeedback.classList.toggle('is-valid', consentGiven);
         consentFeedback.classList.toggle('is-invalid', !consentGiven);
       }
+      updateRequiredMarkers();
       if (submitButton) {
         const canProceed = emailState.valid && consentGiven && !isSubmitting;
         submitButton.disabled = !canProceed;
