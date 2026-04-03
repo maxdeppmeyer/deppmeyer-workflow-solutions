@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-
 <html lang="de">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Leistungen | Deppmeyer Workflow Solutions</title>
 <meta content="Analyse, Beratung, Planung und Umsetzung, Übergabe und Optimierung sowie Betreuung von Workflows für wiederkehrende Abläufe." name="description"/>
-<link href="css/styles.css" rel="stylesheet"/><link href="favicon.png" rel="icon" type="image/png"/><link href="favicon.ico" rel="shortcut icon"/>
+<link href="css/styles.css" rel="stylesheet"/>
 <style>
 body[data-page="leistungen.html"] .leistungen-hero{padding:56px 0 6px;overflow:hidden}
 body[data-page="leistungen.html"] .leistungen-hero-grid{display:block;position:relative}
@@ -65,8 +64,8 @@ body[data-page="leistungen.html"] .forms-head h2{margin-left:auto;margin-right:a
 body[data-page="leistungen.html"] .forms-head p{margin:0 auto;max-width:62ch}
 body[data-page="leistungen.html"] .forms-head::after{display:none}
 
-body[data-page="leistungen.html"] .leistungen-service-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;align-items:start;grid-auto-rows:auto;max-width:1180px;margin:0 auto}
-body[data-page="leistungen.html"] .leistungen-service-grid > .accordion-card{grid-column:span 2;min-height:0;height:auto;background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,251,255,.92));border:1px solid rgba(169,196,232,.42);box-shadow:0 18px 36px rgba(24,56,102,.08);border-radius:30px;overflow:hidden;transition:box-shadow .35s ease}
+body[data-page="leistungen.html"] .leistungen-service-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;align-items:stretch;max-width:1180px;margin:0 auto}
+body[data-page="leistungen.html"] .leistungen-service-grid > .accordion-card{grid-column:span 2;min-height:390px;height:100%;background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,251,255,.92));border:1px solid rgba(169,196,232,.42);box-shadow:0 18px 36px rgba(24,56,102,.08);border-radius:30px;overflow:hidden;transition:min-height .35s ease, box-shadow .35s ease}
 body[data-page="leistungen.html"] .leistungen-service-grid > .accordion-card:nth-child(4){grid-column:2 / span 2}
 body[data-page="leistungen.html"] .leistungen-service-grid > .accordion-card:nth-child(5){grid-column:4 / span 2}
 body[data-page="leistungen.html"] .leist-card .accordion-summary{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:24px 24px 14px;cursor:pointer;list-style:none;background:transparent}
@@ -75,9 +74,9 @@ body[data-page="leistungen.html"] .leist-card .accordion-text h3{margin:0;font-s
 body[data-page="leistungen.html"] .leist-card .accordion-preview{margin:0;max-width:none;font-size:1rem;line-height:1.62;color:#4b6a91}
 body[data-page="leistungen.html"] .leist-card .accordion-action{margin-top:auto;align-self:flex-start;background:rgba(255,255,255,.88);border-color:rgba(173,196,229,.66);color:#17355e;box-shadow:0 10px 20px rgba(24,56,102,.08)}
 body[data-page="leistungen.html"] .leist-card[open] .accordion-action{background:rgba(221,244,255,.92);border-color:rgba(76,154,235,.28)}
-body[data-page="leistungen.html"] .leist-card .accordion-content{display:none;padding:0 24px 26px;overflow:visible;opacity:1}
-body[data-page="leistungen.html"] .leist-card[open]{min-height:0;box-shadow:0 22px 42px rgba(24,56,102,.10)}
-body[data-page="leistungen.html"] .leist-card[open] .accordion-content{display:block}
+body[data-page="leistungen.html"] .leist-card .accordion-content{padding:0 24px 26px;max-height:0;overflow:hidden;transition:max-height .35s ease, opacity .35s ease;opacity:0}
+body[data-page="leistungen.html"] .leist-card[open]{min-height:560px;box-shadow:0 22px 42px rgba(24,56,102,.10)}
+body[data-page="leistungen.html"] .leist-card[open] .accordion-content{max-height:420px;opacity:1}
 body[data-page="leistungen.html"] .detail-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}
 body[data-page="leistungen.html"] .detail-list li{position:relative;padding-left:16px;color:#4b6a91;line-height:1.58}
 body[data-page="leistungen.html"] .detail-list li::before{content:"";position:absolute;left:0;top:.68em;width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg, rgba(37,207,255,.92), rgba(47,124,255,.84))}
@@ -200,11 +199,11 @@ body[data-theme="dark"][data-page="leistungen.html"] .scope-list li{background:r
 </div>
 <div class="leistungen-flow-wrap">
 <div aria-hidden="true" class="leistungen-logo-flow reveal-delay-1" data-logo-network="leistungen">
-<svg class="logo-network" viewbox="0 0 1120 220" xmlns="http://www.w3.org/2000/svg">
+<svg class="logo-network" viewBox="0 0 1120 220" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<lineargradient id="leistungStroke" x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stop-color="rgba(37,207,255,.18)"></stop><stop offset="50%" stop-color="rgba(47,124,255,.82)"></stop><stop offset="100%" stop-color="rgba(37,207,255,.16)"></stop></lineargradient>
-<lineargradient id="leistungStrokeSoft" x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stop-color="rgba(37,207,255,.10)"></stop><stop offset="50%" stop-color="rgba(47,124,255,.56)"></stop><stop offset="100%" stop-color="rgba(37,207,255,.08)"></stop></lineargradient>
-<radialgradient cx="35%" cy="35%" id="agentDot" r="70%"><stop offset="0%" stop-color="#ffffff"></stop><stop offset="45%" stop-color="#6ee7ff"></stop><stop offset="100%" stop-color="#2f7cff"></stop></radialgradient>
+<linearGradient id="leistungStroke" x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stop-color="rgba(37,207,255,.18)"/><stop offset="50%" stop-color="rgba(47,124,255,.82)"/><stop offset="100%" stop-color="rgba(37,207,255,.16)"/></linearGradient>
+<linearGradient id="leistungStrokeSoft" x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stop-color="rgba(37,207,255,.10)"/><stop offset="50%" stop-color="rgba(47,124,255,.56)"/><stop offset="100%" stop-color="rgba(37,207,255,.08)"/></linearGradient>
+<radialGradient id="agentDot" cx="35%" cy="35%" r="70%"><stop offset="0%" stop-color="#ffffff"/><stop offset="45%" stop-color="#6ee7ff"/><stop offset="100%" stop-color="#2f7cff"/></radialGradient>
 </defs>
 <path class="logo-path" d="M34 38 H236 V86 H470" data-flow-path="0"></path>
 <path class="logo-path secondary" d="M236 38 H544 V148 H730" data-flow-path="1"></path>
@@ -231,15 +230,15 @@ body[data-theme="dark"][data-page="leistungen.html"] .scope-list li{background:r
 <g class="flow-agent agent-dot" data-flow-agent="dot"><circle class="halo" cx="0" cy="0" r="11"></circle><circle class="main" cx="0" cy="0" r="5.5"></circle></g>
 <g class="flow-agent agent-dot" data-flow-agent="dot"><circle class="halo" cx="0" cy="0" r="12"></circle><circle class="main" cx="0" cy="0" r="6"></circle></g>
 <g class="flow-agent agent-dot" data-flow-agent="dot"><circle class="halo" cx="0" cy="0" r="10"></circle><circle class="main" cx="0" cy="0" r="5"></circle></g>
-<g class="flow-agent agent-doc" data-flow-agent="doc"><rect class="sheet" height="18" rx="4" ry="4" width="22" x="-11" y="-8"></rect><rect class="corner" height="8" rx="2" ry="2" width="8" x="3" y="-8"></rect><line x1="-6" x2="5" y1="-1.5" y2="-1.5"></line><line x1="-6" x2="4" y1="3.5" y2="3.5"></line></g>
-<g class="flow-agent agent-doc" data-flow-agent="doc"><rect class="sheet" height="17" rx="4" ry="4" width="20" x="-10" y="-7.5"></rect><rect class="corner" height="8" rx="2" ry="2" width="8" x="2" y="-7.5"></rect><line x1="-5" x2="4" y1="-1" y2="-1"></line><line x1="-5" x2="3.5" y1="3" y2="3"></line></g>
+<g class="flow-agent agent-doc" data-flow-agent="doc"><rect class="sheet" x="-11" y="-8" rx="4" ry="4" width="22" height="18"></rect><rect class="corner" x="3" y="-8" rx="2" ry="2" width="8" height="8"></rect><line x1="-6" x2="5" y1="-1.5" y2="-1.5"></line><line x1="-6" x2="4" y1="3.5" y2="3.5"></line></g>
+<g class="flow-agent agent-doc" data-flow-agent="doc"><rect class="sheet" x="-10" y="-7.5" rx="4" ry="4" width="20" height="17"></rect><rect class="corner" x="2" y="-7.5" rx="2" ry="2" width="8" height="8"></rect><line x1="-5" x2="4" y1="-1" y2="-1"></line><line x1="-5" x2="3.5" y1="3" y2="3"></line></g>
 </svg>
 <div class="logo-core-shell"><img alt="" src="assets/logo-icon.png"/></div>
 </div>
 </div>
 </div>
 </section>
-<div class="anchor-offset" id="ablauf-drei-schritte"></div><section class="section" id="leistungen-ueberblick">
+<section class="section" id="leistungen-ueberblick">
 <div class="container">
 <div class="section-head compact-center reveal">
 <span class="eyebrow">Leistungsbereiche</span>
