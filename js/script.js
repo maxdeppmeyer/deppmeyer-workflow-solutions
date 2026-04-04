@@ -1029,10 +1029,30 @@
     const emailFeedback = contactForm.querySelector('[data-email-feedback]');
     const consentInput = contactForm.querySelector('#consent');
     const consentFeedback = contactForm.querySelector('[data-consent-feedback]');
+    const requiredWrappers = [...contactForm.querySelectorAll('[data-required-field]')];
     let isSubmitting = false;
     const setResponseNote = (message) => {
       if (!responseNote) return;
       responseNote.textContent = message || defaultResponseNote;
+    };
+    const getRequiredControl = (wrapper) => wrapper?.querySelector('input, select, textarea');
+    const requiredFieldFilled = (wrapper) => {
+      const control = getRequiredControl(wrapper);
+      if (!control) return false;
+      if (control.type === 'checkbox') return control.checked;
+      return String(control.value || '').trim().length > 0;
+    };
+    const syncRequiredMarkers = () => {
+      requiredWrappers.forEach((wrapper) => {
+        if (!wrapper.querySelector(':scope > .required-marker')) {
+          const marker = document.createElement('span');
+          marker.className = 'required-marker';
+          marker.textContent = '*';
+          marker.setAttribute('aria-hidden', 'true');
+          wrapper.appendChild(marker);
+        }
+        wrapper.classList.toggle('is-filled', requiredFieldFilled(wrapper));
+      });
     };
     const validateEmailValue = (value) => {
       const trimmed = String(value || '').trim();
@@ -1194,18 +1214,26 @@
       const formData = new FormData(contactForm);
       const emailState = validateEmailValue(formData.get('email'));
       const consentGiven = Boolean(formData.get('consent'));
+      const genderValue = String(formData.get('gender') || '').trim();
+      const firstNameValue = String(formData.get('firstName') || '').trim();
+      const lastNameValue = String(formData.get('name') || '').trim();
+      const companyValue = String(formData.get('company') || '').trim();
+      const fullName = [firstNameValue, lastNameValue].filter(Boolean).join(' ').trim();
+      const salutation = genderValue === 'male' ? 'Herr' : (genderValue === 'female' ? 'Frau' : '');
+      const compactName = fullName ? (salutation ? `${salutation} ${fullName}` : fullName) : '—';
+      const compactContact = companyValue ? `${compactName} · ${companyValue}` : compactName;
       const lines = [
-        ['Name', formData.get('name') || '—'],
-        ['Unternehmen', formData.get('company') || '—'],
+        ['Kontakt', compactContact],
         ['E-Mail', formData.get('email') || '—'],
         ['Thema', formData.get('topic') || '—'],
-        ['Beschreibung', formData.get('message') || '—'],
+        ['Text', formData.get('message') || '—'],
         ['Schnellcheck', getAssessmentText() || '—'],
         ['Einwilligung', consentGiven ? 'Bestätigt' : 'Ausstehend']
       ];
       if (summary) {
         summary.innerHTML = lines.map(([label, value]) => `<div><strong>${label}:</strong> ${String(value).replace(/</g, '&lt;')}</div>`).join('');
       }
+      syncRequiredMarkers();
       if (emailInput) {
         emailInput.classList.toggle('is-valid', emailState.valid);
         emailInput.classList.toggle('is-invalid', !emailState.valid && emailState.state !== 'empty');
