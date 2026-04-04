@@ -1044,7 +1044,8 @@
     };
     const syncRequiredMarkers = () => {
       requiredWrappers.forEach((wrapper) => {
-        if (!wrapper.querySelector(':scope > .required-marker')) {
+        const hasMarker = wrapper.querySelector(':scope > .required-marker');
+        if (!hasMarker) {
           const marker = document.createElement('span');
           marker.className = 'required-marker';
           marker.textContent = '*';
