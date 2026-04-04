@@ -3645,3 +3645,8 @@ body[data-page="einsatzbereiche.html"] .einsatz-card > .accordion-summary .accor
   margin-bottom:8px !important;
   align-self:flex-start;
 }
+
+/* only fix requested: move bottom-right einsatzbereiche details button slightly away from bottom edge */
+body[data-page="einsatzbereiche.html"] .einsatz-grid > .einsatz-card:nth-child(4) > .accordion-summary .accordion-action{
+  margin-bottom: 16px !important;
+}
