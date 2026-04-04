@@ -2988,7 +2988,6 @@ body[data-page="index.html"] .workflow-check-intro::after{
 body[data-page="index.html"] .faq-more-compact{justify-content:flex-start;}
 body[data-page="index.html"] .faq-explorer-intro{margin-left:0;margin-right:auto;text-align:left;}
 body[data-page="index.html"] .faq-topic-bar{justify-content:flex-start;}
-body[data-page="index.html"] .faq-search{justify-content:flex-start;margin-left:0;}
 
 body[data-page="leistungen.html"] .leistungen-copy,
 body[data-page="leistungen.html"] #leistungen-ueberblick .section-head,
@@ -3060,7 +3059,6 @@ body[data-page="impressum.html"] .page-hero .lead{
   margin-right:auto !important;
 }
 @media (max-width: 900px){
-  body[data-page="index.html"] .faq-search{justify-content:stretch;}
   body[data-page="leistungen.html"] .leistungen-copy,
   body[data-page="einsatzbereiche.html"] .einsatz-copy,
   body[data-page="ueber-mich.html"] .ueber-copy{
@@ -3613,38 +3611,43 @@ body[data-page="einsatzbereiche.html"] .einsatz-card .accordion-action{
   }
 }
 
-/* targeted regression fix: hide skip link, re-center faq search, restore required markers */
-.skip-link,
-.skip-link:focus,
-.skip-link:focus-visible {
-  display: none !important;
+
 }
 
-body[data-page="index.html"] .faq-search {
-  justify-content: center !important;
-  margin-inline: auto !important;
+/* stable final overrides: preserve current look while removing regressions */
+.faq-search{
+  display:flex;
+  justify-content:center;
+  width:100%;
+  margin-inline:auto;
 }
-
-body[data-page="kontakt.html"] [data-required-field] {
-  position: relative;
+body[data-page="index.html"] .faq-search,
+body[data-page="index.html"] .faq-explorer .faq-search{
+  justify-content:center !important;
+  margin-inline:auto !important;
+  width:100%;
 }
-
-body[data-page="kontakt.html"] [data-required-field] > .required-marker {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  color: #ff5a6f;
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1;
-  pointer-events: none;
+body[data-page="index.html"] .faq-search-input{
+  margin-inline:auto;
 }
-
-body[data-page="kontakt.html"] .consent-wrap[data-required-field] > .required-marker {
-  top: 12px;
-  right: 14px;
+body[data-page="kontakt.html"] [data-required-field]{
+  position:relative;
 }
-
-body[data-page="kontakt.html"] [data-required-field].is-filled > .required-marker {
-  display: none;
+body[data-page="kontakt.html"] [data-required-field] > .required-marker{
+  position:absolute;
+  top:10px;
+  right:12px;
+  color:#ff5a6f;
+  font-size:1rem;
+  font-weight:800;
+  line-height:1;
+  pointer-events:none;
+  z-index:3;
+}
+body[data-page="kontakt.html"] .consent-wrap[data-required-field] > .required-marker{
+  top:12px;
+  right:14px;
+}
+body[data-page="kontakt.html"] [data-required-field].is-filled > .required-marker{
+  display:none;
 }
