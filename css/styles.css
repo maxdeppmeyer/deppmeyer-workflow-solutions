@@ -3651,3 +3651,92 @@ body[data-page="kontakt.html"] .consent-wrap[data-required-field] > .required-ma
 body[data-page="kontakt.html"] [data-required-field].is-filled > .required-marker{
   display:none;
 }
+
+/* targeted footer compact + faq search results */
+.footer.footer-compact{
+  padding:24px 0 28px;
+}
+.footer-compact-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px 28px;
+  flex-wrap:wrap;
+}
+.footer-compact-main{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  min-width:0;
+}
+.footer-compact-main .footer-brand{
+  margin-bottom:0;
+  flex-shrink:0;
+}
+.footer-compact-main .footer-copy{
+  margin:0;
+  max-width:42ch;
+}
+.footer-compact-links{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px 18px;
+  flex-wrap:wrap;
+}
+.footer-compact-links a,
+.footer-compact-links span{
+  white-space:nowrap;
+}
+
+.faq-search-results{
+  width:min(100%, 760px);
+  margin:16px auto 0;
+  padding:8px;
+  border-radius:22px;
+  display:grid;
+  gap:10px;
+  max-height:min(58vh, 520px);
+  overflow:auto;
+  box-sizing:border-box;
+}
+.faq-search-results.hidden{
+  display:none !important;
+}
+.faq-search-mode .faq-topic-grid{
+  display:none !important;
+}
+.faq-search-result{
+  width:100%;
+  text-align:left;
+  cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
+  color:inherit;
+}
+.faq-search-result small{
+  display:block;
+}
+body[data-theme="light"] .faq-search-results{
+  background:linear-gradient(180deg, rgba(248,252,255,.99), rgba(235,244,255,.99));
+  border:1px solid rgba(67,121,197,.18);
+  box-shadow:0 22px 48px rgba(40,84,145,.16);
+}
+body[data-theme="dark"] .faq-search-results{
+  background:linear-gradient(180deg, rgba(18,26,44,.98), rgba(12,18,31,.98));
+  border:1px solid rgba(201,219,255,.16);
+  box-shadow:0 22px 48px rgba(3,10,24,.30);
+}
+
+@media (max-width: 900px){
+  .footer-compact-inner,
+  .footer-compact-main,
+  .footer-compact-links{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .footer-compact-links{
+    justify-content:flex-start;
+  }
+}
