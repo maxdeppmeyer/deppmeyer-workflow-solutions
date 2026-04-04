@@ -161,7 +161,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <div class="contact-fields">
 <div class="form-row">
 <div data-required-field="" data-required-name="Anrede">
-<label for="gender">Anrede</label>
+<span class="required-marker" aria-hidden="true">*</span><label for="gender">Anrede</label>
 <select class="select" id="gender" name="gender" required="">
 <option value="">Bitte auswählen</option>
 <option value="male">Männlich</option>
@@ -170,13 +170,13 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 </select>
 </div>
 <div data-required-field="" data-required-name="Vorname">
-<label for="firstName">Vorname</label>
+<span class="required-marker" aria-hidden="true">*</span><label for="firstName">Vorname</label>
 <input class="input" id="firstName" name="firstName" required=""/>
 </div>
 </div>
 <div class="form-row">
 <div data-required-field="" data-required-name="Nachname">
-<label for="name">Nachname</label>
+<span class="required-marker" aria-hidden="true">*</span><label for="name">Nachname</label>
 <input class="input" id="name" name="name" required=""/>
 </div>
 <div>
@@ -186,7 +186,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 </div>
 <div class="form-row">
 <div data-required-field="" data-required-name="E-Mail">
-<label for="email">E-Mail</label>
+<span class="required-marker" aria-hidden="true">*</span><label for="email">E-Mail</label>
 <input aria-describedby="email-feedback" autocomplete="email" class="input" id="email" inputmode="email" name="email" required="" type="email"/>
 <div aria-live="polite" class="field-help" data-email-feedback="" id="email-feedback">Bitte eine gültige E-Mail-Adresse angeben.</div>
 </div>
@@ -211,7 +211,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <textarea id="message" name="message" placeholder="Beschreiben Sie hier kurz Ihr Anliegen, Ihre Frage, Ihre Anfrage oder Ihr Problem."></textarea>
 </div>
 <div class="consent-wrap" data-required-field="" data-required-name="Datenschutz-Einwilligung">
-<label class="consent-check" for="consent">
+<span class="required-marker" aria-hidden="true">*</span><label class="consent-check" for="consent">
 <input id="consent" name="consent" required="" type="checkbox"/>
 <span>Die <a href="datenschutz.html">Datenschutzhinweise</a> wurden zur Kenntnis genommen. Es wird eingewilligt, dass die angegebenen Daten zur Bearbeitung der Anfrage verarbeitet werden dürfen.</span>
 </label>
