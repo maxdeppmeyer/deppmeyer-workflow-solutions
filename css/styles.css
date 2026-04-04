@@ -3671,3 +3671,25 @@ body[data-theme="dark"] .footer-links a,body[data-theme="dark"] .footer-links sp
 
 /* FAQ more button centered */
 body[data-page="index.html"] .faq-more-compact{justify-content:center !important;margin-left:auto !important;margin-right:auto !important;}
+
+
+/* contact helper cards: closed state alignment only */
+body[data-page="kontakt.html"] .contact-help-grid{align-items:stretch;}
+body[data-page="kontakt.html"] .contact-help-card{
+  min-height:240px;
+}
+body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+  display:flex !important;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:12px;
+  min-height:100%;
+  padding:20px 20px 18px;
+}
+body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-text{
+  width:100%;
+}
+body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-action{
+  align-self:flex-start;
+  margin-top:auto;
+}
