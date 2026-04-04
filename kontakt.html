@@ -130,7 +130,6 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <div class="container contact-form-wrap">
 <div class="contact-layout contact-layout-single">
 <div class="contact-form reveal">
-
 <div class="contact-check-entry workflow-check-intro reveal">
 <div class="mini-label">Schnellcheck</div>
 <h3>Unsicher, welcher Ablauf zuerst sinnvoll ist?</h3>
@@ -161,7 +160,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <div class="contact-fields">
 <div class="form-row">
 <div data-required-field="" data-required-name="Anrede">
-<span class="required-marker" aria-hidden="true">*</span><label for="gender">Anrede</label>
+<span aria-hidden="true" class="required-marker">*</span><label for="gender">Anrede</label>
 <select class="select" id="gender" name="gender" required="">
 <option value="">Bitte auswählen</option>
 <option value="male">Männlich</option>
@@ -170,13 +169,13 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 </select>
 </div>
 <div data-required-field="" data-required-name="Vorname">
-<span class="required-marker" aria-hidden="true">*</span><label for="firstName">Vorname</label>
+<span aria-hidden="true" class="required-marker">*</span><label for="firstName">Vorname</label>
 <input class="input" id="firstName" name="firstName" required=""/>
 </div>
 </div>
 <div class="form-row">
 <div data-required-field="" data-required-name="Nachname">
-<span class="required-marker" aria-hidden="true">*</span><label for="name">Nachname</label>
+<span aria-hidden="true" class="required-marker">*</span><label for="name">Nachname</label>
 <input class="input" id="name" name="name" required=""/>
 </div>
 <div>
@@ -186,7 +185,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 </div>
 <div class="form-row">
 <div data-required-field="" data-required-name="E-Mail">
-<span class="required-marker" aria-hidden="true">*</span><label for="email">E-Mail</label>
+<span aria-hidden="true" class="required-marker">*</span><label for="email">E-Mail</label>
 <input aria-describedby="email-feedback" autocomplete="email" class="input" id="email" inputmode="email" name="email" required="" type="email"/>
 <div aria-live="polite" class="field-help" data-email-feedback="" id="email-feedback">Bitte eine gültige E-Mail-Adresse angeben.</div>
 </div>
@@ -211,7 +210,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <textarea id="message" name="message" placeholder="Beschreiben Sie hier kurz Ihr Anliegen, Ihre Frage, Ihre Anfrage oder Ihr Problem."></textarea>
 </div>
 <div class="consent-wrap" data-required-field="" data-required-name="Datenschutz-Einwilligung">
-<span class="required-marker" aria-hidden="true">*</span><label class="consent-check" for="consent">
+<span aria-hidden="true" class="required-marker">*</span><label class="consent-check" for="consent">
 <input id="consent" name="consent" required="" type="checkbox"/>
 <span>Die <a href="datenschutz.html">Datenschutzhinweise</a> wurden zur Kenntnis genommen. Es wird eingewilligt, dass die angegebenen Daten zur Bearbeitung der Anfrage verarbeitet werden dürfen.</span>
 </label>
@@ -305,41 +304,7 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 </div>
 </section>
 </main>
-<footer class="footer">
-<div class="container footer-grid">
-<div>
-<a aria-label="Startseite" class="footer-brand" href="index.html">
-<img alt="Deppmeyer Logo" class="brand-icon" src="assets/logo-icon.png"/>
-<span class="brand-text">
-<span class="brand-name">Deppmeyer</span>
-<span class="brand-sub">Workflow Solutions</span>
-</span>
-</a>
-<p class="footer-copy">Strukturierte Workflow-Lösungen für nachvollziehbare Abläufe im Alltag.</p>
-</div>
-<div>
-<h3>Seiten</h3>
-<div class="footer-links small">
-<a href="index.html">Start</a>
-<a href="leistungen.html">Leistungen</a>
-<a href="beispiele.html">Beispiele</a>
-<a href="einsatzbereiche.html">Einsatzbereiche</a>
-<a href="ueber-mich.html">Über mich</a>
-<a href="kontakt.html">Kontakt</a>
-</div>
-</div>
-<div>
-<h3>Kontakt &amp; Rechtliches</h3>
-<div class="footer-links small">
-<a data-config="email" href="mailto:kontakt@beispiel.de">kontakt@beispiel.de</a>
-<a data-config="phone" href="tel:+490000000000">+49 000 0000000</a>
-<span data-config="location">Hannover &amp; Umland</span>
-<a href="impressum.html">Impressum</a>
-<a href="datenschutz.html">Datenschutz</a>
-</div>
-</div>
-</div>
-</footer>
+<footer class="footer footer-compact"><div class="container footer-compact-inner"><div class="footer-compact-main"><a aria-label="Startseite" class="footer-brand" href="index.html"><img alt="Deppmeyer Logo" class="brand-icon" decoding="async" src="assets/logo-icon.png"/><span class="brand-text"><span class="brand-name">Deppmeyer</span><span class="brand-sub">Workflow Solutions</span></span></a><p class="footer-copy">Strukturierte Workflow-Lösungen für nachvollziehbare Abläufe im Alltag.</p></div><div class="footer-links small footer-compact-links"><a data-config="email" href="mailto:kontakt@beispiel.de">kontakt@beispiel.de</a><a data-config="phone" href="tel:+490000000000">+49 000 0000000</a><span data-config="location">Hannover &amp; Umland</span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></div></footer>
 <script src="site-config.js"></script>
 <script src="js/script.js"></script>
 </body>
