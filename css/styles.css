@@ -3591,3 +3591,57 @@ body[data-page="einsatzbereiche.html"] .einsatz-card .accordion-summary{
 body[data-page="einsatzbereiche.html"] .einsatz-card .accordion-action{
   margin-bottom: 4px;
 }
+
+
+/* targeted cleanup: hide skip link again, center FAQ search, restore required markers, adjust einsatz button */
+.skip-link,
+.skip-link:focus,
+.skip-link:focus-visible{
+  display:none !important;
+}
+
+body[data-page="index.html"] .faq-explorer .faq-search{
+  width:100%;
+  max-width:620px;
+  margin:0 auto !important;
+  display:flex;
+  justify-content:center !important;
+}
+body[data-page="index.html"] .faq-explorer .faq-search-input{
+  display:block;
+  width:100%;
+  max-width:620px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+body[data-page="kontakt.html"] [data-required-field]{
+  position:relative;
+}
+body[data-page="kontakt.html"] [data-required-field] > .required-marker{
+  position:absolute;
+  top:8px;
+  right:10px;
+  color:#ff5a6f;
+  font-size:1rem;
+  font-weight:800;
+  line-height:1;
+  pointer-events:none;
+  z-index:2;
+}
+body[data-page="kontakt.html"] .consent-wrap[data-required-field] > .required-marker{
+  top:14px;
+  right:16px;
+}
+body[data-page="kontakt.html"] [data-required-field].is-filled > .required-marker{
+  display:none;
+}
+
+body[data-page="einsatzbereiche.html"] .einsatz-card > .accordion-summary{
+  padding-bottom:28px !important;
+}
+body[data-page="einsatzbereiche.html"] .einsatz-card > .accordion-summary .accordion-action{
+  margin-top:auto !important;
+  margin-bottom:8px !important;
+  align-self:flex-start;
+}
