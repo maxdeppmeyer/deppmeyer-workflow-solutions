@@ -132,7 +132,7 @@
         top = Math.max(window.scrollY + targetCenter - headerOffset - (visibleHeight / 2), 0);
       }
 
-      window.scrollTo({ top, behavior: instant || prefersReducedMotion ? 'auto' : 'smooth' });
+      window.scrollTo({ top, behavior: instant || prefersReducedMotion || window.matchMedia('(max-width: 760px)').matches ? 'auto' : 'smooth' });
     };
 
     if (delay > 0) window.setTimeout(run, delay);
@@ -1330,7 +1330,6 @@
     };
 
     const setAssessmentPrefill = ({ title = '', summary = '', topic = '' } = {}) => {
-      const previousAutofill = String(contactForm.dataset.assessmentAutofillText || '');
       const nextTitle = String(title || '').trim();
       const nextSummary = String(summary || '').trim();
       const nextTopic = String(topic || '').trim();
@@ -1341,17 +1340,7 @@
 
       if (nextTopic) applyTopicChoice(nextTopic);
 
-      const nextAutofill = getAssessmentMessage();
-      if (messageField) {
-        const messageTrimmed = messageField.value.trim();
-        const canReplaceAutofill = Boolean(previousAutofill) && messageTrimmed === previousAutofill.trim();
-        if (!messageTrimmed || canReplaceAutofill) {
-          messageField.value = nextAutofill;
-          contactForm.dataset.assessmentAutofillText = nextAutofill;
-        } else if (!nextAutofill) {
-          contactForm.dataset.assessmentAutofillText = '';
-        }
-      }
+      contactForm.dataset.assessmentAutofillText = '';
 
       syncAssessmentPrefillState();
     };
