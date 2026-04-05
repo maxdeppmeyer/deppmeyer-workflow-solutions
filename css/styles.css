@@ -4087,13 +4087,13 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
 /* current request: make all three Kontakt detail teaser cards fully symmetrical on desktop */
 @media (min-width: 981px){
   body[data-page="kontakt.html"] .contact-help-grid{
-    align-items:stretch !important;
+    align-items:start !important;
   }
 
   body[data-page="kontakt.html"] .contact-help-card{
     display:flex !important;
     flex-direction:column !important;
-    align-self:stretch !important;
+    align-self:start !important;
   }
 
   body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
