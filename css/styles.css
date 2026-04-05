@@ -4083,3 +4083,52 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
     text-align:center !important;
   }
 }
+
+/* current request: make all three Kontakt detail teaser cards fully symmetrical on desktop */
+@media (min-width: 981px){
+  body[data-page="kontakt.html"] .contact-help-grid{
+    align-items:stretch !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card{
+    display:flex !important;
+    flex-direction:column !important;
+    align-self:stretch !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+    display:grid !important;
+    grid-template-columns:minmax(0, 1fr) !important;
+    grid-template-rows:auto minmax(0, 1fr) auto !important;
+    align-items:start !important;
+    align-content:stretch !important;
+    gap:12px !important;
+    min-height:252px !important;
+    height:252px !important;
+    padding:20px 22px 22px !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .mini-label,
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-text,
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-action{
+    grid-column:1 !important;
+    justify-self:start !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-text{
+    width:100% !important;
+    align-self:start !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-action{
+    margin:0 !important;
+    align-self:end !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card[open] > .accordion-summary{
+    min-height:0 !important;
+    height:auto !important;
+    grid-template-rows:auto auto auto !important;
+    padding-bottom:18px !important;
+  }
+}
