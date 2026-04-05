@@ -3565,9 +3565,9 @@ body[data-page="kontakt.html"] .contact-help-card .detail-list li{
     flex-direction:column;
     align-items:flex-start;
     gap:12px;
-    min-height:206px !important;
-    height:206px !important;
-    padding:18px 20px !important;
+    min-height:244px !important;
+    height:244px !important;
+    padding:18px 20px 22px !important;
   }
   body[data-page="kontakt.html"] .contact-help-card[open] > .accordion-summary{
     height:auto !important;
