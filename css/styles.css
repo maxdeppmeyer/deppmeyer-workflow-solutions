@@ -3936,3 +3936,150 @@ body[data-page="index.html"] .faq-explorer-intro{
     margin-right:auto !important;
   }
 }
+
+
+/* current request: targeted desktop fix + tablet/mobile adaptation */
+body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+}
+
+@media (min-width: 981px){
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+    min-height:252px !important;
+    height:252px !important;
+    padding:20px 22px 22px !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-action{
+    margin-top:auto !important;
+    margin-bottom:0 !important;
+    align-self:flex-start !important;
+  }
+}
+
+@media (max-width: 1024px){
+  .reveal,
+  .reveal.visible{
+    opacity:1 !important;
+    transform:none !important;
+    transition:none !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-grid{
+    gap:16px !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+    min-height:auto !important;
+    height:auto !important;
+    padding:20px !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card[open] > .accordion-summary{
+    padding-bottom:16px !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-check-entry.workflow-check-intro,
+  body[data-page="kontakt.html"] .contact-check-shell,
+  body[data-page="index.html"] .workflow-check-intro,
+  body[data-page="index.html"] .workflow-check-shell{
+    max-width:100% !important;
+  }
+}
+
+@media (max-width: 760px){
+  html{
+    scroll-behavior:auto !important;
+  }
+
+  *,
+  *::before,
+  *::after{
+    animation:none !important;
+    transition:none !important;
+  }
+
+  .reveal,
+  .reveal.visible{
+    opacity:1 !important;
+    transform:none !important;
+  }
+
+  body[data-page="index.html"] .hero,
+  body[data-page="einsatzbereiche.html"] .einsatz-hero,
+  body[data-page="kontakt.html"] .kontakt-hero{
+    padding-top:46px !important;
+    padding-bottom:14px !important;
+  }
+
+  body[data-page="index.html"] .hero h1,
+  body[data-page="einsatzbereiche.html"] .einsatz-copy h1,
+  body[data-page="kontakt.html"] .kontakt-hero h1{
+    text-align:center !important;
+  }
+
+  body[data-page="index.html"] .hero .lead,
+  body[data-page="einsatzbereiche.html"] .einsatz-copy,
+  body[data-page="einsatzbereiche.html"] .einsatz-copy .lead,
+  body[data-page="einsatzbereiche.html"] .einsatz-callout,
+  body[data-page="kontakt.html"] .contact-intro,
+  body[data-page="kontakt.html"] .contact-form,
+  body[data-page="kontakt.html"] .contact-check-entry.workflow-check-intro,
+  body[data-page="kontakt.html"] .contact-check-shell,
+  body[data-page="kontakt.html"] .contact-prefill-note,
+  body[data-page="kontakt.html"] .summary-list{
+    text-align:center !important;
+    justify-items:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-check-entry.workflow-check-intro,
+  body[data-page="kontakt.html"] .contact-check-shell,
+  body[data-page="kontakt.html"] .contact-prefill-note,
+  body[data-page="kontakt.html"] .contact-help-card .accordion-content,
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary,
+  body[data-page="index.html"] .workflow-check-intro,
+  body[data-page="index.html"] .workflow-check-shell{
+    padding-left:18px !important;
+    padding-right:18px !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+    align-items:center !important;
+    text-align:center !important;
+    gap:10px !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-text,
+  body[data-page="kontakt.html"] .contact-help-card .accordion-preview,
+  body[data-page="kontakt.html"] .contact-help-card .detail-list{
+    text-align:center !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-action{
+    align-self:center !important;
+    margin-top:6px !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-prefill-note-row,
+  body[data-page="kontakt.html"] .contact-response,
+  body[data-page="kontakt.html"] .btn-row,
+  body[data-page="index.html"] .workflow-check-intro .btn-row,
+  body[data-page="index.html"] .workflow-check-actions .btn-row,
+  body[data-page="kontakt.html"] .workflow-check-actions .btn-row,
+  body[data-page="einsatzbereiche.html"] .einsatz-callout .btn-row{
+    justify-content:center !important;
+  }
+
+  body[data-page="kontakt.html"] .contact-prefill-note-row,
+  body[data-page="kontakt.html"] .contact-response{
+    align-items:center !important;
+  }
+
+  body[data-page="kontakt.html"] .summary-list div{
+    text-align:center !important;
+  }
+}
