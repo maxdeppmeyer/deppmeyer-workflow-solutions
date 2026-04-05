@@ -165,7 +165,7 @@
     const explorerHead = explorer.querySelector('.faq-explorer-head');
     let activeTopic = chips[0]?.getAttribute('data-faq-topic') || '';
 
-    const normalize = (value) => String(value || '')
+    const normalizeSearch = (value) => String(value || '')
       .toLowerCase()
       .normalize('NFD')
       .replace(/[̀-ͯ]/g, '')
@@ -174,79 +174,125 @@
       .trim();
 
     const levenshtein = (a, b) => {
-      if (!a) return b.length;
-      if (!b) return a.length;
-      const dp = Array.from({ length: a.length + 1 }, (_, i) => [i]);
-      for (let j = 1; j <= b.length; j += 1) dp[0][j] = j;
-      for (let i = 1; i <= a.length; i += 1) {
-        for (let j = 1; j <= b.length; j += 1) {
-          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      const aa = normalizeSearch(a);
+      const bb = normalizeSearch(b);
+      if (!aa) return bb.length;
+      if (!bb) return aa.length;
+      const dp = Array.from({ length: aa.length + 1 }, (_, i) => [i]);
+      for (let j = 1; j <= bb.length; j += 1) dp[0][j] = j;
+      for (let i = 1; i <= aa.length; i += 1) {
+        for (let j = 1; j <= bb.length; j += 1) {
+          const cost = aa[i - 1] === bb[j - 1] ? 0 : 1;
           dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
         }
       }
-      return dp[a.length][b.length];
+      return dp[aa.length][bb.length];
     };
 
-    const synonyms = {
-      email: ['email', 'e mail', 'mail', 'postfach', 'posteingang', 'kundenantwort', 'anfrage'],
-      termine: ['termin', 'termine', 'kalender', 'rueckmeldung', 'rueckmeldungen', 'buchung'],
-      dokumente: ['dokument', 'dokumente', 'datei', 'dateien', 'angebot', 'angebote', 'ablage'],
-      technik: ['technik', 'tools', 'integration', 'integrationen', 'software'],
-      zusammenarbeit: ['zusammenarbeit', 'ablauf', 'analyse', 'start', 'projekt'],
-      kosten: ['kosten', 'nutzen', 'preis', 'aufwand'],
-      betreuung: ['betreuung', 'betrieb', 'pflege', 'anpassung'],
-      daten: ['ki', 'daten', 'datenschutz']
+    const synonymGroups = {
+      email: ['email','e mail','mail','postfach','postfaecher','posteingang','inbox','kundenantwort','autoantwort','erstantwort'],
+      termine: ['termin','termine','kalender','buchung','terminbuchung','erinnerung','rueckruf'],
+      dokumente: ['dokument','dokumente','datei','dateien','angebot','angebote','rechnung','ablage','anhang'],
+      technik: ['technik','tools','tool','integration','integrationen','schnittstelle','schnittstellen'],
+      kosten: ['kosten','nutzen','preis','preise','wirtschaftlich','wirtschaftlichkeit'],
+      workflow: ['workflow','automatisierung','prozess','prozesse','ablauf','ablaeufe']
     };
 
-    const feedback = document.createElement('div');
-    feedback.className = 'faq-search-feedback';
-    feedback.hidden = true;
-    if (topicGrid) topicGrid.before(feedback);
+    const topicLabelMap = chips.reduce((map, chip) => {
+      const key = chip.getAttribute('data-faq-topic') || '';
+      if (key) map[key] = chip.textContent.trim();
+      return map;
+    }, {});
 
-    const itemIndex = items.map((item) => {
-      const question = item.querySelector('.faq-question')?.childNodes?.[0]?.textContent?.trim() || item.querySelector('.faq-question')?.textContent?.replace(/[+–]/g, '').trim() || '';
-      const answer = item.querySelector('.faq-answer-inner')?.textContent?.trim() || '';
-      const topic = item.getAttribute('data-faq-topic-item') || '';
-      const raw = `${topic} ${question} ${answer} ${item.getAttribute('data-faq-search-text') || ''}`;
-      const normalized = normalize(raw);
+    let resultsPanel = explorer.querySelector('[data-faq-search-results]');
+    if (!resultsPanel && topicGrid) {
+      resultsPanel = document.createElement('div');
+      resultsPanel.className = 'faq-search-results search-results hidden';
+      resultsPanel.setAttribute('data-faq-search-results', '');
+      topicGrid.parentNode.insertBefore(resultsPanel, topicGrid);
+    }
+
+    const buildKeywords = (entry) => {
+      const raw = `${entry.question || ''} ${entry.answer || ''} ${entry.topicLabel || ''} ${entry.searchText || ''}`;
+      const normalized = normalizeSearch(raw);
       const tokens = [...new Set(normalized.split(/\s+/).filter(Boolean))];
-      Object.entries(synonyms).forEach(([key, list]) => {
-        if (topic.includes(key) || list.some((term) => normalized.includes(normalize(term)))) tokens.push(...list.map(normalize));
+      Object.values(synonymGroups).forEach((group) => {
+        if (group.some((term) => normalized.includes(normalizeSearch(term)))) tokens.push(...group.map(normalizeSearch));
       });
-      return { item, topic, question, answer, normalized, tokens: [...new Set(tokens)] };
+      return [...new Set(tokens)].filter(Boolean);
+    };
+
+    const faqIndex = items.map((item, index) => {
+      const topic = item.getAttribute('data-faq-topic-item') || '';
+      const questionButton = item.querySelector('.faq-question');
+      const questionText = questionButton ? questionButton.childNodes[0]?.textContent?.trim() || questionButton.textContent.replace(/[+–-]\s*$/, '').trim() : '';
+      const answerText = item.querySelector('.faq-answer-inner')?.textContent?.trim() || '';
+      const searchText = item.getAttribute('data-faq-search-text') || `${questionText} ${answerText}`;
+      const entry = {
+        index,
+        item,
+        topic,
+        topicLabel: topicLabelMap[topic] || 'FAQ',
+        question: questionText,
+        answer: answerText,
+        searchText,
+      };
+      return {
+        ...entry,
+        normalized: normalizeSearch(`${entry.question} ${entry.answer} ${entry.searchText} ${entry.topicLabel}`),
+        keywordsList: buildKeywords(entry)
+      };
     });
 
-    const setFeedback = (html = '') => {
-      feedback.innerHTML = html;
-      feedback.hidden = !html;
+    const setActiveTopic = (topic) => {
+      activeTopic = topic || chips[0]?.getAttribute('data-faq-topic') || '';
+      chips.forEach((entry) => {
+        const isActive = (entry.getAttribute('data-faq-topic') || '') === activeTopic;
+        entry.classList.toggle('is-active', isActive);
+        entry.setAttribute('aria-selected', String(isActive));
+      });
+    };
+
+    const closeSearchResults = () => {
+      resultsPanel?.classList.add('hidden');
+      if (resultsPanel) resultsPanel.innerHTML = '';
+      explorer.classList.remove('faq-search-mode');
+      if (topicGrid) topicGrid.hidden = false;
     };
 
     const apply = () => {
-      const rawQuery = (input?.value || '').trim();
-      const query = normalize(rawQuery);
       let visibleCount = 0;
-      setFeedback('');
+      items.forEach((item) => {
+        const topic = item.getAttribute('data-faq-topic-item') || '';
+        const visible = !activeTopic || activeTopic === 'all' || topic === activeTopic;
+        item.classList.toggle('is-hidden', !visible);
+        if (visible) visibleCount += 1;
+      });
+      explorer.setAttribute('data-visible-count', String(visibleCount));
+      return items.find((item) => !item.classList.contains('is-hidden')) || null;
+    };
 
+    const renderSearchResults = (queryRaw) => {
+      if (!resultsPanel) return false;
+      const query = normalizeSearch(queryRaw);
       if (!query) {
-        items.forEach((item) => {
-          const topic = item.getAttribute('data-faq-topic-item') || '';
-          const visible = !activeTopic || activeTopic === 'all' || topic === activeTopic;
-          item.classList.toggle('is-hidden', !visible);
-          if (visible) visibleCount += 1;
-        });
-        explorer.setAttribute('data-visible-count', String(visibleCount));
-        return items.find((item) => !item.classList.contains('is-hidden')) || null;
+        closeSearchResults();
+        apply();
+        return false;
       }
 
-      const directMatches = itemIndex.filter((entry) => entry.normalized.includes(query));
-      let visibleEntries = directMatches;
+      const directMatches = faqIndex
+        .map((entry) => ({ entry, score: entry.normalized.includes(query) ? 100 : 0 }))
+        .filter((entry) => entry.score > 0)
+        .slice(0, 8);
 
-      if (!directMatches.length) {
-        const scored = itemIndex.map((entry) => {
+      let matches = directMatches;
+      if (!matches.length) {
+        matches = faqIndex.map((entry) => {
           let score = 0;
-          entry.tokens.forEach((token) => {
+          entry.keywordsList.forEach((token) => {
             if (token === query) score = Math.max(score, 95);
-            else if (token.startsWith(query) || query.startsWith(token)) score = Math.max(score, 82);
+            else if (token.startsWith(query) || query.startsWith(token)) score = Math.max(score, 80);
             else if (token.includes(query) || query.includes(token)) score = Math.max(score, 74);
             else {
               const dist = levenshtein(query, token);
@@ -254,24 +300,59 @@
               else if (dist === 2 && query.length > 4) score = Math.max(score, 62);
             }
           });
-          return { ...entry, score };
-        }).filter((entry) => entry.score >= 62).sort((a, b) => b.score - a.score).slice(0, 6);
-        visibleEntries = scored;
-        if (scored.length) {
-          setFeedback(`<strong>Keine direkten Treffer.</strong> Zu „${rawQuery.replace(/</g, '&lt;')}“ wurden keine exakten FAQ-Treffer gefunden. Vielleicht passt eine dieser Fragen:`);
-        } else {
-          setFeedback(`<strong>Keine direkten Treffer.</strong> Zu „${rawQuery.replace(/</g, '&lt;')}“ wurde in den FAQ nichts Passendes gefunden.`);
-        }
+          Object.entries(synonymGroups).forEach(([key, group]) => {
+            const matchesGroup = group.some((term) => {
+              const normalizedTerm = normalizeSearch(term);
+              const dist = levenshtein(query, normalizedTerm);
+              return normalizedTerm.includes(query) || query.includes(normalizedTerm) || dist <= (query.length > 5 ? 2 : 1);
+            });
+            if (matchesGroup && entry.keywordsList.includes(normalizeSearch(key))) score = Math.max(score, 68);
+          });
+          return { entry, score };
+        }).filter((entry) => entry.score >= 60).sort((a, b) => b.score - a.score).slice(0, 6);
       }
 
-      const visibleSet = new Set(visibleEntries.map((entry) => entry.item));
-      items.forEach((item) => {
-        const visible = visibleSet.has(item);
-        item.classList.toggle('is-hidden', !visible);
-        if (visible) visibleCount += 1;
+      resultsPanel.classList.remove('hidden');
+      explorer.classList.add('faq-search-mode');
+      if (topicGrid) topicGrid.hidden = true;
+
+      if (!matches.length) {
+        resultsPanel.innerHTML = '<div class="search-result"><h3>Keine direkten Treffer</h3><p>Zu diesem Begriff wurden keine passenden FAQ gefunden. Versuche Begriffe wie E-Mail, Termine, Dokumente, Angebote oder Technik.</p></div>';
+        return true;
+      }
+
+      const note = directMatches.length ? '' : `
+        <div class="search-result suggestion-note">
+          <h3>Keine direkten Treffer</h3>
+          <p>Zu „${queryRaw.replace(/</g, '&lt;')}“ wurden keine exakten FAQ gefunden. Vielleicht ist eine dieser Fragen gemeint:</p>
+        </div>
+      `;
+
+      resultsPanel.innerHTML = `${note}${matches.map(({ entry }) => `
+        <button class="search-result faq-search-result" data-faq-result-index="${entry.index}" type="button">
+          <h3>${entry.question}</h3>
+          <p>${entry.answer}</p>
+          <small>${entry.topicLabel}</small>
+        </button>
+      `).join('')}`;
+      return true;
+    };
+
+    const openFaqItem = (item) => {
+      if (!item) return;
+      const button = item.querySelector('.faq-question');
+      if (!button) return;
+      if (!item.classList.contains('open')) {
+        item.classList.add('open');
+        button.setAttribute('aria-expanded', 'true');
+        const sign = button.querySelector('span');
+        if (sign) sign.textContent = '–';
+      }
+      scrollTargetIntoView(item, {
+        block: 'start',
+        padding: isMobileViewport() ? 20 : 28,
+        delay: 14
       });
-      explorer.setAttribute('data-visible-count', String(visibleCount));
-      return visibleEntries[0]?.item || null;
     };
 
     const centerTopicPicker = () => {
@@ -303,30 +384,47 @@
     };
 
     chips.forEach((chip) => chip.addEventListener('click', () => {
-      activeTopic = chip.getAttribute('data-faq-topic') || '';
-      chips.forEach((entry) => {
-        const isActive = entry === chip;
-        entry.classList.toggle('is-active', isActive);
-        entry.setAttribute('aria-selected', String(isActive));
-      });
-      centerVisibleFaqs();
+      setActiveTopic(chip.getAttribute('data-faq-topic') || '');
+      if ((input?.value || '').trim()) {
+        renderSearchResults(input.value);
+      } else {
+        centerVisibleFaqs();
+      }
     }));
 
     input?.addEventListener('input', () => {
-      apply();
+      const hasQuery = renderSearchResults(input.value);
+      if (!hasQuery) apply();
     });
+
+    resultsPanel?.addEventListener('click', (event) => {
+      const trigger = event.target.closest('[data-faq-result-index]');
+      if (!trigger) return;
+      const entry = faqIndex[Number(trigger.getAttribute('data-faq-result-index'))];
+      if (!entry) return;
+      if (input) input.value = '';
+      closeSearchResults();
+      setActiveTopic(entry.topic || 'all');
+      apply();
+      openFaqItem(entry.item);
+    });
+
     toggle.addEventListener('click', () => {
       const willOpen = explorer.hasAttribute('hidden');
       if (willOpen) {
         explorer.removeAttribute('hidden');
         toggle.textContent = 'Weniger Fragen';
-        apply();
+        if ((input?.value || '').trim()) renderSearchResults(input.value);
+        else apply();
         centerTopicPicker();
       } else {
         explorer.setAttribute('hidden', '');
         toggle.textContent = 'Weitere Fragen';
+        closeSearchResults();
       }
     });
+
+    setActiveTopic(activeTopic);
     apply();
   };
   initFaqExplorer();
