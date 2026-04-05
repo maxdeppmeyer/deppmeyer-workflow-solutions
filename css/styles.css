@@ -3565,9 +3565,9 @@ body[data-page="kontakt.html"] .contact-help-card .detail-list li{
     flex-direction:column;
     align-items:flex-start;
     gap:12px;
-    min-height:244px !important;
-    height:244px !important;
-    padding:18px 20px 22px !important;
+    min-height:206px !important;
+    height:206px !important;
+    padding:18px 20px !important;
   }
   body[data-page="kontakt.html"] .contact-help-card[open] > .accordion-summary{
     height:auto !important;
@@ -3673,93 +3673,38 @@ body[data-theme="dark"] .footer-links a,body[data-theme="dark"] .footer-links sp
 body[data-page="index.html"] .faq-more-compact{justify-content:center !important;margin-left:auto !important;margin-right:auto !important;}
 
 
-/* targeted final polish: FAQ search, centered chips, horizontal footer */
-body[data-page="index.html"] .faq-topic-bar{
-  justify-content:center !important;
-}
-body[data-page="index.html"] .faq-search,
-body[data-page="index.html"] .faq-explorer .faq-search{
-  justify-content:center !important;
-  margin-inline:auto !important;
-}
-body[data-page="index.html"] .faq-search-input{
-  margin-inline:auto !important;
-}
-body[data-page="index.html"] .faq-search-feedback{
-  max-width:760px;
-  width:100%;
-  margin:0 auto 4px;
-  padding:14px 18px;
-  border-radius:20px;
-  border:1px solid rgba(98,148,221,.18);
-  background:linear-gradient(180deg, rgba(255,255,255,.76), rgba(240,247,255,.64));
-  color:var(--muted);
-  line-height:1.6;
-}
-body[data-page="index.html"] .faq-search-feedback strong{
-  display:block;
-  margin-bottom:4px;
-  color:var(--heading);
-}
-body[data-theme="dark"][data-page="index.html"] .faq-search-feedback{
-  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-  border-color:rgba(148,185,255,.14);
-  color:rgba(226,236,255,.84);
-}
-body[data-theme="dark"][data-page="index.html"] .faq-search-feedback strong{
-  color:#fff;
-}
-
-.footer{padding:28px 0 32px;}
-.footer-grid{grid-template-columns:1fr !important;justify-items:stretch;align-items:center;}
-.footer-box{
-  width:min(100%, 1120px);
-  margin:0 auto;
-  display:grid;
-  grid-template-columns:auto minmax(240px,1fr) auto auto;
-  align-items:center;
-  gap:18px 28px;
-  justify-items:start;
-  text-align:left;
-  padding:22px 28px;
-  border-radius:28px;
-  background:linear-gradient(180deg, rgba(255,255,255,.56), rgba(238,246,255,.40));
-  border:1px solid rgba(94,137,201,.16);
-  box-shadow:0 16px 36px rgba(17,38,74,.08);
-}
-.footer-brand{margin:0;justify-content:flex-start;}
-.footer-copy{margin:0;max-width:32ch;}
-.footer-links--stack{display:grid;gap:6px;justify-items:start;}
-.footer-links--legal{display:flex;flex-wrap:wrap;gap:12px 18px;justify-content:flex-end;align-items:center;justify-self:end;}
-body[data-theme="dark"] .footer-box{
-  background:linear-gradient(180deg, rgba(19,33,56,.88), rgba(13,24,42,.82));
-  border-color:rgba(142,186,255,.16);
-  box-shadow:0 18px 42px rgba(2,8,18,.34);
-}
-body[data-theme="dark"] .footer-links a,
-body[data-theme="dark"] .footer-links span,
-body[data-theme="dark"] .footer-copy{color:rgba(229,238,255,.86);}
-@media (max-width: 980px){
-  .footer-box{
-    grid-template-columns:1fr 1fr;
-    justify-items:start;
-    text-align:left;
+/* targeted contact help cards fix: equal closed height, visible buttons, no sibling stretching */
+@media (min-width: 981px){
+  body[data-page="kontakt.html"] .contact-help-grid{
+    align-items:start !important;
   }
-  .footer-brand{grid-column:1 / -1;}
-  .footer-copy{grid-column:1 / -1;max-width:48ch;}
-  .footer-links--legal{justify-self:start;justify-content:flex-start;}
-}
-@media (max-width: 640px){
-  .footer{padding:24px 0 28px;}
-  .footer-box{
-    grid-template-columns:1fr;
-    gap:14px;
-    justify-items:center;
-    text-align:center;
-    padding:22px 18px;
+  body[data-page="kontakt.html"] .contact-help-card{
+    align-self:start !important;
+    height:auto !important;
+    min-height:0 !important;
   }
-  .footer-brand{justify-content:center;}
-  .footer-copy{max-width:30ch;}
-  .footer-links--stack,
-  .footer-links--legal{justify-items:center;justify-content:center;justify-self:center;}
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:12px !important;
+    min-height:276px !important;
+    height:276px !important;
+    padding:22px 22px 22px !important;
+  }
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-text{
+    width:100% !important;
+  }
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-action{
+    margin-top:auto !important;
+    align-self:flex-start !important;
+  }
+  body[data-page="kontakt.html"] .contact-help-card[open]{
+    align-self:start !important;
+  }
+  body[data-page="kontakt.html"] .contact-help-card[open] > .accordion-summary{
+    height:auto !important;
+    min-height:0 !important;
+    padding-bottom:18px !important;
+  }
 }
