@@ -23,15 +23,15 @@ body[data-page="kontakt.html"] .contact-signal-node.n2{left:42%}
 body[data-page="kontakt.html"] .contact-signal-node.n3{left:66%}
 body[data-page="kontakt.html"] .contact-signal-node.n4{left:88%}
 @keyframes contactSignalMove{0%{left:12%}18%{left:18%}42%{left:42%}68%{left:66%}100%{left:88%}}
-body[data-page="kontakt.html"] .contact-help-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1120px;margin:0 auto 22px}
-body[data-page="kontakt.html"] .contact-help-card{display:flex;flex-direction:column;height:100%;border-radius:28px;background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,251,255,.92));border:1px solid rgba(169,196,232,.42);box-shadow:0 18px 36px rgba(24,56,102,.08)}
-body[data-page="kontakt.html"] .contact-help-card .accordion-summary{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:226px;padding:18px 20px}
+body[data-page="kontakt.html"] .contact-help-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1120px;margin:0 auto 22px;align-items:start}
+body[data-page="kontakt.html"] .contact-help-card{display:block;align-self:start;min-height:0;border-radius:28px;background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,251,255,.92));border:1px solid rgba(169,196,232,.42);box-shadow:0 18px 36px rgba(24,56,102,.08)}
+body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:226px;height:226px;padding:18px 20px;box-sizing:border-box}
 body[data-page="kontakt.html"] .contact-help-card .accordion-text{width:100%}
 body[data-page="kontakt.html"] .contact-help-card .accordion-text h3{margin:0 0 8px;font-size:1.08rem;line-height:1.24}
 body[data-page="kontakt.html"] .contact-help-card .accordion-preview{margin:0;max-width:none;line-height:1.65}
-body[data-page="kontakt.html"] .contact-help-card .accordion-action{align-self:flex-start;margin-top:auto}
+body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-action{align-self:flex-start;margin-top:auto}
 
-body[data-page="kontakt.html"] .contact-help-card[open] .accordion-summary{min-height:0}
+body[data-page="kontakt.html"] .contact-help-card[open] > .accordion-summary{min-height:0;height:auto;padding-bottom:14px}
 body[data-page="kontakt.html"] .contact-help-card .accordion-content{padding:0 20px 20px;color:#4b6a91}
 body[data-page="kontakt.html"] .contact-help-card .detail-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}
 body[data-page="kontakt.html"] .contact-help-card .detail-list li{position:relative;padding-left:16px;line-height:1.62}
