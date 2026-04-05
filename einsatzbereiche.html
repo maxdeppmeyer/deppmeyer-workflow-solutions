@@ -49,9 +49,89 @@ body[data-page="einsatzbereiche.html"] .einsatz-pulse.r3{animation-delay:2.8s}
 @keyframes einsatzPulse{0%,100%{transform:scale(.92);opacity:.62}45%{transform:scale(1.08);opacity:1}}
 @keyframes einsatzRing{0%{transform:scale(.85);opacity:.12}45%{transform:scale(1.08);opacity:.34}100%{transform:scale(1.28);opacity:0}}
 
+
+body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{gap:24px}
+body[data-page="einsatzbereiche.html"] .einsatz-side-icons{flex:0 0 190px;display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:12px;justify-items:center;align-items:center;pointer-events:none}
+body[data-page="einsatzbereiche.html"] .einsatz-side-icons.right{transform:scaleX(-1)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card{position:relative;width:78px;height:56px;border-radius:18px;border:1px solid rgba(166,198,234,.34);background:linear-gradient(180deg, rgba(255,255,255,.26), rgba(240,247,255,.10));box-shadow:0 16px 32px rgba(24,56,102,.08),0 0 18px rgba(37,207,255,.08)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card::before,body[data-page="einsatzbereiche.html"] .einsatz-icon-card::after{content:"";position:absolute}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.mail::before{left:19px;right:19px;top:17px;bottom:17px;border:1.7px solid rgba(47,124,255,.44);border-radius:9px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.mail::after{left:25px;right:25px;top:21px;height:12px;border-top:1.7px solid rgba(47,124,255,.44);transform:skewY(-18deg)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.docs::before{left:23px;top:14px;width:26px;height:30px;border:1.7px solid rgba(47,124,255,.44);border-radius:8px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.docs::after{left:29px;top:22px;width:14px;height:2px;background:rgba(47,124,255,.38);box-shadow:0 7px 0 rgba(47,124,255,.30),0 14px 0 rgba(47,124,255,.24)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.calendar::before{left:20px;right:20px;top:16px;bottom:16px;border:1.7px solid rgba(47,124,255,.44);border-radius:10px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.calendar::after{left:20px;right:20px;top:24px;height:2px;background:rgba(47,124,255,.38);box-shadow:-12px -10px 0 0 rgba(47,124,255,.28),12px -10px 0 0 rgba(47,124,255,.28)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.flow::before{left:18px;top:27px;width:42px;height:2px;background:linear-gradient(90deg, rgba(37,207,255,.58), rgba(47,124,255,.42));border-radius:999px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.flow::after{right:18px;top:22px;width:12px;height:12px;border-top:2px solid rgba(47,124,255,.42);border-right:2px solid rgba(47,124,255,.42);transform:rotate(45deg)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(1){animation:einsatzIconFloat 8s ease-in-out infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(2){animation:einsatzIconFloat 8s ease-in-out 1.2s infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(3){animation:einsatzIconFloat 8s ease-in-out 2.4s infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(4){animation:einsatzIconFloat 8s ease-in-out 3.6s infinite}
+@keyframes einsatzIconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
 body[data-page="einsatzbereiche.html"] .section-head.compact-center{text-align:center;max-width:880px;margin:0 auto 24px}
+
+body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{gap:24px}
+body[data-page="einsatzbereiche.html"] .einsatz-side-icons{flex:0 0 190px;display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:12px;justify-items:center;align-items:center;pointer-events:none}
+body[data-page="einsatzbereiche.html"] .einsatz-side-icons.right{transform:scaleX(-1)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card{position:relative;width:78px;height:56px;border-radius:18px;border:1px solid rgba(166,198,234,.34);background:linear-gradient(180deg, rgba(255,255,255,.26), rgba(240,247,255,.10));box-shadow:0 16px 32px rgba(24,56,102,.08),0 0 18px rgba(37,207,255,.08)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card::before,body[data-page="einsatzbereiche.html"] .einsatz-icon-card::after{content:"";position:absolute}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.mail::before{left:19px;right:19px;top:17px;bottom:17px;border:1.7px solid rgba(47,124,255,.44);border-radius:9px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.mail::after{left:25px;right:25px;top:21px;height:12px;border-top:1.7px solid rgba(47,124,255,.44);transform:skewY(-18deg)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.docs::before{left:23px;top:14px;width:26px;height:30px;border:1.7px solid rgba(47,124,255,.44);border-radius:8px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.docs::after{left:29px;top:22px;width:14px;height:2px;background:rgba(47,124,255,.38);box-shadow:0 7px 0 rgba(47,124,255,.30),0 14px 0 rgba(47,124,255,.24)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.calendar::before{left:20px;right:20px;top:16px;bottom:16px;border:1.7px solid rgba(47,124,255,.44);border-radius:10px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.calendar::after{left:20px;right:20px;top:24px;height:2px;background:rgba(47,124,255,.38);box-shadow:-12px -10px 0 0 rgba(47,124,255,.28),12px -10px 0 0 rgba(47,124,255,.28)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.flow::before{left:18px;top:27px;width:42px;height:2px;background:linear-gradient(90deg, rgba(37,207,255,.58), rgba(47,124,255,.42));border-radius:999px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.flow::after{right:18px;top:22px;width:12px;height:12px;border-top:2px solid rgba(47,124,255,.42);border-right:2px solid rgba(47,124,255,.42);transform:rotate(45deg)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(1){animation:einsatzIconFloat 8s ease-in-out infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(2){animation:einsatzIconFloat 8s ease-in-out 1.2s infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(3){animation:einsatzIconFloat 8s ease-in-out 2.4s infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(4){animation:einsatzIconFloat 8s ease-in-out 3.6s infinite}
+@keyframes einsatzIconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
 body[data-page="einsatzbereiche.html"] .section-head.compact-center .eyebrow{margin-left:auto;margin-right:auto}
+
+body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{gap:24px}
+body[data-page="einsatzbereiche.html"] .einsatz-side-icons{flex:0 0 190px;display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:12px;justify-items:center;align-items:center;pointer-events:none}
+body[data-page="einsatzbereiche.html"] .einsatz-side-icons.right{transform:scaleX(-1)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card{position:relative;width:78px;height:56px;border-radius:18px;border:1px solid rgba(166,198,234,.34);background:linear-gradient(180deg, rgba(255,255,255,.26), rgba(240,247,255,.10));box-shadow:0 16px 32px rgba(24,56,102,.08),0 0 18px rgba(37,207,255,.08)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card::before,body[data-page="einsatzbereiche.html"] .einsatz-icon-card::after{content:"";position:absolute}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.mail::before{left:19px;right:19px;top:17px;bottom:17px;border:1.7px solid rgba(47,124,255,.44);border-radius:9px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.mail::after{left:25px;right:25px;top:21px;height:12px;border-top:1.7px solid rgba(47,124,255,.44);transform:skewY(-18deg)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.docs::before{left:23px;top:14px;width:26px;height:30px;border:1.7px solid rgba(47,124,255,.44);border-radius:8px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.docs::after{left:29px;top:22px;width:14px;height:2px;background:rgba(47,124,255,.38);box-shadow:0 7px 0 rgba(47,124,255,.30),0 14px 0 rgba(47,124,255,.24)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.calendar::before{left:20px;right:20px;top:16px;bottom:16px;border:1.7px solid rgba(47,124,255,.44);border-radius:10px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.calendar::after{left:20px;right:20px;top:24px;height:2px;background:rgba(47,124,255,.38);box-shadow:-12px -10px 0 0 rgba(47,124,255,.28),12px -10px 0 0 rgba(47,124,255,.28)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.flow::before{left:18px;top:27px;width:42px;height:2px;background:linear-gradient(90deg, rgba(37,207,255,.58), rgba(47,124,255,.42));border-radius:999px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.flow::after{right:18px;top:22px;width:12px;height:12px;border-top:2px solid rgba(47,124,255,.42);border-right:2px solid rgba(47,124,255,.42);transform:rotate(45deg)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(1){animation:einsatzIconFloat 8s ease-in-out infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(2){animation:einsatzIconFloat 8s ease-in-out 1.2s infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(3){animation:einsatzIconFloat 8s ease-in-out 2.4s infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(4){animation:einsatzIconFloat 8s ease-in-out 3.6s infinite}
+@keyframes einsatzIconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
 body[data-page="einsatzbereiche.html"] .section-head.compact-center p{margin:0 auto;max-width:62ch}
+
+body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{gap:24px}
+body[data-page="einsatzbereiche.html"] .einsatz-side-icons{flex:0 0 190px;display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:12px;justify-items:center;align-items:center;pointer-events:none}
+body[data-page="einsatzbereiche.html"] .einsatz-side-icons.right{transform:scaleX(-1)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card{position:relative;width:78px;height:56px;border-radius:18px;border:1px solid rgba(166,198,234,.34);background:linear-gradient(180deg, rgba(255,255,255,.26), rgba(240,247,255,.10));box-shadow:0 16px 32px rgba(24,56,102,.08),0 0 18px rgba(37,207,255,.08)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card::before,body[data-page="einsatzbereiche.html"] .einsatz-icon-card::after{content:"";position:absolute}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.mail::before{left:19px;right:19px;top:17px;bottom:17px;border:1.7px solid rgba(47,124,255,.44);border-radius:9px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.mail::after{left:25px;right:25px;top:21px;height:12px;border-top:1.7px solid rgba(47,124,255,.44);transform:skewY(-18deg)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.docs::before{left:23px;top:14px;width:26px;height:30px;border:1.7px solid rgba(47,124,255,.44);border-radius:8px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.docs::after{left:29px;top:22px;width:14px;height:2px;background:rgba(47,124,255,.38);box-shadow:0 7px 0 rgba(47,124,255,.30),0 14px 0 rgba(47,124,255,.24)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.calendar::before{left:20px;right:20px;top:16px;bottom:16px;border:1.7px solid rgba(47,124,255,.44);border-radius:10px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.calendar::after{left:20px;right:20px;top:24px;height:2px;background:rgba(47,124,255,.38);box-shadow:-12px -10px 0 0 rgba(47,124,255,.28),12px -10px 0 0 rgba(47,124,255,.28)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.flow::before{left:18px;top:27px;width:42px;height:2px;background:linear-gradient(90deg, rgba(37,207,255,.58), rgba(47,124,255,.42));border-radius:999px}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card.flow::after{right:18px;top:22px;width:12px;height:12px;border-top:2px solid rgba(47,124,255,.42);border-right:2px solid rgba(47,124,255,.42);transform:rotate(45deg)}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(1){animation:einsatzIconFloat 8s ease-in-out infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(2){animation:einsatzIconFloat 8s ease-in-out 1.2s infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(3){animation:einsatzIconFloat 8s ease-in-out 2.4s infinite}
+body[data-page="einsatzbereiche.html"] .einsatz-icon-card:nth-child(4){animation:einsatzIconFloat 8s ease-in-out 3.6s infinite}
+@keyframes einsatzIconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
 body[data-page="einsatzbereiche.html"] .section-head.compact-center::after{margin-left:auto;margin-right:auto}
 body[data-page="einsatzbereiche.html"] .einsatz-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start;grid-auto-rows:auto;max-width:1160px;margin:0 auto}
 body[data-page="einsatzbereiche.html"] .einsatz-card > .accordion-summary{min-height:238px}
@@ -97,6 +177,7 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout h2{max-width:20ch}
 @media (max-width:720px){
  body[data-page="einsatzbereiche.html"] .einsatz-grid{grid-template-columns:1fr}
  body[data-page="einsatzbereiche.html"] .einsatz-hero{padding:48px 0 12px}
+ body[data-page="einsatzbereiche.html"] .einsatz-side-icons{display:none}
  body[data-page="einsatzbereiche.html"] .einsatz-copy h1{font-size:clamp(2.35rem,11vw,3.35rem)}
  body[data-page="einsatzbereiche.html"] .einsatz-visual{width:min(100%,280px);height:250px}
  body[data-page="einsatzbereiche.html"] .einsatz-rail.v1{right:24px;height:214px}
@@ -134,7 +215,7 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout h2{max-width:20ch}
 <main>
 <section class="page-hero einsatz-hero">
 <div class="container einsatz-hero-grid reveal">
-<div class="einsatz-copy"><span class="eyebrow">Einsatzbereiche</span><div class="hero-title-row page-title-row"><div aria-hidden="true" class="title-flow title-flow-left"><div class="title-flow-track"><span class="title-flow-line l1"></span><span class="title-flow-line l2"></span><span class="title-flow-line l3"></span><span class="title-flow-junction j1"></span><span class="title-flow-junction j2"></span><span class="title-flow-junction j3"></span><span class="title-flow-junction j4"></span><span class="title-flow-agent a1"></span><span class="title-flow-agent a2"></span><span class="title-flow-agent a3"></span></div></div><h1><span class="line" style="display:block;white-space:nowrap;">Wo sich strukturierte Workflows</span><span class="line" style="display:block;white-space:nowrap;">im Alltag besonders lohnen.</span></h1><div aria-hidden="true" class="title-flow title-flow-right"><div class="title-flow-track"><span class="title-flow-line l1"></span><span class="title-flow-line l2"></span><span class="title-flow-line l3"></span><span class="title-flow-junction j1"></span><span class="title-flow-junction j2"></span><span class="title-flow-junction j3"></span><span class="title-flow-junction j4"></span><span class="title-flow-agent a1"></span><span class="title-flow-agent a2"></span><span class="title-flow-agent a3"></span></div></div></div>
+<div class="einsatz-copy"><span class="eyebrow">Einsatzbereiche</span><div class="hero-title-row page-title-row"><div aria-hidden="true" class="einsatz-side-icons left"><span class="einsatz-icon-card mail"></span><span class="einsatz-icon-card calendar"></span><span class="einsatz-icon-card docs"></span><span class="einsatz-icon-card flow"></span></div><h1><span class="line" style="display:block;white-space:nowrap;">Wo sich strukturierte Workflows</span><span class="line" style="display:block;white-space:nowrap;">im Alltag besonders lohnen.</span></h1><div aria-hidden="true" class="einsatz-side-icons right"><span class="einsatz-icon-card mail"></span><span class="einsatz-icon-card calendar"></span><span class="einsatz-icon-card docs"></span><span class="einsatz-icon-card flow"></span></div></div>
 
 <p class="lead">Sinnvoll wird Unterstützung vor allem dort, wo Anfragen, Termine, Dokumente oder interne Übergaben heute noch manuell geprüft, weitergegeben oder nachgehalten werden. Genau diese Prozessarten sorgen im Alltag oft für unnötigen Aufwand.</p>
 <div class="einsatz-points"><span class="status-pill">E-Mail &amp; Anfragen</span><span class="status-pill">Termine &amp; Rückmeldungen</span><span class="status-pill">Dokumente &amp; Ablagen</span><span class="status-pill">Interne Übergaben</span></div>

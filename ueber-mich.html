@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="de"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>Über mich | Deppmeyer Workflow Solutions</title><meta content="Arbeitsweise und Herangehensweise von Deppmeyer Workflow Solutions: praxisnah, nachvollziehbar und technisch sauber." name="description"/><link href="css/styles.css" rel="stylesheet"/><link href="favicon.png" rel="icon" type="image/png"/><link href="favicon.ico" rel="shortcut icon"/><style>
 body[data-page="ueber-mich.html"] .ueber-hero{padding:58px 0 20px;overflow:hidden}
-body[data-page="ueber-mich.html"] .ueber-hero-grid{display:grid;grid-template-columns:1fr;gap:22px;align-items:center;justify-items:center}
-body[data-page="ueber-mich.html"] .ueber-copy{text-align:center;max-width:900px;margin:0 auto;display:grid;justify-items:center;gap:14px}
+body[data-page="ueber-mich.html"] .ueber-hero-grid{display:grid;grid-template-columns:1fr;gap:22px;align-items:center;justify-items:center;max-width:1240px;margin:0 auto}
+body[data-page="ueber-mich.html"] .ueber-copy{text-align:center;max-width:1180px;margin:0 auto;display:grid;justify-items:center;gap:14px}
 body[data-page="ueber-mich.html"] .ueber-copy .eyebrow{margin:0 auto}
-body[data-page="ueber-mich.html"] .ueber-copy h1{margin:0;max-width:13ch}
-body[data-page="ueber-mich.html"] .ueber-copy .lead{max-width:62ch;margin:0 auto}
+body[data-page="ueber-mich.html"] .ueber-copy h1{margin:0;max-width:none;display:flex;flex-direction:column;align-items:center;gap:.05em;line-height:.92}
+body[data-page="ueber-mich.html"] .ueber-copy h1 .line{display:block;white-space:nowrap}
+body[data-page="ueber-mich.html"] .ueber-copy .lead{max-width:76ch;margin:0 auto;text-align:center}
 body[data-page="ueber-mich.html"] .ueber-points{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;justify-content:center}
 body[data-page="ueber-mich.html"] .ueber-visual-wrap{display:flex;justify-content:center}
 body[data-page="ueber-mich.html"] .ueber-visual{position:relative;width:min(100%,410px);height:330px;pointer-events:none;opacity:.98}
@@ -39,9 +40,57 @@ body[data-page="ueber-mich.html"] .ueber-pulse.r3{animation-delay:2.8s}
 @keyframes ueberSignalB{0%{transform:translate(156px,232px)}24%{transform:translate(156px,152px)}46%{transform:translate(336px,152px)}64%{transform:translate(336px,74px)}82%{transform:translate(196px,74px)}100%{transform:translate(196px,152px)}}
 @keyframes ueberPulse{0%,100%{transform:scale(.92);opacity:.62}45%{transform:scale(1.08);opacity:1}}
 @keyframes ueberRing{0%{transform:scale(.85);opacity:.12}45%{transform:scale(1.08);opacity:.34}100%{transform:scale(1.28);opacity:0}}
+
+body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row{justify-content:center;align-items:center;gap:22px;margin:0 auto;width:min(100%,1180px)}
+body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row h1{text-align:center;margin-left:auto;margin-right:auto}
+body[data-page="ueber-mich.html"] .ueber-side-blocks{position:relative;flex:0 0 160px;height:120px;pointer-events:none;opacity:.96}
+body[data-page="ueber-mich.html"] .ueber-side-blocks.right{transform:scaleX(-1)}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block{position:absolute;border-radius:26px;border:1px solid rgba(160,198,235,.34);background:linear-gradient(180deg, rgba(255,255,255,.30), rgba(226,239,255,.10));box-shadow:0 18px 34px rgba(25,58,108,.10),0 0 24px rgba(52,158,233,.10);backdrop-filter:blur(3px)}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b1{width:92px;height:72px;left:18px;top:20px;animation:ueberBlockFloat 8.8s ease-in-out infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b2{width:102px;height:78px;left:46px;top:30px;animation:ueberBlockFloat 8.8s ease-in-out 1.2s infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b3{width:110px;height:84px;left:30px;top:38px;animation:ueberBlockFloat 8.8s ease-in-out 2.4s infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks::after{content:"";position:absolute;inset:26px 18px 14px;border-radius:30px;background:radial-gradient(circle at 30% 35%, rgba(127,230,255,.28), rgba(127,230,255,0) 48%), radial-gradient(circle at 70% 65%, rgba(47,124,255,.20), rgba(47,124,255,0) 54%);filter:blur(10px);opacity:.9}
+@keyframes ueberBlockFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(1.5deg)}}
+
 body[data-page="ueber-mich.html"] .section-head.compact-center{text-align:center;max-width:820px;margin:0 auto 24px}
+
+body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row{justify-content:center;align-items:center;gap:22px;margin:0 auto;width:min(100%,1180px)}
+body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row h1{text-align:center;margin-left:auto;margin-right:auto}
+body[data-page="ueber-mich.html"] .ueber-side-blocks{position:relative;flex:0 0 160px;height:120px;pointer-events:none;opacity:.96}
+body[data-page="ueber-mich.html"] .ueber-side-blocks.right{transform:scaleX(-1)}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block{position:absolute;border-radius:26px;border:1px solid rgba(160,198,235,.34);background:linear-gradient(180deg, rgba(255,255,255,.30), rgba(226,239,255,.10));box-shadow:0 18px 34px rgba(25,58,108,.10),0 0 24px rgba(52,158,233,.10);backdrop-filter:blur(3px)}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b1{width:92px;height:72px;left:18px;top:20px;animation:ueberBlockFloat 8.8s ease-in-out infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b2{width:102px;height:78px;left:46px;top:30px;animation:ueberBlockFloat 8.8s ease-in-out 1.2s infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b3{width:110px;height:84px;left:30px;top:38px;animation:ueberBlockFloat 8.8s ease-in-out 2.4s infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks::after{content:"";position:absolute;inset:26px 18px 14px;border-radius:30px;background:radial-gradient(circle at 30% 35%, rgba(127,230,255,.28), rgba(127,230,255,0) 48%), radial-gradient(circle at 70% 65%, rgba(47,124,255,.20), rgba(47,124,255,0) 54%);filter:blur(10px);opacity:.9}
+@keyframes ueberBlockFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(1.5deg)}}
+
 body[data-page="ueber-mich.html"] .section-head.compact-center .eyebrow{margin-left:auto;margin-right:auto}
+
+body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row{justify-content:center;align-items:center;gap:22px;margin:0 auto;width:min(100%,1180px)}
+body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row h1{text-align:center;margin-left:auto;margin-right:auto}
+body[data-page="ueber-mich.html"] .ueber-side-blocks{position:relative;flex:0 0 160px;height:120px;pointer-events:none;opacity:.96}
+body[data-page="ueber-mich.html"] .ueber-side-blocks.right{transform:scaleX(-1)}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block{position:absolute;border-radius:26px;border:1px solid rgba(160,198,235,.34);background:linear-gradient(180deg, rgba(255,255,255,.30), rgba(226,239,255,.10));box-shadow:0 18px 34px rgba(25,58,108,.10),0 0 24px rgba(52,158,233,.10);backdrop-filter:blur(3px)}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b1{width:92px;height:72px;left:18px;top:20px;animation:ueberBlockFloat 8.8s ease-in-out infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b2{width:102px;height:78px;left:46px;top:30px;animation:ueberBlockFloat 8.8s ease-in-out 1.2s infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b3{width:110px;height:84px;left:30px;top:38px;animation:ueberBlockFloat 8.8s ease-in-out 2.4s infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks::after{content:"";position:absolute;inset:26px 18px 14px;border-radius:30px;background:radial-gradient(circle at 30% 35%, rgba(127,230,255,.28), rgba(127,230,255,0) 48%), radial-gradient(circle at 70% 65%, rgba(47,124,255,.20), rgba(47,124,255,0) 54%);filter:blur(10px);opacity:.9}
+@keyframes ueberBlockFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(1.5deg)}}
+
 body[data-page="ueber-mich.html"] .section-head.compact-center p{margin:0 auto;max-width:62ch}
+
+body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row{justify-content:center;align-items:center;gap:22px;margin:0 auto;width:min(100%,1180px)}
+body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row h1{text-align:center;margin-left:auto;margin-right:auto}
+body[data-page="ueber-mich.html"] .ueber-side-blocks{position:relative;flex:0 0 160px;height:120px;pointer-events:none;opacity:.96}
+body[data-page="ueber-mich.html"] .ueber-side-blocks.right{transform:scaleX(-1)}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block{position:absolute;border-radius:26px;border:1px solid rgba(160,198,235,.34);background:linear-gradient(180deg, rgba(255,255,255,.30), rgba(226,239,255,.10));box-shadow:0 18px 34px rgba(25,58,108,.10),0 0 24px rgba(52,158,233,.10);backdrop-filter:blur(3px)}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b1{width:92px;height:72px;left:18px;top:20px;animation:ueberBlockFloat 8.8s ease-in-out infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b2{width:102px;height:78px;left:46px;top:30px;animation:ueberBlockFloat 8.8s ease-in-out 1.2s infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks .glow-block.b3{width:110px;height:84px;left:30px;top:38px;animation:ueberBlockFloat 8.8s ease-in-out 2.4s infinite}
+body[data-page="ueber-mich.html"] .ueber-side-blocks::after{content:"";position:absolute;inset:26px 18px 14px;border-radius:30px;background:radial-gradient(circle at 30% 35%, rgba(127,230,255,.28), rgba(127,230,255,0) 48%), radial-gradient(circle at 70% 65%, rgba(47,124,255,.20), rgba(47,124,255,0) 54%);filter:blur(10px);opacity:.9}
+@keyframes ueberBlockFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(1.5deg)}}
+
 body[data-page="ueber-mich.html"] .section-head.compact-center::after{margin-left:auto;margin-right:auto}
 body[data-page="ueber-mich.html"] .about-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:1080px;margin:0 auto}
 body[data-page="ueber-mich.html"] .about-card{height:100%;min-height:0;border-radius:30px;background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,251,255,.92));border:1px solid rgba(169,196,232,.42);box-shadow:0 18px 36px rgba(24,56,102,.08)}
@@ -53,8 +102,8 @@ body[data-page="ueber-mich.html"] .ueber-callout{text-align:center;display:grid;
 body[data-page="ueber-mich.html"] .ueber-callout h2{max-width:18ch;margin:0}
 body[data-page="ueber-mich.html"] .ueber-callout p{max-width:60ch;margin:0}
 body[data-page="ueber-mich.html"] .ueber-callout .btn-row{justify-content:center}
-@media (max-width: 980px){body[data-page="ueber-mich.html"] .ueber-hero-grid{grid-template-columns:1fr;gap:18px}body[data-page="ueber-mich.html"] .ueber-copy h1{max-width:none}body[data-page="ueber-mich.html"] .ueber-visual-wrap{justify-content:center}body[data-page="ueber-mich.html"] .about-grid{grid-template-columns:1fr}}
-@media (max-width: 640px){body[data-page="ueber-mich.html"] .ueber-hero{padding-top:50px}body[data-page="ueber-mich.html"] .ueber-visual{height:290px;width:min(100%,360px)}}
+@media (max-width: 980px){body[data-page="ueber-mich.html"] .ueber-hero-grid{grid-template-columns:1fr;gap:18px}body[data-page="ueber-mich.html"] .ueber-copy h1{max-width:none}body[data-page="ueber-mich.html"] .ueber-copy h1 .line{white-space:normal}body[data-page="ueber-mich.html"] .ueber-side-blocks{flex-basis:110px;height:92px}body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row{gap:14px}body[data-page="ueber-mich.html"] .about-grid{grid-template-columns:1fr}}
+@media (max-width: 640px){body[data-page="ueber-mich.html"] .ueber-hero{padding-top:50px}body[data-page="ueber-mich.html"] .ueber-side-blocks{display:none}body[data-page="ueber-mich.html"] .ueber-copy .lead{max-width:62ch}}
 </style><meta content="#101b3e" name="theme-color"/><meta content="website" property="og:type"/><meta content="de_DE" property="og:locale"/><meta content="Deppmeyer Workflow Solutions" property="og:site_name"/><meta content="Über mich | Deppmeyer Workflow Solutions" property="og:title"/><meta content="Arbeitsweise und Herangehensweise von Deppmeyer Workflow Solutions: praxisnah, nachvollziehbar und technisch sauber." property="og:description"/><meta content="summary" name="twitter:card"/><meta content="Über mich | Deppmeyer Workflow Solutions" name="twitter:title"/><meta content="Arbeitsweise und Herangehensweise von Deppmeyer Workflow Solutions: praxisnah, nachvollziehbar und technisch sauber." name="twitter:description"/></head>
 <body class="page-shell" data-page="ueber-mich.html" data-theme="light"><script>try{const k='deppmeyer-theme';const saved=sessionStorage.getItem(k);const theme=saved||'light';document.body.setAttribute('data-theme',theme);document.documentElement.style.colorScheme=theme;}catch(e){}</script><div aria-hidden="true" class="scroll-progress"></div><div aria-hidden="true" class="cursor-glow"></div><header class="topbar"><div class="container nav"><a aria-label="Startseite" class="brand" href="index.html"><img alt="Deppmeyer Logo" class="brand-icon" decoding="async" src="assets/logo-icon.png"/><span class="brand-text"><span class="brand-name">Deppmeyer</span><span class="brand-sub">Workflow Solutions</span></span></a><nav aria-label="Hauptnavigation" class="nav-links"><a href="index.html">Start</a><a href="leistungen.html">Leistungen</a><a href="beispiele.html">Beispiele</a><a href="einsatzbereiche.html">Einsatzbereiche</a><a class="active" href="ueber-mich.html">Über mich</a><a href="kontakt.html">Kontakt</a></nav><div class="nav-actions"><div class="header-search search-shell" data-search-root="">
 <span class="search-icon">⌕</span>
@@ -68,7 +117,7 @@ body[data-page="ueber-mich.html"] .ueber-callout .btn-row{justify-content:center
 <main id="main-content" tabindex="-1">
 <section class="page-hero ueber-hero">
 <div class="container ueber-hero-grid reveal">
-<div class="ueber-copy"><span class="eyebrow">Über mich</span><div class="hero-title-row page-title-row"><div aria-hidden="true" class="title-flow title-flow-left"><div class="title-flow-track"><span class="title-flow-line l1"></span><span class="title-flow-line l2"></span><span class="title-flow-line l3"></span><span class="title-flow-junction j1"></span><span class="title-flow-junction j2"></span><span class="title-flow-junction j3"></span><span class="title-flow-junction j4"></span><span class="title-flow-agent a1"></span><span class="title-flow-agent a2"></span><span class="title-flow-agent a3"></span></div></div><h1>Zuverlässig in der Zusammenarbeit. Sorgfältig in der Umsetzung.</h1><div aria-hidden="true" class="title-flow title-flow-right"><div class="title-flow-track"><span class="title-flow-line l1"></span><span class="title-flow-line l2"></span><span class="title-flow-line l3"></span><span class="title-flow-junction j1"></span><span class="title-flow-junction j2"></span><span class="title-flow-junction j3"></span><span class="title-flow-junction j4"></span><span class="title-flow-agent a1"></span><span class="title-flow-agent a2"></span><span class="title-flow-agent a3"></span></div></div></div>
+<div class="ueber-copy"><span class="eyebrow">Über mich</span><div class="hero-title-row page-title-row"><div aria-hidden="true" class="ueber-side-blocks left"><span class="glow-block b1"></span><span class="glow-block b2"></span><span class="glow-block b3"></span></div><h1><span class="line">Zuverlässig in der Zusammenarbeit.</span><span class="line">Sorgfältig in der Umsetzung.</span></h1><div aria-hidden="true" class="ueber-side-blocks right"><span class="glow-block b1"></span><span class="glow-block b2"></span><span class="glow-block b3"></span></div></div>
 <p class="lead">Ich lege Wert auf einen verlässlichen Austausch, nachvollziehbare Absprachen und Lösungen, die im Alltag wirklich funktionieren. Im Mittelpunkt stehen Vertrauen, saubere Arbeit und ein Umgang, bei dem man sich auf Zusagen, Rückmeldungen und Ergebnisse verlassen kann.</p>
 <p class="lead">Mir ist wichtig, Prozesse nicht unnötig kompliziert zu machen. Statt Show oder Fachsprache geht es um sorgfältige Umsetzung, ehrliche Einschätzungen und eine Zusammenarbeit, die angenehm, ruhig und professionell bleibt.</p>
 <div class="ueber-points"><span class="status-pill">KMU-Fokus</span><span class="status-pill">Hannover &amp; Umland</span><span class="status-pill">verständliche Umsetzung</span></div><div class="trust-triplet"><span>verständliche Kommunikation</span><span>realistische Einschätzung</span><span>saubere Übergaben</span></div>
