@@ -3708,3 +3708,231 @@ body[data-page="index.html"] .faq-more-compact{justify-content:center !important
     padding-bottom:18px !important;
   }
 }
+
+
+/* v014 final stability and responsive hardening */
+/* Keep closed details truly closed; only opened card shows its content */
+details:not([open]) > .accordion-content,
+details:not([open]) > .faq-answer,
+details:not([open]) > .faq-answer-inner,
+details:not([open]) > [data-accordion-content],
+details:not([open]) > .workflow-check-result{
+  display:none !important;
+}
+details[open] > .accordion-content,
+details[open] > .faq-answer,
+details[open] > [data-accordion-content]{
+  display:block !important;
+}
+
+/* FAQ search should behave like the main search, but only for FAQ results */
+.faq-search-results{
+  width:min(100%, 860px);
+  margin:0 auto 12px;
+  display:grid;
+  gap:12px;
+}
+.faq-search-results.hidden{
+  display:none !important;
+}
+.faq-search-result{
+  width:100%;
+  text-align:left;
+  cursor:pointer;
+}
+.faq-search-result h3,
+.faq-search-result p,
+.faq-search-result small{
+  pointer-events:none;
+}
+.faq-search-mode [data-faq-topic-grid]{
+  display:none !important;
+}
+.faq-search-feedback{
+  width:min(100%, 860px);
+  margin:0 auto 12px;
+}
+
+/* Footer: compact horizontal layout on desktop, centered stack on smaller devices */
+.footer{
+  padding:32px 0 40px;
+}
+.footer-grid{
+  grid-template-columns:1fr !important;
+  justify-items:center;
+  align-items:center;
+}
+.footer-box{
+  width:min(100%, 1120px);
+  display:grid;
+  grid-template-columns:minmax(280px, 1.35fr) minmax(180px, auto) minmax(150px, auto);
+  grid-template-areas:
+    "brand contact legal"
+    "copy contact legal";
+  gap:12px 34px;
+  align-items:center;
+  justify-items:start;
+  text-align:left;
+  padding:24px 28px;
+  border-radius:28px;
+}
+.footer-box > .footer-brand{
+  grid-area:brand;
+  margin-bottom:0;
+}
+.footer-box > .footer-copy{
+  grid-area:copy;
+  margin:0;
+  max-width:40ch;
+}
+.footer-box > .footer-links--stack{
+  grid-area:contact;
+  justify-items:start;
+  align-content:center;
+  gap:8px;
+}
+.footer-box > .footer-links--legal{
+  grid-area:legal;
+  justify-items:start;
+  align-content:center;
+  gap:8px;
+}
+.footer-links--legal{
+  grid-auto-flow:row;
+  grid-auto-columns:auto;
+}
+@media (max-width: 900px){
+  .footer-box{
+    width:min(100%, 620px);
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "brand"
+      "copy"
+      "contact"
+      "legal";
+    justify-items:center;
+    text-align:center;
+    gap:14px;
+    padding:24px 18px;
+  }
+  .footer-box > .footer-links--stack,
+  .footer-box > .footer-links--legal{
+    justify-items:center;
+  }
+}
+
+/* FAQ elements centered consistently, including tablet and mobile */
+body[data-page="index.html"] .faq-grid-primary,
+body[data-page="index.html"] .faq-more-compact,
+body[data-page="index.html"] .faq-explorer-head,
+body[data-page="index.html"] .faq-explorer-intro,
+body[data-page="index.html"] .faq-topic-bar,
+body[data-page="index.html"] .faq-search{
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] .faq-more-compact,
+body[data-page="index.html"] .faq-topic-bar,
+body[data-page="index.html"] .faq-search{
+  justify-content:center !important;
+}
+body[data-page="index.html"] .faq-explorer-intro{
+  text-align:center !important;
+}
+@media (max-width: 900px){
+  .faq-topic-bar{
+    justify-content:center !important;
+  }
+  .faq-search{
+    justify-content:center !important;
+  }
+}
+
+/* Contact helper cards: stable equal teaser height and button anchored bottom-left */
+@media (min-width: 981px){
+  body[data-page="kontakt.html"] .contact-help-grid{
+    align-items:start !important;
+  }
+  body[data-page="kontakt.html"] .contact-help-card{
+    align-self:start !important;
+    min-height:0 !important;
+    height:auto !important;
+  }
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:12px !important;
+    min-height:236px !important;
+    height:236px !important;
+    padding:20px 22px !important;
+  }
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-text{
+    width:100% !important;
+  }
+  body[data-page="kontakt.html"] .contact-help-card > .accordion-summary .accordion-action{
+    margin-top:auto !important;
+    align-self:flex-start !important;
+  }
+  body[data-page="kontakt.html"] .contact-help-card[open] > .accordion-summary{
+    min-height:0 !important;
+    height:auto !important;
+    padding-bottom:18px !important;
+  }
+}
+
+/* Mobile/tablet: center layouts and remove decorative animations without touching desktop */
+@media (max-width: 1024px){
+  .cursor-glow,
+  .hero-visual,
+  .hero-stream-wrap,
+  .hero-flow-canvas,
+  body[data-page="leistungen.html"] .leistungen-flow-wrap,
+  body[data-page="einsatzbereiche.html"] .einsatz-visual-wrap,
+  body[data-page="ueber-mich.html"] .ueber-visual-wrap,
+  body[data-page="kontakt.html"] .contact-signal-strip{
+    display:none !important;
+  }
+
+  .hero-grid,
+  .page-hero-grid,
+  body[data-page="leistungen.html"] .leistungen-hero-grid,
+  body[data-page="einsatzbereiche.html"] .einsatz-hero-grid,
+  body[data-page="ueber-mich.html"] .ueber-hero-grid,
+  body[data-page="kontakt.html"] .kontakt-hero .page-hero-grid{
+    grid-template-columns:1fr !important;
+    justify-items:center !important;
+  }
+
+  .hero-copy,
+  body[data-page="leistungen.html"] .leistungen-copy,
+  body[data-page="einsatzbereiche.html"] .einsatz-copy,
+  body[data-page="ueber-mich.html"] .ueber-copy,
+  body[data-page="kontakt.html"] .kontakt-hero .page-hero-grid > div,
+  .contact-intro,
+  .workflow-check-intro,
+  .section-head{
+    text-align:center !important;
+    justify-items:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  .section-head::after,
+  .workflow-check-intro::after{
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  .btn-row,
+  .hero-trustline,
+  .kontakt-points,
+  .hero-inline-points,
+  body[data-page="einsatzbereiche.html"] .einsatz-points,
+  body[data-page="ueber-mich.html"] .ueber-points,
+  body[data-page="leistungen.html"] .leistungen-cta-center .btn-row{
+    justify-content:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+}
