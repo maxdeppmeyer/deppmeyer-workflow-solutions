@@ -165,20 +165,113 @@
     const explorerHead = explorer.querySelector('.faq-explorer-head');
     let activeTopic = chips[0]?.getAttribute('data-faq-topic') || '';
 
+    const normalize = (value) => String(value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+
+    const levenshtein = (a, b) => {
+      if (!a) return b.length;
+      if (!b) return a.length;
+      const dp = Array.from({ length: a.length + 1 }, (_, i) => [i]);
+      for (let j = 1; j <= b.length; j += 1) dp[0][j] = j;
+      for (let i = 1; i <= a.length; i += 1) {
+        for (let j = 1; j <= b.length; j += 1) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+        }
+      }
+      return dp[a.length][b.length];
+    };
+
+    const synonyms = {
+      email: ['email', 'e mail', 'mail', 'postfach', 'posteingang', 'kundenantwort', 'anfrage'],
+      termine: ['termin', 'termine', 'kalender', 'rueckmeldung', 'rueckmeldungen', 'buchung'],
+      dokumente: ['dokument', 'dokumente', 'datei', 'dateien', 'angebot', 'angebote', 'ablage'],
+      technik: ['technik', 'tools', 'integration', 'integrationen', 'software'],
+      zusammenarbeit: ['zusammenarbeit', 'ablauf', 'analyse', 'start', 'projekt'],
+      kosten: ['kosten', 'nutzen', 'preis', 'aufwand'],
+      betreuung: ['betreuung', 'betrieb', 'pflege', 'anpassung'],
+      daten: ['ki', 'daten', 'datenschutz']
+    };
+
+    const feedback = document.createElement('div');
+    feedback.className = 'faq-search-feedback';
+    feedback.hidden = true;
+    if (topicGrid) topicGrid.before(feedback);
+
+    const itemIndex = items.map((item) => {
+      const question = item.querySelector('.faq-question')?.childNodes?.[0]?.textContent?.trim() || item.querySelector('.faq-question')?.textContent?.replace(/[+–]/g, '').trim() || '';
+      const answer = item.querySelector('.faq-answer-inner')?.textContent?.trim() || '';
+      const topic = item.getAttribute('data-faq-topic-item') || '';
+      const raw = `${topic} ${question} ${answer} ${item.getAttribute('data-faq-search-text') || ''}`;
+      const normalized = normalize(raw);
+      const tokens = [...new Set(normalized.split(/\s+/).filter(Boolean))];
+      Object.entries(synonyms).forEach(([key, list]) => {
+        if (topic.includes(key) || list.some((term) => normalized.includes(normalize(term)))) tokens.push(...list.map(normalize));
+      });
+      return { item, topic, question, answer, normalized, tokens: [...new Set(tokens)] };
+    });
+
+    const setFeedback = (html = '') => {
+      feedback.innerHTML = html;
+      feedback.hidden = !html;
+    };
+
     const apply = () => {
-      const query = (input?.value || '').trim().toLowerCase();
+      const rawQuery = (input?.value || '').trim();
+      const query = normalize(rawQuery);
       let visibleCount = 0;
+      setFeedback('');
+
+      if (!query) {
+        items.forEach((item) => {
+          const topic = item.getAttribute('data-faq-topic-item') || '';
+          const visible = !activeTopic || activeTopic === 'all' || topic === activeTopic;
+          item.classList.toggle('is-hidden', !visible);
+          if (visible) visibleCount += 1;
+        });
+        explorer.setAttribute('data-visible-count', String(visibleCount));
+        return items.find((item) => !item.classList.contains('is-hidden')) || null;
+      }
+
+      const directMatches = itemIndex.filter((entry) => entry.normalized.includes(query));
+      let visibleEntries = directMatches;
+
+      if (!directMatches.length) {
+        const scored = itemIndex.map((entry) => {
+          let score = 0;
+          entry.tokens.forEach((token) => {
+            if (token === query) score = Math.max(score, 95);
+            else if (token.startsWith(query) || query.startsWith(token)) score = Math.max(score, 82);
+            else if (token.includes(query) || query.includes(token)) score = Math.max(score, 74);
+            else {
+              const dist = levenshtein(query, token);
+              if (dist <= 1) score = Math.max(score, 70);
+              else if (dist === 2 && query.length > 4) score = Math.max(score, 62);
+            }
+          });
+          return { ...entry, score };
+        }).filter((entry) => entry.score >= 62).sort((a, b) => b.score - a.score).slice(0, 6);
+        visibleEntries = scored;
+        if (scored.length) {
+          setFeedback(`<strong>Keine direkten Treffer.</strong> Zu „${rawQuery.replace(/</g, '&lt;')}“ wurden keine exakten FAQ-Treffer gefunden. Vielleicht passt eine dieser Fragen:`);
+        } else {
+          setFeedback(`<strong>Keine direkten Treffer.</strong> Zu „${rawQuery.replace(/</g, '&lt;')}“ wurde in den FAQ nichts Passendes gefunden.`);
+        }
+      }
+
+      const visibleSet = new Set(visibleEntries.map((entry) => entry.item));
       items.forEach((item) => {
-        const topic = item.getAttribute('data-faq-topic-item') || '';
-        const text = item.getAttribute('data-faq-search-text') || item.textContent.toLowerCase();
-        const topicMatch = !activeTopic || activeTopic === 'all' || topic === activeTopic;
-        const queryMatch = !query || text.includes(query);
-        const visible = topicMatch && queryMatch;
+        const visible = visibleSet.has(item);
         item.classList.toggle('is-hidden', !visible);
         if (visible) visibleCount += 1;
       });
       explorer.setAttribute('data-visible-count', String(visibleCount));
-      return items.find((item) => !item.classList.contains('is-hidden')) || null;
+      return visibleEntries[0]?.item || null;
     };
 
     const centerTopicPicker = () => {
