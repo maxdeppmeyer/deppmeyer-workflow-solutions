@@ -4157,3 +4157,56 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
     margin-right:auto !important;
   }
 }
+
+
+/* current request: phone hero on start page centered more strictly */
+@media (max-width: 760px){
+  body[data-page="index.html"] .hero .container.hero-grid-clean{
+    justify-items:center !important;
+  }
+
+  body[data-page="index.html"] .hero-copy{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    text-align:center !important;
+    width:100% !important;
+    max-width:100% !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  body[data-page="index.html"] .hero-copy > .eyebrow,
+  body[data-page="index.html"] .hero-copy > h1,
+  body[data-page="index.html"] .hero-copy > .lead,
+  body[data-page="index.html"] .hero-copy > .hero-summary-line,
+  body[data-page="index.html"] .hero-copy > .hero-trustline{
+    text-align:center !important;
+    align-self:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  body[data-page="index.html"] .hero-copy > .lead,
+  body[data-page="index.html"] .hero-copy > .hero-summary-line{
+    max-width:30rem !important;
+  }
+
+  body[data-page="index.html"] .hero-copy > .btn-row{
+    width:auto !important;
+    max-width:100% !important;
+    justify-content:center !important;
+    align-items:center !important;
+    align-self:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  body[data-page="index.html"] .hero-copy > .btn-row .btn,
+  body[data-page="index.html"] .hero-copy > .btn-row .btn.ghost{
+    width:auto !important;
+    min-width:min(100%, 260px) !important;
+    max-width:100% !important;
+  }
+}
