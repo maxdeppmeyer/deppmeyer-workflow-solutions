@@ -4132,3 +4132,28 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
     padding-bottom:18px !important;
   }
 }
+
+
+/* mobile hotfix: start hero on phone fully centered */
+@media (max-width: 760px){
+  body[data-page="index.html"] .hero-copy{
+    display:grid !important;
+    justify-items:center !important;
+    text-align:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+  body[data-page="index.html"] .hero-copy > h1,
+  body[data-page="index.html"] .hero-copy > .lead,
+  body[data-page="index.html"] .hero-copy > .hero-summary-line{
+    text-align:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+  body[data-page="index.html"] .hero-copy > .btn-row{
+    justify-content:center !important;
+    align-items:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+}
