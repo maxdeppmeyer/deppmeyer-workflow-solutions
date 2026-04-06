@@ -4159,10 +4159,14 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
 }
 
 
-/* current request: phone hero on start page centered more strictly */
+/* mobile fix: start hero on phone fully centered with centered buttons */
 @media (max-width: 760px){
-  body[data-page="index.html"] .hero .container.hero-grid-clean{
+  body[data-page="index.html"] .hero-grid-clean{
+    display:grid !important;
+    grid-template-columns:1fr !important;
     justify-items:center !important;
+    min-height:auto !important;
+    padding-right:0 !important;
   }
 
   body[data-page="index.html"] .hero-copy{
@@ -4170,43 +4174,45 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
     flex-direction:column !important;
     align-items:center !important;
     justify-content:flex-start !important;
-    text-align:center !important;
     width:100% !important;
-    max-width:100% !important;
+    max-width:34rem !important;
     margin-left:auto !important;
     margin-right:auto !important;
+    text-align:center !important;
   }
 
-  body[data-page="index.html"] .hero-copy > .eyebrow,
   body[data-page="index.html"] .hero-copy > h1,
   body[data-page="index.html"] .hero-copy > .lead,
-  body[data-page="index.html"] .hero-copy > .hero-summary-line,
-  body[data-page="index.html"] .hero-copy > .hero-trustline{
+  body[data-page="index.html"] .hero-copy > .hero-summary-line{
+    width:100% !important;
     text-align:center !important;
-    align-self:center !important;
     margin-left:auto !important;
     margin-right:auto !important;
   }
 
-  body[data-page="index.html"] .hero-copy > .lead,
+  body[data-page="index.html"] .hero-copy > .lead{
+    max-width:31rem !important;
+  }
+
   body[data-page="index.html"] .hero-copy > .hero-summary-line{
-    max-width:30rem !important;
+    max-width:26rem !important;
   }
 
   body[data-page="index.html"] .hero-copy > .btn-row{
-    width:auto !important;
-    max-width:100% !important;
-    justify-content:center !important;
+    display:flex !important;
+    flex-direction:column !important;
     align-items:center !important;
-    align-self:center !important;
+    justify-content:center !important;
+    width:100% !important;
+    max-width:320px !important;
     margin-left:auto !important;
     margin-right:auto !important;
   }
 
-  body[data-page="index.html"] .hero-copy > .btn-row .btn,
-  body[data-page="index.html"] .hero-copy > .btn-row .btn.ghost{
-    width:auto !important;
-    min-width:min(100%, 260px) !important;
-    max-width:100% !important;
+  body[data-page="index.html"] .hero-copy > .btn-row .btn{
+    width:min(100%, 320px) !important;
+    max-width:320px !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
   }
 }
