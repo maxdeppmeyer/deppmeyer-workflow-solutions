@@ -954,11 +954,21 @@
 
   document.querySelectorAll('[data-config]').forEach((node) => {
     const key = node.getAttribute('data-config');
-    if (!window.siteConfig || !window.siteConfig[key]) return;
-    node.textContent = window.siteConfig[key];
+    const value = window.siteConfig && Object.prototype.hasOwnProperty.call(window.siteConfig, key)
+      ? String(window.siteConfig[key] || '').trim()
+      : '';
+
+    if (!value) {
+      const removableParent = node.closest('[data-config-wrap], .status-pill, .footer-links > a, .footer-links > span');
+      if (removableParent) removableParent.remove();
+      else node.remove();
+      return;
+    }
+
+    node.textContent = value;
     if (node.tagName === 'A') {
-      if (key === 'email') node.href = `mailto:${window.siteConfig[key]}`;
-      if (key === 'phone') node.href = `tel:${window.siteConfig[key].replace(/\s+/g, '')}`;
+      if (key === 'email') node.href = `mailto:${value}`;
+      if (key === 'phone') node.href = `tel:${value.replace(/\s+/g, '')}`;
     }
   });
 
@@ -1259,11 +1269,26 @@
       }
       return { valid: true, state: 'valid', message: 'E-Mail-Adresse sieht gültig aus.' };
     };
+    const validatePhoneValue = (value) => {
+      const trimmed = String(value || '').trim();
+      if (!trimmed) {
+        return { valid: false, state: 'empty', message: 'Bitte eine Telefonnummer für den Rückruf angeben.' };
+      }
+      const normalized = trimmed.replace(/[^\d+]/g, '');
+      if (normalized.length < 7) {
+        return { valid: false, state: 'invalid', message: 'Bitte eine Telefonnummer mit ausreichend Stellen angeben.' };
+      }
+      return { valid: true, state: 'valid', message: 'Telefonnummer für den Rückruf hinterlegt.' };
+    };
     const prefillBox = contactForm.querySelector('[data-contact-prefill]');
     const prefillText = contactForm.querySelector('[data-contact-prefill-text]');
     const prefillClearButton = contactForm.querySelector('[data-contact-prefill-clear]');
     const messageField = contactForm.querySelector('#message');
     const topicField = contactForm.querySelector('#topic');
+    const phoneInput = contactForm.querySelector('#phone');
+    const callbackInput = contactForm.querySelector('#callbackRequested');
+    const callbackFeedback = contactForm.querySelector('[data-callback-feedback]');
+    const callbackTrigger = contactForm.querySelector('[data-contact-callback-trigger]');
     let pendingStoredAssessment = readStoredWorkflowResult();
     const normalizeTopic = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
 
@@ -1391,10 +1416,26 @@
       clearAssessmentPrefill();
       setResponseNote(defaultResponseNote);
     });
+
+    callbackTrigger?.addEventListener('click', () => {
+      if (callbackInput) callbackInput.checked = true;
+      if (topicField && !String(topicField.value || '').trim()) topicField.value = 'Allgemeine Prozessoptimierung';
+      updateSummary();
+      requestAnimationFrame(() => {
+        if (phoneInput) phoneInput.focus();
+        scrollTargetIntoView(contactForm, { block: 'center', force: true, padding: isMobileViewport() ? 18 : 28 });
+      });
+    });
+
+    const callbackParam = new URLSearchParams(window.location.search).get('callback');
+    if (callbackParam && callbackInput) callbackInput.checked = true;
+
     const updateSummary = () => {
       const formData = new FormData(contactForm);
       const emailState = validateEmailValue(formData.get('email'));
       const consentGiven = Boolean(formData.get('consent'));
+      const callbackRequested = Boolean(formData.get('callbackRequested'));
+      const phoneState = callbackRequested ? validatePhoneValue(formData.get('phone')) : { valid: true, state: 'idle', message: 'Rückruf ist optional.' };
       const genderValue = String(formData.get('gender') || '').trim();
       const firstNameValue = String(formData.get('firstName') || '').trim();
       const lastNameValue = String(formData.get('name') || '').trim();
@@ -1406,6 +1447,8 @@
       const lines = [
         ['Kontakt', compactContact],
         ['E-Mail', formData.get('email') || '—'],
+        ['Telefon', formData.get('phone') || '—'],
+        ['Rückruf', callbackRequested ? 'Gewünscht' : 'Nicht angefragt'],
         ['Thema', formData.get('topic') || '—'],
         ['Text', formData.get('message') || '—'],
         ['Schnellcheck', getAssessmentText() || '—'],
@@ -1437,8 +1480,21 @@
         consentFeedback.classList.toggle('is-valid', consentGiven);
         consentFeedback.classList.toggle('is-invalid', !consentGiven);
       }
+      if (phoneInput) {
+        phoneInput.classList.toggle('is-valid', callbackRequested && phoneState.valid);
+        phoneInput.classList.toggle('is-invalid', callbackRequested && !phoneState.valid && phoneState.state !== 'empty');
+        phoneInput.setAttribute('aria-invalid', String(callbackRequested && !phoneState.valid && phoneState.state !== 'empty'));
+        phoneInput.setCustomValidity(callbackRequested && !phoneState.valid ? phoneState.message : '');
+      }
+      if (callbackFeedback) {
+        callbackFeedback.textContent = callbackRequested
+          ? phoneState.message
+          : 'Optional: Für einen Rückruf bitte Telefonnummer angeben und Rückruf aktivieren.';
+        callbackFeedback.classList.toggle('is-valid', callbackRequested && phoneState.valid);
+        callbackFeedback.classList.toggle('is-invalid', callbackRequested && !phoneState.valid);
+      }
       if (submitButton) {
-        const canProceed = emailState.valid && consentGiven && !isSubmitting;
+        const canProceed = emailState.valid && consentGiven && phoneState.valid && !isSubmitting;
         submitButton.disabled = !canProceed;
         submitButton.setAttribute('aria-disabled', String(!canProceed));
         submitButton.classList.toggle('is-disabled', !canProceed);
@@ -1452,9 +1508,12 @@
       const formData = new FormData(contactForm);
       const emailState = validateEmailValue(formData.get('email'));
       const consentGiven = Boolean(formData.get('consent'));
-      if (!emailState.valid || !consentGiven) {
+      const callbackRequested = Boolean(formData.get('callbackRequested'));
+      const phoneState = callbackRequested ? validatePhoneValue(formData.get('phone')) : { valid: true };
+      if (!emailState.valid || !consentGiven || !phoneState.valid) {
         updateSummary();
         if (!emailState.valid && emailInput) emailInput.focus();
+        else if (!phoneState.valid && phoneInput) phoneInput.focus();
         else if (consentInput) consentInput.focus();
         return;
       }
@@ -1482,6 +1541,8 @@
   email: String(formData.get('email') || '').trim(),
   topic: String(formData.get('topic') || '').trim(),
   message: String(formData.get('message') || '').trim(),
+  phone: String(formData.get('phone') || '').trim(),
+  callbackRequested: Boolean(formData.get('callbackRequested')),
   consent: consentGiven,
   assessment: getAssessmentText()
 })
