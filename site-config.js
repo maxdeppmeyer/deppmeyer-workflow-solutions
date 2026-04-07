@@ -1,13 +1,13 @@
 window.siteConfig = {
   companyName: "Deppmeyer Workflow Solutions",
   shortName: "Deppmeyer",
-  tagline: "Automatisierung, Workflows & KI für KMU",
-  email: "kontakt@beispiel.de",
-  phone: "+49 000 0000000",
-  location: "Hannover & Umland",
-  serviceArea: "Hannover, Garbsen und Region",
+  tagline: "Praxisnahe Prozessoptimierung und Workflow-Lösungen",
+  email: "deppmeyer.workflow@solutions.de",
+  phone: "",
+  location: "Deutschlandweit, mit Standort in Hannover",
+  serviceArea: "Deutschlandweit digital, Standort Hannover",
   legalName: "Max Deppmeyer",
-  street: "Musterstraße 1",
-  cityZip: "30159 Hannover",
-  domain: "https://example.com"
+  street: "[Straße und Hausnummer ergänzen]",
+  cityZip: "[PLZ und Ort ergänzen]",
+  domain: "https://deppmeyer-workflow-solutions.pages.dev"
 };

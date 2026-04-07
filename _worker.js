@@ -32,6 +32,8 @@ async function handleContactSubmission(request, env) {
     email: clean(payload.email).toLowerCase(),
     topic: clean(payload.topic),
     message: clean(payload.message),
+    phone: clean(payload.phone),
+    callbackRequested: payload.callbackRequested === true,
     consent: payload.consent === true,
     assessment: clean(payload.assessment),
     website: clean(payload.website)
@@ -55,6 +57,10 @@ async function handleContactSubmission(request, env) {
 
   if (!isValidEmail(data.email)) {
     return json({ ok: false, message: 'Bitte eine gültige E-Mail-Adresse eingeben.' }, 400);
+  }
+
+  if (data.callbackRequested && !isValidPhone(data.phone)) {
+    return json({ ok: false, message: 'Bitte eine Telefonnummer für den Rückruf angeben.' }, 400);
   }
 
   if (!data.consent) {
@@ -121,6 +127,11 @@ function clean(value) {
 
 function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(value || '').trim());
+}
+
+function isValidPhone(value) {
+  const normalized = String(value || '').trim().replace(/[^\d+]/g, '');
+  return normalized.length >= 7;
 }
 
 function json(payload, status) {
