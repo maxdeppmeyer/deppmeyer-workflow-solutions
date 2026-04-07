@@ -4362,18 +4362,88 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
   }
 }
 
-/* hotfix: Kontakt callback row alignment + Leistungen hero headline wrap */
-@media (min-width: 721px){
-  body[data-page="kontakt.html"] .callback-check{
-    margin-top:34px;
-  }
+
+/* === v007 legal pages centering polish === */
+body[data-page="impressum.html"] .page-hero,
+body[data-page="datenschutz.html"] .page-hero{
+  text-align:center !important;
 }
-@media (max-width: 720px){
-  body[data-page="kontakt.html"] .callback-check{
-    margin-top:0;
-  }
+body[data-page="impressum.html"] .page-hero .container,
+body[data-page="datenschutz.html"] .page-hero .container{
+  max-width:980px;
+  margin-inline:auto;
 }
-body[data-page="leistungen.html"] .leistungen-copy h1{
-  max-width:15ch !important;
-  white-space:normal !important;
+body[data-page="impressum.html"] .page-hero h1,
+body[data-page="datenschutz.html"] .page-hero h1{
+  max-width:none;
+  margin-left:auto;
+  margin-right:auto;
+}
+body[data-page="impressum.html"] .page-hero p,
+body[data-page="datenschutz.html"] .page-hero p,
+body[data-page="impressum.html"] .page-hero .lead,
+body[data-page="datenschutz.html"] .page-hero .lead{
+  max-width:860px;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="impressum.html"] .legal .container.card,
+body[data-page="datenschutz.html"] .legal .container.card{
+  max-width:980px;
+  margin-inline:auto;
+  padding:36px clamp(24px,4vw,44px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+body[data-page="impressum.html"] .legal .container.card > *,
+body[data-page="datenschutz.html"] .legal .container.card > *{
+  width:100%;
+  max-width:780px;
+}
+body[data-page="impressum.html"] .legal-note,
+body[data-page="datenschutz.html"] .legal-note{
+  max-width:100% !important;
+  margin:0 0 26px !important;
+  text-align:center;
+}
+body[data-page="impressum.html"] .legal p,
+body[data-page="datenschutz.html"] .legal p,
+body[data-page="impressum.html"] .legal ul,
+body[data-page="datenschutz.html"] .legal ul{
+  max-width:780px;
+  margin-left:auto;
+  margin-right:auto;
+}
+body[data-page="impressum.html"] .legal h2,
+body[data-page="datenschutz.html"] .legal h2{
+  max-width:780px;
+  margin:34px auto 14px;
+  text-align:center;
+}
+body[data-page="impressum.html"] .legal p:first-of-type{
+  text-align:center;
+}
+body[data-page="impressum.html"] .legal p strong:first-child,
+body[data-page="impressum.html"] .legal p strong:last-child{
+  display:inline-block;
+  margin-bottom:4px;
+}
+body[data-page="datenschutz.html"] .legal ul{
+  padding-left:22px;
+}
+body[data-page="datenschutz.html"] .legal li + li{
+  margin-top:8px;
+}
+@media (max-width: 760px){
+  body[data-page="impressum.html"] .legal .container.card,
+  body[data-page="datenschutz.html"] .legal .container.card{
+    padding:24px 18px;
+  }
+  body[data-page="impressum.html"] .legal p,
+  body[data-page="datenschutz.html"] .legal p,
+  body[data-page="impressum.html"] .legal ul,
+  body[data-page="datenschutz.html"] .legal ul{
+    max-width:none;
+  }
 }
