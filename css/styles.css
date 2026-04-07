@@ -4361,3 +4361,19 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
     text-align:left !important;
   }
 }
+
+/* hotfix: Kontakt callback row alignment + Leistungen hero headline wrap */
+@media (min-width: 721px){
+  body[data-page="kontakt.html"] .callback-check{
+    margin-top:34px;
+  }
+}
+@media (max-width: 720px){
+  body[data-page="kontakt.html"] .callback-check{
+    margin-top:0;
+  }
+}
+body[data-page="leistungen.html"] .leistungen-copy h1{
+  max-width:15ch !important;
+  white-space:normal !important;
+}
