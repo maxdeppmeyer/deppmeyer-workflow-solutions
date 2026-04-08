@@ -4500,3 +4500,101 @@ body[data-page="leistungen.html"] .leistungen-flow-wrap{
     padding:26px 22px !important;
   }
 }
+
+
+/* v009 legal pages centering + leistungen hero hard override */
+html body[data-page="impressum.html"] .legal,
+html body[data-page="datenschutz.html"] .legal{
+  max-width:980px !important;
+  margin:0 auto !important;
+  padding:20px 24px 0 !important;
+  box-sizing:border-box !important;
+}
+html body[data-page="impressum.html"] .legal > *,
+html body[data-page="datenschutz.html"] .legal > *{
+  width:100% !important;
+  box-sizing:border-box !important;
+}
+html body[data-page="impressum.html"] .legal-note,
+html body[data-page="datenschutz.html"] .legal-note{
+  margin:0 0 28px !important;
+  text-align:left !important;
+}
+html body[data-page="impressum.html"] .legal h2,
+html body[data-page="datenschutz.html"] .legal h2{
+  text-align:left !important;
+  margin:34px 0 14px !important;
+  max-width:none !important;
+}
+html body[data-page="impressum.html"] .legal p,
+html body[data-page="datenschutz.html"] .legal p,
+html body[data-page="impressum.html"] .legal li,
+html body[data-page="datenschutz.html"] .legal li{
+  text-align:left !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+  max-width:none !important;
+}
+html body[data-page="impressum.html"] .legal p,
+html body[data-page="datenschutz.html"] .legal p{
+  margin:0 0 18px !important;
+}
+html body[data-page="impressum.html"] .legal p > strong:first-child,
+html body[data-page="datenschutz.html"] .legal p > strong:first-child{
+  display:block !important;
+  margin-bottom:10px !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero{
+  padding:56px 0 8px !important;
+  overflow:hidden !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-hero-grid{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  justify-items:center !important;
+  align-items:center !important;
+  gap:18px !important;
+  max-width:1240px !important;
+  margin:0 auto !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy{
+  max-width:920px !important;
+  width:100% !important;
+  margin:0 auto !important;
+  display:grid !important;
+  justify-items:center !important;
+  gap:14px !important;
+  text-align:center !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy h1{
+  width:100% !important;
+  max-width:18ch !important;
+  margin:0 auto !important;
+  text-align:center !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+  line-height:.98 !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy .lead,
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy .eyebrow{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy .lead{
+  max-width:66ch !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-flow-wrap{
+  width:100% !important;
+  min-height:212px !important;
+  margin-top:10px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+}
+@media (max-width: 900px){
+  html body[data-page="impressum.html"] .legal,
+  html body[data-page="datenschutz.html"] .legal{
+    padding:16px 20px 0 !important;
+  }
+}
