@@ -4363,87 +4363,140 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
 }
 
 
-/* === v007 legal pages centering polish === */
+/* v008 targeted legal cleanup + restore leistungen hero */
 body[data-page="impressum.html"] .page-hero,
 body[data-page="datenschutz.html"] .page-hero{
   text-align:center !important;
+  padding-bottom:20px !important;
 }
 body[data-page="impressum.html"] .page-hero .container,
 body[data-page="datenschutz.html"] .page-hero .container{
-  max-width:980px;
-  margin-inline:auto;
+  max-width:980px !important;
+  margin:0 auto !important;
+  display:grid !important;
+  justify-items:center !important;
+  gap:14px !important;
+  text-align:center !important;
 }
 body[data-page="impressum.html"] .page-hero h1,
 body[data-page="datenschutz.html"] .page-hero h1{
-  max-width:none;
-  margin-left:auto;
-  margin-right:auto;
+  margin:0 auto !important;
+  max-width:none !important;
+  text-align:center !important;
 }
 body[data-page="impressum.html"] .page-hero p,
 body[data-page="datenschutz.html"] .page-hero p,
 body[data-page="impressum.html"] .page-hero .lead,
 body[data-page="datenschutz.html"] .page-hero .lead{
-  max-width:860px;
-  margin-left:auto !important;
-  margin-right:auto !important;
+  max-width:72ch !important;
+  margin:0 auto !important;
+  text-align:center !important;
 }
-body[data-page="impressum.html"] .legal .container.card,
-body[data-page="datenschutz.html"] .legal .container.card{
-  max-width:980px;
-  margin-inline:auto;
-  padding:36px clamp(24px,4vw,44px);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+body[data-page="impressum.html"] .legal,
+body[data-page="datenschutz.html"] .legal{
+  padding-top:12px !important;
+}
+body[data-page="impressum.html"] .legal > .container.card,
+body[data-page="datenschutz.html"] .legal > .container.card{
+  max-width:940px !important;
+  margin:0 auto !important;
+  padding:34px 38px !important;
 }
 body[data-page="impressum.html"] .legal .container.card > *,
 body[data-page="datenschutz.html"] .legal .container.card > *{
-  width:100%;
-  max-width:780px;
+  text-align:left !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
 }
 body[data-page="impressum.html"] .legal-note,
 body[data-page="datenschutz.html"] .legal-note{
-  max-width:100% !important;
   margin:0 0 26px !important;
-  text-align:center;
+  padding:16px 18px !important;
+  border-radius:20px !important;
 }
 body[data-page="impressum.html"] .legal p,
 body[data-page="datenschutz.html"] .legal p,
-body[data-page="impressum.html"] .legal ul,
-body[data-page="datenschutz.html"] .legal ul{
-  max-width:780px;
-  margin-left:auto;
-  margin-right:auto;
+body[data-page="impressum.html"] .legal li,
+body[data-page="datenschutz.html"] .legal li{
+  line-height:1.72 !important;
+}
+body[data-page="impressum.html"] .legal p,
+body[data-page="datenschutz.html"] .legal p{
+  margin:0 0 18px !important;
 }
 body[data-page="impressum.html"] .legal h2,
 body[data-page="datenschutz.html"] .legal h2{
-  max-width:780px;
-  margin:34px auto 14px;
-  text-align:center;
+  margin:34px 0 14px !important;
+  font-size:clamp(1.7rem,2.3vw,2.35rem) !important;
+  line-height:1.08 !important;
 }
-body[data-page="impressum.html"] .legal p:first-of-type{
-  text-align:center;
+body[data-page="impressum.html"] .legal p > strong:first-child,
+body[data-page="datenschutz.html"] .legal p > strong:first-child{
+  display:block;
+  margin-bottom:10px;
+  color:var(--heading);
+  font-size:1.18rem;
+  line-height:1.25;
 }
-body[data-page="impressum.html"] .legal p strong:first-child,
-body[data-page="impressum.html"] .legal p strong:last-child{
-  display:inline-block;
-  margin-bottom:4px;
+body[data-page="impressum.html"] .legal ul,
+body[data-page="datenschutz.html"] .legal ul,
+body[data-page="impressum.html"] .legal ol,
+body[data-page="datenschutz.html"] .legal ol{
+  margin:0 0 18px !important;
+  padding-left:1.2rem !important;
 }
-body[data-page="datenschutz.html"] .legal ul{
-  padding-left:22px;
+body[data-page="impressum.html"] .section-back-home .container,
+body[data-page="datenschutz.html"] .section-back-home .container{
+  justify-content:center !important;
 }
-body[data-page="datenschutz.html"] .legal li + li{
-  margin-top:8px;
+
+body[data-page="leistungen.html"] .leistungen-hero{
+  padding:56px 0 8px !important;
+  overflow:hidden !important;
 }
-@media (max-width: 760px){
-  body[data-page="impressum.html"] .legal .container.card,
-  body[data-page="datenschutz.html"] .legal .container.card{
-    padding:24px 18px;
-  }
-  body[data-page="impressum.html"] .legal p,
-  body[data-page="datenschutz.html"] .legal p,
-  body[data-page="impressum.html"] .legal ul,
-  body[data-page="datenschutz.html"] .legal ul{
-    max-width:none;
+body[data-page="leistungen.html"] .container.leistungen-hero-grid{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  justify-items:center !important;
+  align-items:center !important;
+  gap:18px !important;
+  max-width:1240px !important;
+}
+body[data-page="leistungen.html"] .leistungen-copy{
+  max-width:920px !important;
+  margin:0 auto !important;
+  display:grid !important;
+  justify-items:center !important;
+  gap:14px !important;
+  text-align:center !important;
+}
+body[data-page="leistungen.html"] .leistungen-copy .eyebrow,
+body[data-page="leistungen.html"] .leistungen-copy h1,
+body[data-page="leistungen.html"] .leistungen-copy .lead{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+}
+body[data-page="leistungen.html"] .leistungen-copy h1{
+  max-width:16ch !important;
+  font-size:clamp(3rem,4.3vw,4.8rem) !important;
+  line-height:.98 !important;
+}
+body[data-page="leistungen.html"] .leistungen-copy .lead{
+  max-width:66ch !important;
+}
+body[data-page="leistungen.html"] .leistungen-flow-wrap{
+  width:100% !important;
+  min-height:212px !important;
+  margin-top:10px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+}
+
+@media (max-width: 900px){
+  body[data-page="impressum.html"] .legal > .container.card,
+  body[data-page="datenschutz.html"] .legal > .container.card{
+    padding:26px 22px !important;
   }
 }
