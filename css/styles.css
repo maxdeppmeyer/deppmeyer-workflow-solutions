@@ -4693,3 +4693,87 @@ html body[data-page="einsatzbereiche.html"] .einsatz-pulse{
     font-size: clamp(2.3rem, 10vw, 3.2rem) !important;
   }
 }
+
+
+/* --- targeted desktop hero alignment fix: Leistungen / Beispiele / Einsatzbereiche --- */
+@media (min-width: 981px){
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-hero-grid,
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid,
+  html body[data-page="einsatzbereiche.html"] .einsatz-hero-grid{
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    align-items: center !important;
+    gap: 20px !important;
+  }
+
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy,
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid > div:first-child,
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy{
+    width: 100% !important;
+    max-width: 1180px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: grid !important;
+    justify-items: center !important;
+    text-align: center !important;
+  }
+
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid > div:first-child{
+    gap: 14px !important;
+  }
+
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy h1,
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid > div:first-child h1,
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy h1{
+    width: 100% !important;
+    max-width: 24ch !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    text-wrap: balance !important;
+    line-height: 1.02 !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy h1{
+    font-size: clamp(3.2rem, 4.9vw, 4.75rem) !important;
+  }
+
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid > div:first-child h1{
+    font-size: clamp(3.1rem, 4.7vw, 4.65rem) !important;
+  }
+
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy h1{
+    font-size: clamp(3.15rem, 4.8vw, 4.7rem) !important;
+  }
+
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy .lead,
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid > div:first-child .lead,
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy .lead{
+    max-width: 62ch !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+
+  html body[data-page="beispiele.html"] .examples-note{
+    max-width: 760px !important;
+    width: 100% !important;
+    margin: 6px auto 0 !important;
+  }
+
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{
+    grid-template-columns: minmax(96px, 132px) minmax(0, 1fr) minmax(96px, 132px) !important;
+    justify-items: center !important;
+    align-items: center !important;
+    gap: 20px !important;
+    max-width: 1160px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  html body[data-page="einsatzbereiche.html"] .einsatz-side-icons{
+    flex: 0 0 132px !important;
+  }
+}
