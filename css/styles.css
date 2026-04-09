@@ -4935,3 +4935,124 @@ html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{
   gap:0 !important;
   max-width:960px !important;
 }
+
+/* === targeted fix: kontakt callback alignment + mobile text safety === */
+@media (min-width: 761px){
+  html body[data-page="kontakt.html"] .form-row > div:last-child{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    padding-top:0 !important;
+  }
+
+  html body[data-page="kontakt.html"] .form-row > div:last-child::before{
+    content:"";
+    display:block;
+    flex:0 0 31px;
+    height:31px;
+    width:100%;
+  }
+
+  html body[data-page="kontakt.html"] .callback-check{
+    margin-top:0 !important;
+    width:100% !important;
+    min-height:52px !important;
+    display:grid !important;
+    align-items:center !important;
+  }
+
+  html body[data-page="kontakt.html"] .callback-check input{
+    margin-top:0 !important;
+    align-self:center !important;
+  }
+}
+
+@media (max-width: 760px){
+  html body[data-page="kontakt.html"] .form-row > div:last-child::before{
+    display:none !important;
+  }
+
+  html body[data-page="kontakt.html"] .callback-check{
+    min-height:0 !important;
+  }
+
+  html body[data-page="index.html"] .hero h1,
+  html body[data-page="leistungen.html"] .page-hero h1,
+  html body[data-page="beispiele.html"] .page-hero h1,
+  html body[data-page="einsatzbereiche.html"] .page-hero h1,
+  html body[data-page="ueber-mich.html"] .page-hero h1,
+  html body[data-page="kontakt.html"] .page-hero h1,
+  html body[data-page="impressum.html"] .page-hero h1,
+  html body[data-page="datenschutz.html"] .page-hero h1,
+  html body[data-page="404.html"] .page-hero h1,
+  html body[data-page="ablauf.html"] h1,
+  html body .section-head h2,
+  html body .callout h2,
+  html body .cta-panel h2,
+  html body .quote-box h2,
+  html body .accordion-text h3,
+  html body .service-card h3,
+  html body .usage-card h3,
+  html body .problem-card h3,
+  html body .step-card h3,
+  html body .timeline-card h3,
+  html body .stack-card h3{
+    max-width:100% !important;
+    width:100% !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    text-wrap:balance !important;
+    hyphens:auto;
+  }
+
+  html body[data-page="index.html"] .hero h1,
+  html body[data-page="leistungen.html"] .page-hero h1,
+  html body[data-page="beispiele.html"] .page-hero h1,
+  html body[data-page="einsatzbereiche.html"] .page-hero h1,
+  html body[data-page="ueber-mich.html"] .page-hero h1,
+  html body[data-page="kontakt.html"] .page-hero h1,
+  html body[data-page="impressum.html"] .page-hero h1,
+  html body[data-page="datenschutz.html"] .page-hero h1,
+  html body[data-page="404.html"] .page-hero h1,
+  html body[data-page="ablauf.html"] h1{
+    font-size:clamp(2rem, 9vw, 3rem) !important;
+    line-height:1.04 !important;
+  }
+
+  html body[data-page="index.html"] .hero-copy,
+  html body .page-copy,
+  html body .section-head,
+  html body .cta-panel,
+  html body .quote-box,
+  html body .contact-form,
+  html body .contact-card,
+  html body .workflow-check-intro,
+  html body .workflow-check-shell,
+  html body .problem-card,
+  html body .service-card,
+  html body .usage-card,
+  html body .step-card,
+  html body .timeline-card,
+  html body .example-card,
+  html body .overview-card,
+  html body .stack-card{
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  html body .lead,
+  html body p,
+  html body li,
+  html body label,
+  html body .note,
+  html body .field-help,
+  html body .accordion-preview,
+  html body .faq-answer-inner,
+  html body .summary-list div{
+    max-width:100% !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+}
