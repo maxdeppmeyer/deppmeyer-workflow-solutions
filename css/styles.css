@@ -4777,3 +4777,151 @@ html body[data-page="einsatzbereiche.html"] .einsatz-pulse{
     flex: 0 0 132px !important;
   }
 }
+
+/* --- targeted request: Start / Beispiele / Einsatzbereiche / Kontakt only --- */
+
+/* Start: hero animation must end before problem cards */
+html body[data-page="index.html"] #hero{
+  position:relative;
+  overflow:hidden;
+}
+html body[data-page="index.html"] .hero-copy,
+html body[data-page="index.html"] .problem-grid,
+html body[data-page="index.html"] .problem-card,
+html body[data-page="index.html"] #probleme{
+  position:relative;
+  z-index:2;
+}
+html body[data-page="index.html"] .hero-stream-wrap.hero-stream-naked{
+  z-index:0;
+}
+
+/* Start + Kontakt: quickcheck question titles visible again on all devices */
+html body[data-page="index.html"] .workflow-question-card legend.workflow-question-title,
+html body[data-page="kontakt.html"] .workflow-question-card legend.workflow-question-title{
+  display:block !important;
+  width:100%;
+  margin:0 0 14px;
+  padding:0;
+  font-size:1.15rem;
+  font-weight:800;
+  color:var(--heading);
+}
+
+/* Kontakt: callback box aligned cleanly next to phone field on desktop/tablet */
+html body[data-page="kontakt.html"] .callback-check{
+  margin-top:30px !important;
+  min-height:54px;
+  align-items:center !important;
+}
+@media (max-width: 760px){
+  html body[data-page="kontakt.html"] .callback-check{
+    margin-top:0 !important;
+    min-height:0;
+  }
+}
+
+/* Beispiele: top filter chips centered */
+html body[data-page="beispiele.html"] .examples-tools,
+html body[data-page="beispiele.html"] .examples-chip-row,
+html body[data-page="beispiele.html"] .examples-chip-row-left{
+  justify-content:center !important;
+}
+html body[data-page="beispiele.html"] .examples-tools{
+  width:100%;
+  align-items:center !important;
+}
+html body[data-page="beispiele.html"] .examples-chip-row-left{
+  width:100%;
+}
+
+/* Beispiele: cleaner closing visual without overlaps */
+html body[data-page="beispiele.html"] .cta-panel-examples{
+  align-items:center !important;
+}
+html body[data-page="beispiele.html"] .cta-savings-visual{
+  width:min(100%, 430px);
+  max-width:430px;
+  min-height:248px;
+  margin-left:auto;
+  margin-right:auto;
+  overflow:hidden;
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 24% 24%, rgba(87,207,255,.10), transparent 28%),
+    radial-gradient(circle at 78% 72%, rgba(100,118,255,.10), transparent 32%),
+    linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,.08));
+  border:1px solid rgba(120,164,225,.16);
+}
+html body[data-page="beispiele.html"] .cta-savings-visual::before{
+  display:block;
+  content:"";
+  position:absolute;
+  inset:16px;
+  border-radius:22px;
+  border:1px solid rgba(120,164,225,.14);
+  background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+}
+html body[data-page="beispiele.html"] .savings-track{
+  left:12% !important;
+  right:12% !important;
+  top:58% !important;
+}
+html body[data-page="beispiele.html"] .savings-signal{
+  top:58% !important;
+  left:12% !important;
+  animation:savingsSignalStraight 5.6s ease-in-out infinite !important;
+}
+html body[data-page="beispiele.html"] .savings-orbit{
+  display:none !important;
+}
+html body[data-page="beispiele.html"] .savings-label{
+  z-index:3 !important;
+}
+html body[data-page="beispiele.html"] .savings-label-loss{
+  left:12% !important;
+  top:16% !important;
+}
+html body[data-page="beispiele.html"] .savings-label-cost{
+  left:auto !important;
+  right:12% !important;
+  top:16% !important;
+}
+html body[data-page="beispiele.html"] .savings-label-time{
+  right:12% !important;
+  bottom:16% !important;
+}
+html body[data-page="beispiele.html"] .savings-status{
+  left:50% !important;
+  top:58% !important;
+  bottom:auto !important;
+  right:auto !important;
+  transform:translate(-50%, -50%);
+  max-width:220px;
+  width:max-content;
+  text-align:center;
+  z-index:2 !important;
+}
+@keyframes savingsSignalStraight{
+  0%{left:12%;}
+  50%{left:50%;}
+  100%{left:88%;}
+}
+@media (max-width: 900px){
+  html body[data-page="beispiele.html"] .cta-savings-visual{
+    min-height:270px;
+  }
+  html body[data-page="beispiele.html"] .savings-status{
+    max-width:200px;
+  }
+}
+
+/* Einsatzbereiche: remove side icon animations/cards completely, keep centered title block */
+html body[data-page="einsatzbereiche.html"] .einsatz-side-icons{
+  display:none !important;
+}
+html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{
+  grid-template-columns:1fr !important;
+  gap:0 !important;
+  max-width:960px !important;
+}
