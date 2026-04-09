@@ -4808,15 +4808,24 @@ html body[data-page="kontakt.html"] .workflow-question-card legend.workflow-ques
   color:var(--heading);
 }
 
-/* Kontakt: callback box aligned cleanly next to phone field on desktop/tablet */
+/* Kontakt: callback box sits directly next to the phone field */
+html body[data-page="kontakt.html"] .form-row > div:last-child{
+  display:flex;
+  align-items:flex-start;
+  padding-top:24px;
+}
 html body[data-page="kontakt.html"] .callback-check{
-  margin-top:30px !important;
+  margin-top:0 !important;
   min-height:54px;
   align-items:center !important;
+  width:100%;
 }
 @media (max-width: 760px){
+  html body[data-page="kontakt.html"] .form-row > div:last-child{
+    display:block;
+    padding-top:0;
+  }
   html body[data-page="kontakt.html"] .callback-check{
-    margin-top:0 !important;
     min-height:0;
   }
 }
@@ -4870,7 +4879,9 @@ html body[data-page="beispiele.html"] .savings-track{
 html body[data-page="beispiele.html"] .savings-signal{
   top:58% !important;
   left:12% !important;
-  animation:savingsSignalStraight 5.6s ease-in-out infinite !important;
+  z-index:4 !important;
+  animation:savingsSignalPingPong 3.8s ease-in-out infinite alternate !important;
+  will-change:left;
 }
 html body[data-page="beispiele.html"] .savings-orbit{
   display:none !important;
@@ -4902,9 +4913,8 @@ html body[data-page="beispiele.html"] .savings-status{
   text-align:center;
   z-index:2 !important;
 }
-@keyframes savingsSignalStraight{
+@keyframes savingsSignalPingPong{
   0%{left:12%;}
-  50%{left:50%;}
   100%{left:88%;}
 }
 @media (max-width: 900px){
