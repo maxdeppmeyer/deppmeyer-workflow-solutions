@@ -5056,3 +5056,101 @@ html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{
     word-break:break-word !important;
   }
 }
+
+
+/* final targeted fix: contact callback row + mobile text clipping */
+@media (min-width: 761px){
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type{
+    align-items:start !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type > div:last-child{
+    display:block !important;
+    align-self:start !important;
+    padding-top:20px !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type > div:last-child::before{
+    content:none !important;
+    display:none !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check{
+    width:100% !important;
+    height:56px !important;
+    min-height:56px !important;
+    margin:0 !important;
+    padding:0 18px !important;
+    display:grid !important;
+    grid-template-columns:22px minmax(0, 1fr) !important;
+    align-items:center !important;
+    column-gap:12px !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check input{
+    margin:0 !important;
+    align-self:center !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check span{
+    line-height:1.35 !important;
+  }
+}
+
+@media (max-width: 760px){
+  html,
+  body{
+    overflow-x:hidden !important;
+  }
+
+  html body .container,
+  html body .page-hero-grid,
+  html body .hero-grid,
+  html body .page-copy,
+  html body .section-head,
+  html body .accordion-summary,
+  html body .accordion-text,
+  html body .cta-panel,
+  html body .quote-box,
+  html body .contact-card,
+  html body .contact-form,
+  html body .problem-card,
+  html body .service-card,
+  html body .usage-card,
+  html body .step-card,
+  html body .timeline-card,
+  html body .example-card,
+  html body .overview-card,
+  html body .stack-card,
+  html body .workflow-question-card,
+  html body .workflow-option,
+  html body .summary-list div{
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  html body .page-hero h1,
+  html body .hero h1,
+  html body .section-head h2,
+  html body .callout h2,
+  html body .cta-panel h2,
+  html body .quote-box h2,
+  html body .accordion-text h3,
+  html body .service-card h3,
+  html body .usage-card h3,
+  html body .problem-card h3,
+  html body .step-card h3,
+  html body .timeline-card h3,
+  html body .stack-card h3,
+  html body p,
+  html body li,
+  html body label,
+  html body span,
+  html body a,
+  html body .note,
+  html body .field-help{
+    max-width:100% !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+}
