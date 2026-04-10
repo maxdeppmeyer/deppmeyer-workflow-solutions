@@ -1224,8 +1224,24 @@
   if (contactForm) {
     const summary = contactForm.querySelector('[data-contact-summary]');
     const submitButton = contactForm.querySelector('[data-contact-submit]');
+    const submitDefaultLabel = submitButton ? String(submitButton.textContent || '').trim() || 'Kostenloses Erstgespräch anfragen' : 'Kostenloses Erstgespräch anfragen';
     const responseNote = contactForm.querySelector('[data-contact-note]');
     const defaultResponseNote = responseNote ? responseNote.textContent.trim() : '';
+    const responseWrap = contactForm.querySelector('.contact-response');
+    const callbackHintNote = (() => {
+      if (!responseWrap) return null;
+      const existing = responseWrap.querySelector('[data-callback-choice-note]');
+      if (existing) return existing;
+      const note = document.createElement('span');
+      note.className = 'note';
+      note.hidden = true;
+      note.setAttribute('aria-live', 'polite');
+      note.setAttribute('data-callback-choice-note', '');
+      note.textContent = 'Hinweis: Es kann nur eine Option gewählt werden. Mit ausgewähltem Rückruf wird die Anfrage als Rückrufwunsch behandelt.';
+      if (responseNote) responseWrap.insertBefore(note, responseNote);
+      else responseWrap.appendChild(note);
+      return note;
+    })();
     const emailInput = contactForm.querySelector('#email');
     const emailFeedback = contactForm.querySelector('[data-email-feedback]');
     const consentInput = contactForm.querySelector('#consent');
@@ -1245,15 +1261,55 @@
     };
     const syncRequiredMarkers = () => {
       requiredWrappers.forEach((wrapper) => {
-        const hasMarker = wrapper.querySelector(':scope > .required-marker');
-        if (!hasMarker) {
-          const marker = document.createElement('span');
+        const label = wrapper.querySelector(':scope > label');
+        const isConsentWrapper = wrapper.classList.contains('consent-wrap') || label?.classList.contains('consent-check');
+        let marker = wrapper.querySelector(':scope > .required-marker, :scope > label > .required-marker');
+        if (!marker) {
+          marker = document.createElement('span');
           marker.className = 'required-marker';
           marker.textContent = '*';
           marker.setAttribute('aria-hidden', 'true');
+        }
+
+        if (isConsentWrapper) {
+          if (marker.parentElement !== wrapper) wrapper.appendChild(marker);
+          wrapper.style.position = 'relative';
+          Object.assign(marker.style, {
+            position: 'absolute',
+            top: '12px',
+            right: '14px',
+            color: '#ff5a6f',
+            fontSize: '1rem',
+            fontWeight: '800',
+            lineHeight: '1',
+            pointerEvents: 'none',
+            zIndex: '3'
+          });
+        } else if (label) {
+          if (marker.parentElement !== label) label.appendChild(marker);
+          Object.assign(label.style, {
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px'
+          });
+          Object.assign(marker.style, {
+            position: 'static',
+            top: '',
+            right: '',
+            color: '#ff5a6f',
+            fontSize: '1rem',
+            fontWeight: '800',
+            lineHeight: '1',
+            pointerEvents: 'none',
+            zIndex: ''
+          });
+        } else if (marker.parentElement !== wrapper) {
           wrapper.appendChild(marker);
         }
-        wrapper.classList.toggle('is-filled', requiredFieldFilled(wrapper));
+
+        const filled = requiredFieldFilled(wrapper);
+        marker.style.display = filled ? 'none' : 'inline-block';
+        wrapper.classList.toggle('is-filled', filled);
       });
     };
     const validateEmailValue = (value) => {
@@ -1435,6 +1491,7 @@
       const emailState = validateEmailValue(formData.get('email'));
       const consentGiven = Boolean(formData.get('consent'));
       const callbackRequested = Boolean(formData.get('callbackRequested'));
+      if (callbackHintNote) callbackHintNote.hidden = !callbackRequested;
       const phoneState = callbackRequested ? validatePhoneValue(formData.get('phone')) : { valid: true, state: 'idle', message: 'Rückruf ist optional.' };
       const genderValue = String(formData.get('gender') || '').trim();
       const firstNameValue = String(formData.get('firstName') || '').trim();
@@ -1503,6 +1560,9 @@
     contactForm.addEventListener('input', () => {
       if (!isSubmitting) updateSummary();
     });
+    contactForm.addEventListener('change', () => {
+      if (!isSubmitting) updateSummary();
+    });
     contactForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const formData = new FormData(contactForm);
@@ -1560,7 +1620,7 @@
       } finally {
         isSubmitting = false;
         if (submitButton) {
-          submitButton.textContent = 'Anfrage absenden';
+          submitButton.textContent = submitDefaultLabel;
         }
         updateSummary();
       }
