@@ -156,8 +156,8 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 </div><form data-contact-form="">
 <div class="contact-prefill-note" data-contact-prefill="" hidden=""><div class="mini-label">Schnellcheck</div><div class="contact-prefill-note-row"><p data-contact-prefill-text=""></p><button class="btn ghost contact-prefill-clear" data-contact-prefill-clear="" type="button">Schnellcheck entfernen</button></div></div>
 <div class="contact-fields">
-<div class="form-row">
-<div data-required-field="" data-required-name="Anrede">
+<div class="form-row contact-form-row">
+<div class="contact-field" data-required-field="" data-required-name="Anrede">
 <span aria-hidden="true" class="required-marker">*</span><label for="gender">Anrede</label>
 <select class="select" id="gender" name="gender" required="">
 <option value="">Bitte auswählen</option>
@@ -166,28 +166,28 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <option value="diverse">Divers</option>
 </select>
 </div>
-<div data-required-field="" data-required-name="Vorname">
+<div class="contact-field" data-required-field="" data-required-name="Vorname">
 <span aria-hidden="true" class="required-marker">*</span><label for="firstName">Vorname</label>
 <input class="input" id="firstName" name="firstName" required=""/>
 </div>
 </div>
-<div class="form-row">
-<div data-required-field="" data-required-name="Nachname">
+<div class="form-row contact-form-row">
+<div class="contact-field" data-required-field="" data-required-name="Nachname">
 <span aria-hidden="true" class="required-marker">*</span><label for="name">Nachname</label>
 <input class="input" id="name" name="name" required=""/>
 </div>
-<div>
+<div class="contact-field">
 <label for="company">Unternehmen</label>
 <input class="input" id="company" name="company"/>
 </div>
 </div>
-<div class="form-row">
-<div data-required-field="" data-required-name="E-Mail">
+<div class="form-row contact-form-row">
+<div class="contact-field" data-required-field="" data-required-name="E-Mail">
 <span aria-hidden="true" class="required-marker">*</span><label for="email">E-Mail</label>
 <input aria-describedby="email-feedback" autocomplete="email" class="input" id="email" inputmode="email" name="email" required="" type="email"/>
 <div aria-live="polite" class="field-help" data-email-feedback="" id="email-feedback">Bitte eine gültige E-Mail-Adresse angeben.</div>
 </div>
-<div>
+<div class="contact-field">
 <label for="topic">Thema / Bereich</label>
 <select class="select" id="topic" name="topic">
 <option>Allgemeine Prozessoptimierung</option>
@@ -207,13 +207,14 @@ body[data-page="kontakt.html"] .contact-prefill-clear{padding:10px 16px;min-heig
 <label for="message">Kurze Beschreibung</label>
 <textarea id="message" name="message" placeholder="Beschreiben Sie kurz den Ablauf, das Problem oder das gewünschte Ergebnis."></textarea>
 </div>
-<div class="form-row">
-<div>
+<div class="form-row contact-form-row contact-form-row--callback">
+<div class="contact-field">
 <label for="phone">Telefon (optional)</label>
 <input class="input" id="phone" inputmode="tel" name="phone" placeholder="Nur nötig, wenn ein Rückruf gewünscht ist." type="tel"/>
 <div aria-live="polite" class="field-help" data-callback-feedback="">Optional: Für einen Rückruf bitte Telefonnummer angeben und Rückruf aktivieren.</div>
 </div>
-<div>
+<div class="contact-field contact-field--callback">
+<label aria-hidden="true" class="contact-field-spacer">Telefon (optional)</label>
 <label class="consent-check callback-check" for="callbackRequested">
 <input id="callbackRequested" name="callbackRequested" type="checkbox"/>
 <span>Bitte Rückruf statt E-Mail-Antwort.</span>
