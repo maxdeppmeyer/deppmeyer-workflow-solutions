@@ -5154,3 +5154,117 @@ html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{
     word-break:break-word !important;
   }
 }
+
+/* === targeted fix v22: contact last row alignment + mobile text clipping safety === */
+@media (min-width: 761px){
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    align-items:start !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type > div:last-child{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    align-self:start !important;
+    padding-top:0 !important;
+    margin-top:0 !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type > div:last-child::before{
+    content:"Telefon (optional)";
+    visibility:hidden !important;
+    display:block !important;
+    font-size:1rem !important;
+    line-height:1.25 !important;
+    margin:0 0 8px 0 !important;
+    padding:0 !important;
+    height:auto !important;
+    white-space:nowrap !important;
+    pointer-events:none !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check{
+    width:100% !important;
+    box-sizing:border-box !important;
+    min-height:54px !important;
+    height:54px !important;
+    margin:0 !important;
+    padding:15px 18px !important;
+    display:grid !important;
+    grid-template-columns:18px minmax(0,1fr) !important;
+    align-items:center !important;
+    column-gap:12px !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check input{
+    margin:0 !important;
+    align-self:center !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check span{
+    line-height:1.35 !important;
+    margin:0 !important;
+  }
+}
+
+@media (max-width: 760px){
+  html,
+  body{
+    overflow-x:hidden !important;
+  }
+
+  html body .container,
+  html body .page-hero,
+  html body .page-hero .container,
+  html body .page-hero-grid,
+  html body .hero-grid,
+  html body .hero-copy,
+  html body .page-copy,
+  html body .section-head,
+  html body .accordion-summary,
+  html body .accordion-text,
+  html body .cta-panel,
+  html body .quote-box,
+  html body .contact-form,
+  html body .contact-card,
+  html body .workflow-check-shell,
+  html body .workflow-question-card,
+  html body .problem-card,
+  html body .service-card,
+  html body .usage-card,
+  html body .step-card,
+  html body .timeline-card,
+  html body .example-card,
+  html body .overview-card,
+  html body .stack-card,
+  html body .legal,
+  html body .legal-card{
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  html body h1,
+  html body h2,
+  html body h3,
+  html body .lead,
+  html body p,
+  html body li,
+  html body label,
+  html body .note,
+  html body .field-help,
+  html body .accordion-preview,
+  html body .faq-answer-inner,
+  html body .summary-list div,
+  html body .legal p,
+  html body .legal li,
+  html body .legal h2,
+  html body .legal h3{
+    width:auto !important;
+    max-width:100% !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    hyphens:auto !important;
+  }
+}
