@@ -1247,6 +1247,7 @@
       const existing = responseWrap.querySelector('[data-contact-validation-note]');
       if (existing) return existing;
       const note = document.createElement('div');
+      note.className = 'note';
       note.hidden = true;
       note.setAttribute('role', 'status');
       note.setAttribute('aria-live', 'polite');
@@ -1255,17 +1256,18 @@
         display: 'block',
         flexBasis: '100%',
         width: '100%',
-        padding: '12px 14px',
+        padding: '10px 14px',
         borderRadius: '14px',
-        background: '#fff4db',
-        border: '1px solid #f4c977',
-        color: '#8b5a00',
+        background: 'rgba(255,255,255,.06)',
+        border: '1px solid rgba(200,74,100,.18)',
+        color: 'var(--muted-2)',
         lineHeight: '1.55',
-        fontSize: '0.95rem',
-        fontWeight: '600',
+        fontSize: '0.94rem',
+        fontWeight: '500',
         boxSizing: 'border-box'
       });
-      if (callbackHintNote) responseWrap.insertBefore(note, callbackHintNote);
+      if (submitButton) responseWrap.insertBefore(note, submitButton);
+      else if (callbackHintNote) responseWrap.insertBefore(note, callbackHintNote);
       else if (responseNote) responseWrap.insertBefore(note, responseNote);
       else responseWrap.appendChild(note);
       return note;
@@ -1286,7 +1288,7 @@
       const shouldShow = shouldRevealValidationHint && !isSubmitting && issues.length > 0;
       validationHintNote.hidden = !shouldShow;
       validationHintNote.textContent = shouldShow
-        ? `Bitte noch prüfen oder ausfüllen: ${issues.join(' · ')}.`
+        ? 'Bitte fülle alle Pflichtfelder korrekt aus, um fortzufahren.'
         : '';
     };
     const getRequiredControl = (wrapper) => wrapper?.querySelector('input, select, textarea');
