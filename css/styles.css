@@ -5378,3 +5378,37 @@ html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{
     hyphens:auto !important;
   }
 }
+
+/* targeted fix v23: kontakt form desktop rows keep both columns on the same baseline */
+@media (min-width: 761px){
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:14px !important;
+    align-items:start !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    align-self:start !important;
+    margin:0 !important;
+    padding-top:0 !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field::before,
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field:last-child::before{
+    content:none !important;
+    display:none !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row--callback > .contact-field--callback > .contact-field-spacer{
+    display:block !important;
+    visibility:hidden !important;
+    margin:0 0 8px 0 !important;
+    line-height:1.25 !important;
+    min-height:20px !important;
+    pointer-events:none !important;
+  }
+}
