@@ -1242,15 +1242,52 @@
       else responseWrap.appendChild(note);
       return note;
     })();
+    const validationHintNote = (() => {
+      if (!responseWrap) return null;
+      const existing = responseWrap.querySelector('[data-contact-validation-note]');
+      if (existing) return existing;
+      const note = document.createElement('div');
+      note.hidden = true;
+      note.setAttribute('role', 'status');
+      note.setAttribute('aria-live', 'polite');
+      note.setAttribute('data-contact-validation-note', '');
+      Object.assign(note.style, {
+        display: 'block',
+        flexBasis: '100%',
+        width: '100%',
+        padding: '12px 14px',
+        borderRadius: '14px',
+        background: '#fff4db',
+        border: '1px solid #f4c977',
+        color: '#8b5a00',
+        lineHeight: '1.55',
+        fontSize: '0.95rem',
+        fontWeight: '600',
+        boxSizing: 'border-box'
+      });
+      if (callbackHintNote) responseWrap.insertBefore(note, callbackHintNote);
+      else if (responseNote) responseWrap.insertBefore(note, responseNote);
+      else responseWrap.appendChild(note);
+      return note;
+    })();
     const emailInput = contactForm.querySelector('#email');
     const emailFeedback = contactForm.querySelector('[data-email-feedback]');
     const consentInput = contactForm.querySelector('#consent');
     const consentFeedback = contactForm.querySelector('[data-consent-feedback]');
     const requiredWrappers = [...contactForm.querySelectorAll('[data-required-field]')];
     let isSubmitting = false;
+    let shouldRevealValidationHint = false;
     const setResponseNote = (message) => {
       if (!responseNote) return;
       responseNote.textContent = message || defaultResponseNote;
+    };
+    const setValidationHint = (issues = []) => {
+      if (!validationHintNote) return;
+      const shouldShow = shouldRevealValidationHint && !isSubmitting && issues.length > 0;
+      validationHintNote.hidden = !shouldShow;
+      validationHintNote.textContent = shouldShow
+        ? `Bitte noch prüfen oder ausfüllen: ${issues.join(' · ')}.`
+        : '';
     };
     const getRequiredControl = (wrapper) => wrapper?.querySelector('input, select, textarea');
     const requiredFieldFilled = (wrapper) => {
@@ -1550,6 +1587,21 @@
         callbackFeedback.classList.toggle('is-valid', callbackRequested && phoneState.valid);
         callbackFeedback.classList.toggle('is-invalid', callbackRequested && !phoneState.valid);
       }
+      const validationIssues = [];
+      if (!emailState.valid) {
+        validationIssues.push(emailState.state === 'empty'
+          ? 'gültige E-Mail-Adresse eingeben'
+          : 'E-Mail-Adresse korrigieren');
+      }
+      if (callbackRequested && !phoneState.valid) {
+        validationIssues.push(phoneState.state === 'empty'
+          ? 'Telefonnummer für den Rückruf angeben'
+          : 'Telefonnummer für den Rückruf prüfen');
+      }
+      if (!consentGiven) {
+        validationIssues.push('Datenschutz-Einwilligung bestätigen');
+      }
+      setValidationHint(validationIssues);
       if (submitButton) {
         const canProceed = emailState.valid && consentGiven && phoneState.valid && !isSubmitting;
         submitButton.disabled = !canProceed;
@@ -1558,9 +1610,11 @@
       }
     };
     contactForm.addEventListener('input', () => {
+      shouldRevealValidationHint = true;
       if (!isSubmitting) updateSummary();
     });
     contactForm.addEventListener('change', () => {
+      shouldRevealValidationHint = true;
       if (!isSubmitting) updateSummary();
     });
     contactForm.addEventListener('submit', async (event) => {
@@ -1571,6 +1625,7 @@
       const callbackRequested = Boolean(formData.get('callbackRequested'));
       const phoneState = callbackRequested ? validatePhoneValue(formData.get('phone')) : { valid: true };
       if (!emailState.valid || !consentGiven || !phoneState.valid) {
+        shouldRevealValidationHint = true;
         updateSummary();
         if (!emailState.valid && emailInput) emailInput.focus();
         else if (!phoneState.valid && phoneInput) phoneInput.focus();
@@ -1613,6 +1668,7 @@
         }
         contactForm.reset();
         applyAssessmentPrefill();
+        shouldRevealValidationHint = false;
         updateSummary();
         setResponseNote(result.message || 'Anfrage erfolgreich gesendet.');
       } catch (error) {
