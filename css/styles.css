@@ -5626,3 +5626,92 @@ html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{
     padding:10px 14px !important;
   }
 }
+
+
+/* v010 homepage clarity + examples emphasis */
+body[data-page="index.html"] #einstieg .section-head{max-width:760px}
+body[data-page="index.html"] .home-guide-grid{margin-top:18px;align-items:stretch}
+body[data-page="index.html"] .home-guide-card{height:100%;text-align:left}
+body[data-page="index.html"] .home-guide-card h3{max-width:14ch}
+body[data-page="index.html"] .hero-copy{max-width:680px}
+body[data-page="index.html"] .hero-summary-line{font-weight:700}
+body[data-page="index.html"] .workflow-check-intro{max-width:760px}
+body[data-page="index.html"] .workflow-check-shell--sequential{max-width:860px}
+body[data-page="index.html"] .cta-panel-centered{max-width:860px;margin-inline:auto}
+@media (max-width: 900px){
+  body[data-page="index.html"] .home-guide-card h3{max-width:none}
+}
+
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis{
+  width:min(100%, 980px);
+  margin:0 auto;
+  display:grid !important;
+  justify-items:center;
+  gap:14px;
+  padding:18px 22px;
+  border-radius:28px;
+  background:linear-gradient(180deg, rgba(255,255,255,.72), rgba(239,246,255,.56));
+  border:1px solid rgba(67,121,197,.18);
+  box-shadow:0 18px 42px rgba(40,84,145,.10);
+}
+html body[data-page="beispiele.html"] .examples-filter-kicker{
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  margin:0;
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid rgba(67,121,197,.18);
+  background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(239,246,255,.82));
+}
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis,
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .examples-chip-row,
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .examples-chip-row-left{
+  justify-content:center !important;
+  align-items:center !important;
+  text-align:center !important;
+}
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .examples-chip-row-left{
+  width:100%;
+  gap:10px 12px;
+}
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .example-chip{
+  min-height:46px;
+  padding:12px 18px;
+  border-width:1px;
+  border-color:rgba(67,121,197,.22);
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(236,245,255,.84));
+  box-shadow:0 10px 24px rgba(40,84,145,.08);
+  font-weight:700;
+}
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .example-chip:hover{
+  transform:translateY(-2px);
+  border-color:rgba(33,176,255,.42);
+  box-shadow:0 14px 28px rgba(33,176,255,.12);
+}
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .example-chip.is-active{
+  background:linear-gradient(135deg, rgba(39,164,255,.24), rgba(64,218,255,.16));
+  border-color:rgba(33,176,255,.48);
+  box-shadow:0 16px 32px rgba(33,176,255,.16), 0 0 0 1px rgba(33,176,255,.12);
+}
+body[data-theme="dark"][data-page="beispiele.html"] .examples-tools.examples-tools-emphasis{
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border-color:rgba(148,185,255,.16);
+  box-shadow:0 24px 48px rgba(3,10,24,.24);
+}
+body[data-theme="dark"][data-page="beispiele.html"] .examples-filter-kicker{
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  border-color:rgba(148,185,255,.16);
+}
+body[data-theme="dark"][data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .example-chip{
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  border-color:rgba(148,185,255,.18);
+  box-shadow:0 12px 26px rgba(3,10,24,.22);
+}
+body[data-theme="dark"][data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .example-chip.is-active{
+  background:linear-gradient(135deg, rgba(39,164,255,.26), rgba(64,218,255,.14));
+  border-color:rgba(64,218,255,.36);
+}
+@media (max-width: 760px){
+  html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis{padding:16px 14px}
+}
