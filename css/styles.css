@@ -5770,3 +5770,142 @@ body[data-page="index.html"] .home-cta-final-row{
     grid-template-columns:1fr !important;
   }
 }
+
+/* v011 start hero centered refinement */
+body[data-page="index.html"] .hero-grid.hero-grid-clean.hero-grid-centered{
+  grid-template-columns:minmax(150px, 220px) minmax(0, 760px) minmax(150px, 220px);
+  align-items:center;
+  justify-content:center;
+  gap:26px;
+}
+body[data-page="index.html"] .hero-copy.hero-copy-centered{
+  grid-column:2;
+  max-width:760px;
+  margin:0 auto;
+  text-align:center;
+}
+body[data-page="index.html"] .hero-copy.hero-copy-centered > .eyebrow,
+body[data-page="index.html"] .hero-copy.hero-copy-centered > h1,
+body[data-page="index.html"] .hero-copy.hero-copy-centered > .lead,
+body[data-page="index.html"] .hero-copy.hero-copy-centered > .hero-summary-line{
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
+body[data-page="index.html"] .hero-copy.hero-copy-centered > .eyebrow{
+  margin-bottom:16px;
+}
+body[data-page="index.html"] .hero-copy.hero-copy-centered > h1{
+  max-width:13.5ch;
+}
+body[data-page="index.html"] .hero-copy.hero-copy-centered > .lead{
+  max-width:720px;
+  margin-top:18px;
+}
+body[data-page="index.html"] .hero-copy.hero-copy-centered > .hero-summary-line{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-top:18px;
+  padding:12px 18px;
+  border-radius:999px;
+  border:1px solid rgba(96,148,224,.18);
+  background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(237,245,255,.8));
+  color:#42648d;
+  box-shadow:0 12px 28px rgba(40,84,145,.08);
+}
+body[data-page="index.html"] .hero-copy.hero-copy-centered > .btn-row,
+body[data-page="index.html"] .hero-copy.hero-copy-centered > .hero-trustline{
+  justify-content:center;
+}
+body[data-page="index.html"] .hero-copy.hero-copy-centered > .btn-row{
+  margin-top:26px;
+}
+body[data-page="index.html"] .hero-copy.hero-copy-centered > .hero-trustline{
+  margin-top:18px;
+}
+body[data-page="index.html"] .hero-side{
+  position:relative;
+  min-height:430px;
+  pointer-events:none;
+  opacity:.98;
+}
+body[data-page="index.html"] .hero-side-left{grid-column:1;}
+body[data-page="index.html"] .hero-side-right{grid-column:3;}
+body[data-page="index.html"] .hero-flow-canvas-side{
+  width:100%;
+  height:430px;
+  overflow:hidden;
+}
+body[data-page="index.html"] .hero-flow-svg-side{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+body[data-page="index.html"] .hero-side-left .hero-flow-svg-side{
+  transform:translateX(10%) scale(-0.74,0.74);
+  transform-origin:center center;
+}
+body[data-page="index.html"] .hero-side-right .hero-flow-svg-side{
+  transform:translateX(-10%) scale(0.74);
+  transform-origin:center center;
+}
+body[data-page="index.html"] .hero-side .flow-base{
+  stroke-width:3.25;
+}
+body[data-page="index.html"] .hero-side .flow-glow-side{
+  stroke-width:2.8;
+  filter:drop-shadow(0 0 7px rgba(109, 219, 255, .28));
+}
+body[data-page="index.html"] .hero-side .flow-pulse,
+body[data-page="index.html"] .hero-side .flow-node,
+body[data-page="index.html"] .hero-side .orbit-dot,
+body[data-page="index.html"] .hero-side .flow-dot-runner circle{
+  filter:drop-shadow(0 0 8px rgba(90,216,255,.42));
+}
+body[data-page="index.html"] .hero-side .orbit-ring{
+  stroke:rgba(126, 193, 255, .24);
+}
+body[data-page="index.html"] .hero-side .flow-doc rect,
+body[data-page="index.html"] .hero-side .flow-doc line{
+  stroke:rgba(92, 166, 255, .58);
+}
+@media (max-width: 1100px){
+  body[data-page="index.html"] .hero-grid.hero-grid-clean.hero-grid-centered{
+    grid-template-columns:minmax(120px, 170px) minmax(0, 720px) minmax(120px, 170px);
+    gap:20px;
+  }
+  body[data-page="index.html"] .hero-side{
+    min-height:360px;
+  }
+  body[data-page="index.html"] .hero-flow-canvas-side{
+    height:360px;
+  }
+}
+@media (max-width: 900px){
+  body[data-page="index.html"] .hero-grid.hero-grid-clean.hero-grid-centered{
+    grid-template-columns:minmax(0, 760px);
+    gap:0;
+  }
+  body[data-page="index.html"] .hero-copy.hero-copy-centered{
+    grid-column:1;
+  }
+  body[data-page="index.html"] .hero-side{
+    display:none;
+  }
+}
+@media (max-width: 760px){
+  body[data-page="index.html"] .hero-copy.hero-copy-centered > h1{
+    max-width:11.5ch;
+  }
+  body[data-page="index.html"] .hero-copy.hero-copy-centered > .lead{
+    margin-top:16px;
+  }
+  body[data-page="index.html"] .hero-copy.hero-copy-centered > .hero-summary-line{
+    display:flex;
+    width:min(100%, 100%);
+    padding:11px 14px;
+    line-height:1.45;
+  }
+}
