@@ -5715,3 +5715,58 @@ body[data-theme="dark"][data-page="beispiele.html"] .examples-tools.examples-too
 @media (max-width: 760px){
   html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis{padding:16px 14px}
 }
+
+
+/* start page reset: hero, full faq, quickcheck, final ctas only */
+body[data-page="index.html"] #faq .section-head,
+body[data-page="index.html"] #faq .faq-explorer,
+body[data-page="index.html"] #faq .faq-explorer-head,
+body[data-page="index.html"] #faq .faq-explorer-intro,
+body[data-page="index.html"] #faq .faq-topic-bar,
+body[data-page="index.html"] #faq .faq-search,
+body[data-page="index.html"] #faq .faq-topic-grid{
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] #faq .faq-explorer-intro,
+body[data-page="index.html"] #faq .section-head{
+  text-align:center !important;
+}
+body[data-page="index.html"] #faq .faq-topic-bar,
+body[data-page="index.html"] #faq .faq-search{
+  justify-content:center !important;
+}
+body[data-page="index.html"] #faq .faq-topic-grid{
+  max-width:1100px;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-head,
+body[data-page="index.html"] #workflow-check .workflow-check-intro,
+body[data-page="index.html"] #workflow-check .workflow-check-toggle-row,
+body[data-page="index.html"] #workflow-check .workflow-check-progress{
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-head,
+body[data-page="index.html"] #workflow-check .workflow-check-intro{
+  text-align:center !important;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-head h2,
+body[data-page="index.html"] #workflow-check .workflow-check-head p,
+body[data-page="index.html"] #workflow-check .workflow-check-intro h3,
+body[data-page="index.html"] #workflow-check .workflow-check-intro p{
+  text-align:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-toggle-row,
+body[data-page="index.html"] .home-cta-final-row{
+  justify-content:center !important;
+}
+body[data-page="index.html"] .home-cta-final-row{
+  padding-top:8px;
+}
+@media (max-width: 760px){
+  body[data-page="index.html"] #faq .faq-topic-grid{
+    grid-template-columns:1fr !important;
+  }
+}
