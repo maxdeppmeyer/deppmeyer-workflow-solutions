@@ -4363,99 +4363,1410 @@ body[data-page="einsatzbereiche.html"] .einsatz-callout > div:first-child > p{
 }
 
 
-/* === Start Hero centered refinement === */
-body[data-page="index.html"] .hero-grid-clean.hero-grid-centered{
-  display:block;
-  position:relative;
-  min-height:640px;
-  padding-right:0;
+/* v008 targeted legal cleanup + restore leistungen hero */
+body[data-page="impressum.html"] .page-hero,
+body[data-page="datenschutz.html"] .page-hero{
+  text-align:center !important;
+  padding-bottom:20px !important;
 }
-body[data-page="index.html"] .hero-copy.hero-copy-centered{
+body[data-page="impressum.html"] .page-hero .container,
+body[data-page="datenschutz.html"] .page-hero .container{
+  max-width:980px !important;
+  margin:0 auto !important;
+  display:grid !important;
+  justify-items:center !important;
+  gap:14px !important;
+  text-align:center !important;
+}
+body[data-page="impressum.html"] .page-hero h1,
+body[data-page="datenschutz.html"] .page-hero h1{
+  margin:0 auto !important;
+  max-width:none !important;
+  text-align:center !important;
+}
+body[data-page="impressum.html"] .page-hero p,
+body[data-page="datenschutz.html"] .page-hero p,
+body[data-page="impressum.html"] .page-hero .lead,
+body[data-page="datenschutz.html"] .page-hero .lead{
+  max-width:72ch !important;
+  margin:0 auto !important;
+  text-align:center !important;
+}
+body[data-page="impressum.html"] .legal,
+body[data-page="datenschutz.html"] .legal{
+  padding-top:12px !important;
+}
+body[data-page="impressum.html"] .legal > .container.card,
+body[data-page="datenschutz.html"] .legal > .container.card{
+  max-width:940px !important;
+  margin:0 auto !important;
+  padding:34px 38px !important;
+}
+body[data-page="impressum.html"] .legal .container.card > *,
+body[data-page="datenschutz.html"] .legal .container.card > *{
+  text-align:left !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+body[data-page="impressum.html"] .legal-note,
+body[data-page="datenschutz.html"] .legal-note{
+  margin:0 0 26px !important;
+  padding:16px 18px !important;
+  border-radius:20px !important;
+}
+body[data-page="impressum.html"] .legal p,
+body[data-page="datenschutz.html"] .legal p,
+body[data-page="impressum.html"] .legal li,
+body[data-page="datenschutz.html"] .legal li{
+  line-height:1.72 !important;
+}
+body[data-page="impressum.html"] .legal p,
+body[data-page="datenschutz.html"] .legal p{
+  margin:0 0 18px !important;
+}
+body[data-page="impressum.html"] .legal h2,
+body[data-page="datenschutz.html"] .legal h2{
+  margin:34px 0 14px !important;
+  font-size:clamp(1.7rem,2.3vw,2.35rem) !important;
+  line-height:1.08 !important;
+}
+body[data-page="impressum.html"] .legal p > strong:first-child,
+body[data-page="datenschutz.html"] .legal p > strong:first-child{
+  display:block;
+  margin-bottom:10px;
+  color:var(--heading);
+  font-size:1.18rem;
+  line-height:1.25;
+}
+body[data-page="impressum.html"] .legal ul,
+body[data-page="datenschutz.html"] .legal ul,
+body[data-page="impressum.html"] .legal ol,
+body[data-page="datenschutz.html"] .legal ol{
+  margin:0 0 18px !important;
+  padding-left:1.2rem !important;
+}
+body[data-page="impressum.html"] .section-back-home .container,
+body[data-page="datenschutz.html"] .section-back-home .container{
+  justify-content:center !important;
+}
+
+body[data-page="leistungen.html"] .leistungen-hero{
+  padding:56px 0 8px !important;
+  overflow:hidden !important;
+}
+body[data-page="leistungen.html"] .container.leistungen-hero-grid{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  justify-items:center !important;
+  align-items:center !important;
+  gap:18px !important;
+  max-width:1240px !important;
+}
+body[data-page="leistungen.html"] .leistungen-copy{
+  max-width:920px !important;
+  margin:0 auto !important;
+  display:grid !important;
+  justify-items:center !important;
+  gap:14px !important;
+  text-align:center !important;
+}
+body[data-page="leistungen.html"] .leistungen-copy .eyebrow,
+body[data-page="leistungen.html"] .leistungen-copy h1,
+body[data-page="leistungen.html"] .leistungen-copy .lead{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+}
+body[data-page="leistungen.html"] .leistungen-copy h1{
+  max-width:16ch !important;
+  font-size:clamp(3rem,4.3vw,4.8rem) !important;
+  line-height:.98 !important;
+}
+body[data-page="leistungen.html"] .leistungen-copy .lead{
+  max-width:66ch !important;
+}
+body[data-page="leistungen.html"] .leistungen-flow-wrap{
+  width:100% !important;
+  min-height:212px !important;
+  margin-top:10px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+}
+
+@media (max-width: 900px){
+  body[data-page="impressum.html"] .legal > .container.card,
+  body[data-page="datenschutz.html"] .legal > .container.card{
+    padding:26px 22px !important;
+  }
+}
+
+
+/* v009 legal pages centering + leistungen hero hard override */
+html body[data-page="impressum.html"] .legal,
+html body[data-page="datenschutz.html"] .legal{
+  max-width:980px !important;
+  margin:0 auto !important;
+  padding:20px 24px 0 !important;
+  box-sizing:border-box !important;
+}
+html body[data-page="impressum.html"] .legal > *,
+html body[data-page="datenschutz.html"] .legal > *{
+  width:100% !important;
+  box-sizing:border-box !important;
+}
+html body[data-page="impressum.html"] .legal-note,
+html body[data-page="datenschutz.html"] .legal-note{
+  margin:0 0 28px !important;
+  text-align:left !important;
+}
+html body[data-page="impressum.html"] .legal h2,
+html body[data-page="datenschutz.html"] .legal h2{
+  text-align:left !important;
+  margin:34px 0 14px !important;
+  max-width:none !important;
+}
+html body[data-page="impressum.html"] .legal p,
+html body[data-page="datenschutz.html"] .legal p,
+html body[data-page="impressum.html"] .legal li,
+html body[data-page="datenschutz.html"] .legal li{
+  text-align:left !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+  max-width:none !important;
+}
+html body[data-page="impressum.html"] .legal p,
+html body[data-page="datenschutz.html"] .legal p{
+  margin:0 0 18px !important;
+}
+html body[data-page="impressum.html"] .legal p > strong:first-child,
+html body[data-page="datenschutz.html"] .legal p > strong:first-child{
+  display:block !important;
+  margin-bottom:10px !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero{
+  padding:56px 0 8px !important;
+  overflow:hidden !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-hero-grid{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  justify-items:center !important;
+  align-items:center !important;
+  gap:18px !important;
+  max-width:1240px !important;
+  margin:0 auto !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy{
+  max-width:920px !important;
+  width:100% !important;
+  margin:0 auto !important;
+  display:grid !important;
+  justify-items:center !important;
+  gap:14px !important;
+  text-align:center !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy h1{
+  width:100% !important;
+  max-width:18ch !important;
+  margin:0 auto !important;
+  text-align:center !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+  line-height:.98 !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy .lead,
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy .eyebrow{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy .lead{
+  max-width:66ch !important;
+}
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-flow-wrap{
+  width:100% !important;
+  min-height:212px !important;
+  margin-top:10px !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+}
+@media (max-width: 900px){
+  html body[data-page="impressum.html"] .legal,
+  html body[data-page="datenschutz.html"] .legal{
+    padding:16px 20px 0 !important;
+  }
+}
+
+/* --- targeted fixes: page headings + einsatzbereiche motion --- */
+html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy h1,
+html body[data-page="beispiele.html"] .page-hero .container h1,
+html body[data-page="kontakt.html"] .page-hero .container h1,
+html body[data-page="404.html"] .page-hero .container h1{
+  max-width: 22ch !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  line-height: 1.02 !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  text-wrap: balance !important;
+}
+
+html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row,
+html body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row{
+  grid-template-columns: minmax(88px, 132px) minmax(0, 1fr) minmax(88px, 132px) !important;
+  gap: 18px !important;
+}
+
+html body[data-page="einsatzbereiche.html"] .einsatz-side-icons,
+html body[data-page="ueber-mich.html"] .ueber-side-blocks{
+  flex: 0 0 132px !important;
+}
+
+html body[data-page="einsatzbereiche.html"] .einsatz-copy h1,
+html body[data-page="ueber-mich.html"] .ueber-copy h1,
+html body[data-page="datenschutz.html"] .page-hero .container h1,
+html body[data-page="impressum.html"] .page-hero .container h1{
+  max-width: 18ch !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  line-height: 1.02 !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  text-wrap: balance !important;
+}
+
+html body[data-page="einsatzbereiche.html"] .einsatz-copy h1{
+  display: block !important;
+  font-size: clamp(2.8rem, 4.1vw, 4.25rem) !important;
+}
+
+html body[data-page="ueber-mich.html"] .ueber-copy h1{
+  font-size: clamp(2.8rem, 4vw, 4.2rem) !important;
+}
+
+html body[data-page="einsatzbereiche.html"] .einsatz-node,
+html body[data-page="einsatzbereiche.html"] .einsatz-icon-card,
+html body[data-page="einsatzbereiche.html"] .einsatz-icon-card::before,
+html body[data-page="einsatzbereiche.html"] .einsatz-icon-card::after{
+  animation: none !important;
+}
+
+html body[data-page="einsatzbereiche.html"] .einsatz-signal,
+html body[data-page="einsatzbereiche.html"] .einsatz-pulse{
+  display: none !important;
+}
+
+@media (max-width: 980px){
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row,
+  html body[data-page="ueber-mich.html"] .ueber-copy .hero-title-row{
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy h1,
+  html body[data-page="ueber-mich.html"] .ueber-copy h1,
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy h1,
+  html body[data-page="beispiele.html"] .page-hero .container h1,
+  html body[data-page="kontakt.html"] .page-hero .container h1{
+    max-width: 15ch !important;
+  }
+}
+
+@media (max-width: 640px){
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy h1,
+  html body[data-page="ueber-mich.html"] .ueber-copy h1,
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy h1,
+  html body[data-page="beispiele.html"] .page-hero .container h1,
+  html body[data-page="kontakt.html"] .page-hero .container h1,
+  html body[data-page="datenschutz.html"] .page-hero .container h1,
+  html body[data-page="impressum.html"] .page-hero .container h1,
+  html body[data-page="404.html"] .page-hero .container h1{
+    max-width: 12ch !important;
+    font-size: clamp(2.3rem, 10vw, 3.2rem) !important;
+  }
+}
+
+
+/* --- targeted desktop hero alignment fix: Leistungen / Beispiele / Einsatzbereiche --- */
+@media (min-width: 981px){
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-hero-grid,
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid,
+  html body[data-page="einsatzbereiche.html"] .einsatz-hero-grid{
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    align-items: center !important;
+    gap: 20px !important;
+  }
+
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy,
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid > div:first-child,
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy{
+    width: 100% !important;
+    max-width: 1180px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: grid !important;
+    justify-items: center !important;
+    text-align: center !important;
+  }
+
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid > div:first-child{
+    gap: 14px !important;
+  }
+
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy h1,
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid > div:first-child h1,
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy h1{
+    width: 100% !important;
+    max-width: 24ch !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    text-wrap: balance !important;
+    line-height: 1.02 !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy h1{
+    font-size: clamp(3.2rem, 4.9vw, 4.75rem) !important;
+  }
+
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid > div:first-child h1{
+    font-size: clamp(3.1rem, 4.7vw, 4.65rem) !important;
+  }
+
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy h1{
+    font-size: clamp(3.15rem, 4.8vw, 4.7rem) !important;
+  }
+
+  html body[data-page="leistungen.html"] .page-hero.leistungen-hero .leistungen-copy .lead,
+  html body[data-page="beispiele.html"] .page-hero .page-hero-grid > div:first-child .lead,
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy .lead{
+    max-width: 62ch !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+
+  html body[data-page="beispiele.html"] .examples-note{
+    max-width: 760px !important;
+    width: 100% !important;
+    margin: 6px auto 0 !important;
+  }
+
+  html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{
+    grid-template-columns: minmax(96px, 132px) minmax(0, 1fr) minmax(96px, 132px) !important;
+    justify-items: center !important;
+    align-items: center !important;
+    gap: 20px !important;
+    max-width: 1160px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  html body[data-page="einsatzbereiche.html"] .einsatz-side-icons{
+    flex: 0 0 132px !important;
+  }
+}
+
+/* --- targeted request: Start / Beispiele / Einsatzbereiche / Kontakt only --- */
+
+/* Start: hero animation must end before problem cards */
+html body[data-page="index.html"] #hero{
+  position:relative;
+  overflow:hidden;
+}
+html body[data-page="index.html"] .hero-copy,
+html body[data-page="index.html"] .problem-grid,
+html body[data-page="index.html"] .problem-card,
+html body[data-page="index.html"] #probleme{
   position:relative;
   z-index:2;
-  max-width:980px;
-  margin:0 auto;
+}
+html body[data-page="index.html"] .hero-stream-wrap.hero-stream-naked{
+  z-index:0;
+}
+
+/* Start + Kontakt: quickcheck question titles visible again on all devices */
+html body[data-page="index.html"] .workflow-question-card legend.workflow-question-title,
+html body[data-page="kontakt.html"] .workflow-question-card legend.workflow-question-title{
+  display:block !important;
+  width:100%;
+  margin:0 0 14px;
+  padding:0;
+  font-size:1.15rem;
+  font-weight:800;
+  color:var(--heading);
+}
+
+/* Kontakt: callback box sits directly next to the phone field */
+html body[data-page="kontakt.html"] .form-row > div:last-child{
+  display:flex;
+  align-items:flex-start;
+  padding-top:24px;
+}
+html body[data-page="kontakt.html"] .callback-check{
+  margin-top:0 !important;
+  min-height:54px;
+  align-items:center !important;
+  width:100%;
+}
+@media (max-width: 760px){
+  html body[data-page="kontakt.html"] .form-row > div:last-child{
+    display:block;
+    padding-top:0;
+  }
+  html body[data-page="kontakt.html"] .callback-check{
+    min-height:0;
+  }
+}
+
+/* Beispiele: top filter chips centered */
+html body[data-page="beispiele.html"] .examples-tools,
+html body[data-page="beispiele.html"] .examples-chip-row,
+html body[data-page="beispiele.html"] .examples-chip-row-left{
+  justify-content:center !important;
+}
+html body[data-page="beispiele.html"] .examples-tools{
+  width:100%;
+  align-items:center !important;
+}
+html body[data-page="beispiele.html"] .examples-chip-row-left{
+  width:100%;
+}
+
+/* Beispiele: cleaner closing visual without overlaps */
+html body[data-page="beispiele.html"] .cta-panel-examples{
+  align-items:center !important;
+}
+html body[data-page="beispiele.html"] .cta-savings-visual{
+  width:min(100%, 430px);
+  max-width:430px;
+  min-height:248px;
+  margin-left:auto;
+  margin-right:auto;
+  overflow:hidden;
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 24% 24%, rgba(87,207,255,.10), transparent 28%),
+    radial-gradient(circle at 78% 72%, rgba(100,118,255,.10), transparent 32%),
+    linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,.08));
+  border:1px solid rgba(120,164,225,.16);
+}
+html body[data-page="beispiele.html"] .cta-savings-visual::before{
+  display:block;
+  content:"";
+  position:absolute;
+  inset:16px;
+  border-radius:22px;
+  border:1px solid rgba(120,164,225,.14);
+  background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+}
+html body[data-page="beispiele.html"] .savings-track{
+  left:12% !important;
+  right:12% !important;
+  top:58% !important;
+}
+html body[data-page="beispiele.html"] .savings-signal{
+  top:58% !important;
+  left:12% !important;
+  z-index:4 !important;
+  animation:savingsSignalPingPong 3.8s ease-in-out infinite alternate !important;
+  will-change:left;
+}
+html body[data-page="beispiele.html"] .savings-orbit{
+  display:none !important;
+}
+html body[data-page="beispiele.html"] .savings-label{
+  z-index:3 !important;
+}
+html body[data-page="beispiele.html"] .savings-label-loss{
+  left:12% !important;
+  top:16% !important;
+}
+html body[data-page="beispiele.html"] .savings-label-cost{
+  left:auto !important;
+  right:12% !important;
+  top:16% !important;
+}
+html body[data-page="beispiele.html"] .savings-label-time{
+  right:12% !important;
+  bottom:16% !important;
+}
+html body[data-page="beispiele.html"] .savings-status{
+  left:50% !important;
+  top:58% !important;
+  bottom:auto !important;
+  right:auto !important;
+  transform:translate(-50%, -50%);
+  max-width:220px;
+  width:max-content;
   text-align:center;
+  z-index:2 !important;
 }
-body[data-page="index.html"] .hero-copy.hero-copy-centered .eyebrow,
-body[data-page="index.html"] .hero-copy.hero-copy-centered .mini-label{
-  margin-left:auto;
-  margin-right:auto;
+@keyframes savingsSignalPingPong{
+  0%{left:12%;}
+  100%{left:88%;}
 }
-body[data-page="index.html"] .hero-copy.hero-copy-centered h1{
-  max-width:11.6ch;
-  margin-left:auto;
-  margin-right:auto;
+@media (max-width: 900px){
+  html body[data-page="beispiele.html"] .cta-savings-visual{
+    min-height:270px;
+  }
+  html body[data-page="beispiele.html"] .savings-status{
+    max-width:200px;
+  }
 }
-body[data-page="index.html"] .hero-copy.hero-copy-centered .lead{
-  max-width:52ch;
-  margin:18px auto 0;
+
+/* Einsatzbereiche: remove side icon animations/cards completely, keep centered title block */
+html body[data-page="einsatzbereiche.html"] .einsatz-side-icons{
+  display:none !important;
 }
-body[data-page="index.html"] .hero-copy.hero-copy-centered .hero-summary-line{
-  display:inline-flex;
+html body[data-page="einsatzbereiche.html"] .einsatz-copy .hero-title-row{
+  grid-template-columns:1fr !important;
+  gap:0 !important;
+  max-width:960px !important;
+}
+
+/* === targeted fix: kontakt callback alignment + mobile text safety === */
+@media (min-width: 761px){
+  html body[data-page="kontakt.html"] .form-row > div:last-child{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    padding-top:0 !important;
+  }
+
+  html body[data-page="kontakt.html"] .form-row > div:last-child::before{
+    content:"";
+    display:block;
+    flex:0 0 31px;
+    height:31px;
+    width:100%;
+  }
+
+  html body[data-page="kontakt.html"] .callback-check{
+    margin-top:0 !important;
+    width:100% !important;
+    min-height:52px !important;
+    display:grid !important;
+    align-items:center !important;
+  }
+
+  html body[data-page="kontakt.html"] .callback-check input{
+    margin-top:0 !important;
+    align-self:center !important;
+  }
+}
+
+@media (max-width: 760px){
+  html body[data-page="kontakt.html"] .form-row > div:last-child::before{
+    display:none !important;
+  }
+
+  html body[data-page="kontakt.html"] .callback-check{
+    min-height:0 !important;
+  }
+
+  html body[data-page="index.html"] .hero h1,
+  html body[data-page="leistungen.html"] .page-hero h1,
+  html body[data-page="beispiele.html"] .page-hero h1,
+  html body[data-page="einsatzbereiche.html"] .page-hero h1,
+  html body[data-page="ueber-mich.html"] .page-hero h1,
+  html body[data-page="kontakt.html"] .page-hero h1,
+  html body[data-page="impressum.html"] .page-hero h1,
+  html body[data-page="datenschutz.html"] .page-hero h1,
+  html body[data-page="404.html"] .page-hero h1,
+  html body[data-page="ablauf.html"] h1,
+  html body .section-head h2,
+  html body .callout h2,
+  html body .cta-panel h2,
+  html body .quote-box h2,
+  html body .accordion-text h3,
+  html body .service-card h3,
+  html body .usage-card h3,
+  html body .problem-card h3,
+  html body .step-card h3,
+  html body .timeline-card h3,
+  html body .stack-card h3{
+    max-width:100% !important;
+    width:100% !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    text-wrap:balance !important;
+    hyphens:auto;
+  }
+
+  html body[data-page="index.html"] .hero h1,
+  html body[data-page="leistungen.html"] .page-hero h1,
+  html body[data-page="beispiele.html"] .page-hero h1,
+  html body[data-page="einsatzbereiche.html"] .page-hero h1,
+  html body[data-page="ueber-mich.html"] .page-hero h1,
+  html body[data-page="kontakt.html"] .page-hero h1,
+  html body[data-page="impressum.html"] .page-hero h1,
+  html body[data-page="datenschutz.html"] .page-hero h1,
+  html body[data-page="404.html"] .page-hero h1,
+  html body[data-page="ablauf.html"] h1{
+    font-size:clamp(2rem, 9vw, 3rem) !important;
+    line-height:1.04 !important;
+  }
+
+  html body[data-page="index.html"] .hero-copy,
+  html body .page-copy,
+  html body .section-head,
+  html body .cta-panel,
+  html body .quote-box,
+  html body .contact-form,
+  html body .contact-card,
+  html body .workflow-check-intro,
+  html body .workflow-check-shell,
+  html body .problem-card,
+  html body .service-card,
+  html body .usage-card,
+  html body .step-card,
+  html body .timeline-card,
+  html body .example-card,
+  html body .overview-card,
+  html body .stack-card{
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  html body .lead,
+  html body p,
+  html body li,
+  html body label,
+  html body .note,
+  html body .field-help,
+  html body .accordion-preview,
+  html body .faq-answer-inner,
+  html body .summary-list div{
+    max-width:100% !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+}
+
+
+/* final targeted fix: contact callback row + mobile text clipping */
+@media (min-width: 761px){
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type{
+    align-items:start !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type > div:last-child{
+    display:block !important;
+    align-self:start !important;
+    padding-top:20px !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type > div:last-child::before{
+    content:none !important;
+    display:none !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check{
+    width:100% !important;
+    height:56px !important;
+    min-height:56px !important;
+    margin:0 !important;
+    padding:0 18px !important;
+    display:grid !important;
+    grid-template-columns:22px minmax(0, 1fr) !important;
+    align-items:center !important;
+    column-gap:12px !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check input{
+    margin:0 !important;
+    align-self:center !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check span{
+    line-height:1.35 !important;
+  }
+}
+
+@media (max-width: 760px){
+  html,
+  body{
+    overflow-x:hidden !important;
+  }
+
+  html body .container,
+  html body .page-hero-grid,
+  html body .hero-grid,
+  html body .page-copy,
+  html body .section-head,
+  html body .accordion-summary,
+  html body .accordion-text,
+  html body .cta-panel,
+  html body .quote-box,
+  html body .contact-card,
+  html body .contact-form,
+  html body .problem-card,
+  html body .service-card,
+  html body .usage-card,
+  html body .step-card,
+  html body .timeline-card,
+  html body .example-card,
+  html body .overview-card,
+  html body .stack-card,
+  html body .workflow-question-card,
+  html body .workflow-option,
+  html body .summary-list div{
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  html body .page-hero h1,
+  html body .hero h1,
+  html body .section-head h2,
+  html body .callout h2,
+  html body .cta-panel h2,
+  html body .quote-box h2,
+  html body .accordion-text h3,
+  html body .service-card h3,
+  html body .usage-card h3,
+  html body .problem-card h3,
+  html body .step-card h3,
+  html body .timeline-card h3,
+  html body .stack-card h3,
+  html body p,
+  html body li,
+  html body label,
+  html body span,
+  html body a,
+  html body .note,
+  html body .field-help{
+    max-width:100% !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+}
+
+/* === targeted fix v22: contact last row alignment + mobile text clipping safety === */
+@media (min-width: 761px){
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    align-items:start !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type > div:last-child{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    align-self:start !important;
+    padding-top:0 !important;
+    margin-top:0 !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type > div:last-child::before{
+    content:"Telefon (optional)";
+    visibility:hidden !important;
+    display:block !important;
+    font-size:1rem !important;
+    line-height:1.25 !important;
+    margin:0 0 8px 0 !important;
+    padding:0 !important;
+    height:auto !important;
+    white-space:nowrap !important;
+    pointer-events:none !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check{
+    width:100% !important;
+    box-sizing:border-box !important;
+    min-height:54px !important;
+    height:54px !important;
+    margin:0 !important;
+    padding:15px 18px !important;
+    display:grid !important;
+    grid-template-columns:18px minmax(0,1fr) !important;
+    align-items:center !important;
+    column-gap:12px !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check input{
+    margin:0 !important;
+    align-self:center !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .form-row:last-of-type .callback-check span{
+    line-height:1.35 !important;
+    margin:0 !important;
+  }
+}
+
+@media (max-width: 760px){
+  html,
+  body{
+    overflow-x:hidden !important;
+  }
+
+  html body .container,
+  html body .page-hero,
+  html body .page-hero .container,
+  html body .page-hero-grid,
+  html body .hero-grid,
+  html body .hero-copy,
+  html body .page-copy,
+  html body .section-head,
+  html body .accordion-summary,
+  html body .accordion-text,
+  html body .cta-panel,
+  html body .quote-box,
+  html body .contact-form,
+  html body .contact-card,
+  html body .workflow-check-shell,
+  html body .workflow-question-card,
+  html body .problem-card,
+  html body .service-card,
+  html body .usage-card,
+  html body .step-card,
+  html body .timeline-card,
+  html body .example-card,
+  html body .overview-card,
+  html body .stack-card,
+  html body .legal,
+  html body .legal-card{
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  html body h1,
+  html body h2,
+  html body h3,
+  html body .lead,
+  html body p,
+  html body li,
+  html body label,
+  html body .note,
+  html body .field-help,
+  html body .accordion-preview,
+  html body .faq-answer-inner,
+  html body .summary-list div,
+  html body .legal p,
+  html body .legal li,
+  html body .legal h2,
+  html body .legal h3{
+    width:auto !important;
+    max-width:100% !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    hyphens:auto !important;
+  }
+}
+
+
+/* === targeted fix v23: contact form rows aligned cleanly without affecting other areas === */
+@media (min-width: 761px){
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row{
+    display:grid !important;
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+    gap:14px !important;
+    align-items:start !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    align-self:start !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field > label:not(.consent-check){
+    display:block !important;
+    margin:0 0 8px 0 !important;
+    line-height:1.25 !important;
+    min-height:20px !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field > .input,
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field > .select{
+    min-height:54px !important;
+    height:54px !important;
+    box-sizing:border-box !important;
+    margin:0 !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field > .field-help{
+    margin-top:8px !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row--callback > .contact-field--callback{
+    display:flex !important;
+    flex-direction:column !important;
+    align-self:start !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row--callback > .contact-field--callback > .contact-field-spacer{
+    display:block !important;
+    visibility:hidden !important;
+    margin:0 0 8px 0 !important;
+    line-height:1.25 !important;
+    min-height:20px !important;
+    pointer-events:none !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row--callback .callback-check{
+    width:100% !important;
+    min-height:54px !important;
+    height:54px !important;
+    box-sizing:border-box !important;
+    margin:0 !important;
+    padding:0 18px !important;
+    display:grid !important;
+    grid-template-columns:18px minmax(0, 1fr) !important;
+    align-items:center !important;
+    column-gap:12px !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row--callback .callback-check input{
+    margin:0 !important;
+    align-self:center !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row--callback .callback-check span{
+    margin:0 !important;
+    line-height:1.3 !important;
+  }
+}
+
+@media (max-width: 760px){
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field,
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row--callback > .contact-field--callback{
+    min-width:0 !important;
+  }
+
+  html body[data-page="kontakt.html"] .contact-field-spacer{
+    display:none !important;
+  }
+
+  html body[data-page="kontakt.html"] .page-hero h1,
+  html body[data-page="kontakt.html"] .section-head h2,
+  html body[data-page="kontakt.html"] .contact-form h2,
+  html body .page-hero h1,
+  html body .hero h1,
+  html body .section-head h2,
+  html body .callout h2,
+  html body .cta-panel h2,
+  html body .accordion-text h3,
+  html body .service-card h3,
+  html body .usage-card h3,
+  html body .problem-card h3,
+  html body .timeline-card h3,
+  html body .step-card h3{
+    max-width:100% !important;
+    width:100% !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    hyphens:auto !important;
+  }
+}
+
+/* targeted fix v23: kontakt form desktop rows keep both columns on the same baseline */
+@media (min-width: 761px){
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:14px !important;
+    align-items:start !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    align-self:start !important;
+    margin:0 !important;
+    padding-top:0 !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field::before,
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row > .contact-field:last-child::before{
+    content:none !important;
+    display:none !important;
+  }
+
+  html body[data-page="kontakt.html"] form[data-contact-form] .contact-fields > .contact-form-row--callback > .contact-field--callback > .contact-field-spacer{
+    display:block !important;
+    visibility:hidden !important;
+    margin:0 0 8px 0 !important;
+    line-height:1.25 !important;
+    min-height:20px !important;
+    pointer-events:none !important;
+  }
+}
+
+
+/* === v24 mobile polish: safer word wrapping, cleaner centering and touch targets === */
+@media (max-width: 760px){
+  html body .hero .container,
+  html body .page-hero .container,
+  html body .hero-copy,
+  html body .page-copy,
+  html body .section-head,
+  html body .cta-panel,
+  html body .cta-copy,
+  html body .quote-box,
+  html body .faq-explorer-head,
+  html body .faq-section-head,
+  html body .footer-box,
+  html body .footer-compact-main{
+    text-align:center !important;
+    margin-inline:auto !important;
+  }
+
+  html body .hero-copy > .eyebrow,
+  html body .page-copy > .eyebrow,
+  html body .section-head > .eyebrow,
+  html body .section-head > .mini-label,
+  html body .cta-panel .eyebrow,
+  html body .quote-box .eyebrow,
+  html body .footer-box .eyebrow,
+  html body .footer-compact-main .eyebrow,
+  html body .section-head::after{
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  html body h1,
+  html body h2,
+  html body h3,
+  html body h4,
+  html body .faq-question,
+  html body .accordion-summary h3,
+  html body .btn,
+  html body .mobile-links a,
+  html body .nav-links a,
+  html body .footer-links a,
+  html body .footer-links span,
+  html body .brand-name,
+  html body .brand-sub,
+  html body .eyebrow,
+  html body .mini-label,
+  html body .tag,
+  html body .status-pill{
+    white-space:normal !important;
+    overflow-wrap:normal !important;
+    word-break:normal !important;
+    hyphens:none !important;
+    text-wrap:balance !important;
+  }
+
+  html body p,
+  html body li,
+  html body .lead,
+  html body .small,
+  html body .note,
+  html body .field-help,
+  html body .accordion-preview,
+  html body .faq-answer-inner,
+  html body .accordion-content,
+  html body .summary-list div,
+  html body .contact-response,
+  html body .legal p,
+  html body .legal li{
+    overflow-wrap:break-word !important;
+    word-break:normal !important;
+    hyphens:none !important;
+    text-wrap:pretty !important;
+  }
+
+  html body .contact-form,
+  html body .contact-form label,
+  html body .contact-fields,
+  html body .contact-points,
+  html body .summary-list,
+  html body .detail-list,
+  html body .compare-list,
+  html body .faq-answer-inner,
+  html body .accordion-content,
+  html body .accordion-preview,
+  html body .legal,
+  html body .legal-note,
+  html body .footer-links,
+  html body .footer-copy{
+    text-align:left !important;
+  }
+
+  html body .hero-copy .lead,
+  html body .page-copy .lead,
+  html body .section-head > p,
+  html body .cta-panel p,
+  html body .quote-box p,
+  html body .faq-explorer-head p,
+  html body .faq-section-head p,
+  html body .footer-copy{
+    max-width:34rem !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  html body .btn-row,
+  html body .workflow-check-actions .btn-row,
+  html body .contact-response{
+    justify-content:center !important;
+    align-items:stretch !important;
+    gap:12px !important;
+  }
+
+  html body .btn-row .btn,
+  html body .workflow-check-actions .btn-row .btn,
+  html body .contact-response .btn{
+    width:min(100%, 360px) !important;
+    margin-inline:auto !important;
+  }
+
+  html body .section{
+    padding:60px 0 !important;
+  }
+
+  html body .section-tight{
+    padding:46px 0 !important;
+  }
+
+  html body .hero,
+  html body .page-hero{
+    padding:30px 0 18px !important;
+  }
+
+  html body .section-head{
+    margin-bottom:24px !important;
+  }
+
+  html body .contact-form,
+  html body .contact-card,
+  html body .cta-panel,
+  html body .quote-box,
+  html body .faq-item,
+  html body .service-card,
+  html body .usage-card,
+  html body .problem-card,
+  html body .step-card,
+  html body .timeline-card,
+  html body .overview-card,
+  html body .footer-card,
+  html body .example-card,
+  html body .dashboard-shell,
+  html body .workflow-current{
+    padding:18px !important;
+  }
+
+  html body .input,
+  html body .select,
+  html body textarea,
+  html body .faq-search-input,
+  html body .search-input{
+    font-size:16px !important;
+  }
+
+  html body .input,
+  html body .select,
+  html body .faq-search-input,
+  html body .search-input{
+    min-height:56px !important;
+    padding:16px 18px !important;
+  }
+
+  html body textarea{
+    min-height:168px !important;
+    padding:16px 18px !important;
+  }
+
+  html body .callback-check,
+  html body .consent-check,
+  html body .contact-check-entry,
+  html body .contact-check-shell{
+    font-size:16px !important;
+  }
+
+  html body .mobile-toggle{
+    width:48px !important;
+    height:48px !important;
+  }
+
+  html body .mobile-links a{
+    min-height:48px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    padding:14px 16px !important;
+  }
+
+  html body .faq-question{
+    min-height:56px !important;
+    padding:20px !important;
+    align-items:center !important;
+  }
+
+  html body .accordion-summary{
+    padding:20px !important;
+    gap:12px !important;
+    align-items:center !important;
+  }
+
+  html body .accordion-action{
+    min-height:44px !important;
+    padding:10px 14px !important;
+  }
+}
+
+
+/* v010 homepage clarity + examples emphasis */
+body[data-page="index.html"] #einstieg .section-head{max-width:760px}
+body[data-page="index.html"] .home-guide-grid{margin-top:18px;align-items:stretch}
+body[data-page="index.html"] .home-guide-card{height:100%;text-align:left}
+body[data-page="index.html"] .home-guide-card h3{max-width:14ch}
+body[data-page="index.html"] .hero-copy{max-width:680px}
+body[data-page="index.html"] .hero-summary-line{font-weight:700}
+body[data-page="index.html"] .workflow-check-intro{max-width:760px}
+body[data-page="index.html"] .workflow-check-shell--sequential{max-width:860px}
+body[data-page="index.html"] .cta-panel-centered{max-width:860px;margin-inline:auto}
+@media (max-width: 900px){
+  body[data-page="index.html"] .home-guide-card h3{max-width:none}
+}
+
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis{
+  width:min(100%, 980px);
+  margin:0 auto;
+  display:grid !important;
+  justify-items:center;
+  gap:14px;
+  padding:18px 22px;
+  border-radius:28px;
+  background:linear-gradient(180deg, rgba(255,255,255,.72), rgba(239,246,255,.56));
+  border:1px solid rgba(67,121,197,.18);
+  box-shadow:0 18px 42px rgba(40,84,145,.10);
+}
+html body[data-page="beispiele.html"] .examples-filter-kicker{
+  display:inline-flex !important;
   align-items:center;
   justify-content:center;
-  margin:20px auto 0;
-  padding:10px 18px;
+  margin:0;
+  padding:8px 14px;
   border-radius:999px;
-  background:rgba(255,255,255,.38);
-  border:1px solid rgba(115,155,220,.18);
-  color:#31527f;
-  font-weight:800;
-  letter-spacing:.01em;
-  box-shadow:0 16px 36px rgba(24,48,86,.08);
+  border:1px solid rgba(67,121,197,.18);
+  background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(239,246,255,.82));
 }
-body[data-page="index.html"] .hero-copy.hero-copy-centered .btn-row{
-  justify-content:center;
-  margin-top:24px;
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis,
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .examples-chip-row,
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .examples-chip-row-left{
+  justify-content:center !important;
+  align-items:center !important;
+  text-align:center !important;
 }
-body[data-page="index.html"] .hero-copy.hero-copy-centered .hero-trustline{
-  justify-content:center;
-  margin-top:18px;
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .examples-chip-row-left{
+  width:100%;
+  gap:10px 12px;
 }
-body[data-page="index.html"] .hero-stream-wrap.hero-stream-naked.hero-stream-side{
-  position:absolute;
-  top:20px;
-  right:clamp(0px, 2vw, 18px);
-  width:min(28vw, 340px);
-  min-height:760px;
-  opacity:.95;
-  z-index:1;
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .example-chip{
+  min-height:46px;
+  padding:12px 18px;
+  border-width:1px;
+  border-color:rgba(67,121,197,.22);
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(236,245,255,.84));
+  box-shadow:0 10px 24px rgba(40,84,145,.08);
+  font-weight:700;
 }
-body[data-page="index.html"] .hero-stream-wrap.hero-stream-naked.hero-stream-side .hero-flow-canvas{height:760px;}
-body[data-page="index.html"] .hero-trustline span{background:rgba(255,255,255,.24);}
-@media (max-width:1180px){
-  body[data-page="index.html"] .hero-stream-wrap.hero-stream-naked.hero-stream-side{
-    width:min(29vw, 300px);
-    min-height:700px;
-  }
-  body[data-page="index.html"] .hero-stream-wrap.hero-stream-naked.hero-stream-side .hero-flow-canvas{height:700px;}
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .example-chip:hover{
+  transform:translateY(-2px);
+  border-color:rgba(33,176,255,.42);
+  box-shadow:0 14px 28px rgba(33,176,255,.12);
 }
-@media (max-width:900px){
-  body[data-page="index.html"] .hero-grid-clean.hero-grid-centered{min-height:auto;}
-  body[data-page="index.html"] .hero-stream-wrap.hero-stream-naked.hero-stream-side{
-    position:relative;
-    top:auto;
-    right:auto;
-    width:min(100%, 420px);
-    min-height:420px;
-    margin:18px auto 0;
-  }
-  body[data-page="index.html"] .hero-stream-wrap.hero-stream-naked.hero-stream-side .hero-flow-canvas{height:420px;}
+html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .example-chip.is-active{
+  background:linear-gradient(135deg, rgba(39,164,255,.24), rgba(64,218,255,.16));
+  border-color:rgba(33,176,255,.48);
+  box-shadow:0 16px 32px rgba(33,176,255,.16), 0 0 0 1px rgba(33,176,255,.12);
 }
-@media (max-width:760px){
-  body[data-page="index.html"] .hero-copy.hero-copy-centered h1{max-width:12ch;}
-  body[data-page="index.html"] .hero-copy.hero-copy-centered .lead{max-width:34ch;}
-  body[data-page="index.html"] .hero-copy.hero-copy-centered .hero-summary-line{
-    display:flex;
-    width:100%;
-    max-width:340px;
-    font-size:.98rem;
-    line-height:1.45;
-  }
-  body[data-page="index.html"] .hero-copy.hero-copy-centered .hero-trustline{gap:8px;}
-  body[data-page="index.html"] .hero-copy.hero-copy-centered .hero-trustline span{
-    width:100%;
-    justify-content:center;
+body[data-theme="dark"][data-page="beispiele.html"] .examples-tools.examples-tools-emphasis{
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border-color:rgba(148,185,255,.16);
+  box-shadow:0 24px 48px rgba(3,10,24,.24);
+}
+body[data-theme="dark"][data-page="beispiele.html"] .examples-filter-kicker{
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  border-color:rgba(148,185,255,.16);
+}
+body[data-theme="dark"][data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .example-chip{
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  border-color:rgba(148,185,255,.18);
+  box-shadow:0 12px 26px rgba(3,10,24,.22);
+}
+body[data-theme="dark"][data-page="beispiele.html"] .examples-tools.examples-tools-emphasis .example-chip.is-active{
+  background:linear-gradient(135deg, rgba(39,164,255,.26), rgba(64,218,255,.14));
+  border-color:rgba(64,218,255,.36);
+}
+@media (max-width: 760px){
+  html body[data-page="beispiele.html"] .examples-tools.examples-tools-emphasis{padding:16px 14px}
+}
+
+
+/* start page reset: hero, full faq, quickcheck, final ctas only */
+body[data-page="index.html"] #faq .section-head,
+body[data-page="index.html"] #faq .faq-explorer,
+body[data-page="index.html"] #faq .faq-explorer-head,
+body[data-page="index.html"] #faq .faq-explorer-intro,
+body[data-page="index.html"] #faq .faq-topic-bar,
+body[data-page="index.html"] #faq .faq-search,
+body[data-page="index.html"] #faq .faq-topic-grid{
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] #faq .faq-explorer-intro,
+body[data-page="index.html"] #faq .section-head{
+  text-align:center !important;
+}
+body[data-page="index.html"] #faq .faq-topic-bar,
+body[data-page="index.html"] #faq .faq-search{
+  justify-content:center !important;
+}
+body[data-page="index.html"] #faq .faq-topic-grid{
+  max-width:1100px;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-head,
+body[data-page="index.html"] #workflow-check .workflow-check-intro,
+body[data-page="index.html"] #workflow-check .workflow-check-toggle-row,
+body[data-page="index.html"] #workflow-check .workflow-check-progress{
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-head,
+body[data-page="index.html"] #workflow-check .workflow-check-intro{
+  text-align:center !important;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-head h2,
+body[data-page="index.html"] #workflow-check .workflow-check-head p,
+body[data-page="index.html"] #workflow-check .workflow-check-intro h3,
+body[data-page="index.html"] #workflow-check .workflow-check-intro p{
+  text-align:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-toggle-row,
+body[data-page="index.html"] .home-cta-final-row{
+  justify-content:center !important;
+}
+body[data-page="index.html"] .home-cta-final-row{
+  padding-top:8px;
+}
+@media (max-width: 760px){
+  body[data-page="index.html"] #faq .faq-topic-grid{
+    grid-template-columns:1fr !important;
   }
 }
