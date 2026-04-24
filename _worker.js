@@ -1,4 +1,4 @@
-const N8N_WEBHOOK_URL = 'https://maxde.app.n8n.cloud/webhook/cloudflare-contact';
+const DEFAULT_CONTACT_TTL_SECONDS = 60 * 60 * 24 * 90;
 
 export default {
   async fetch(request, env) {
@@ -25,25 +25,27 @@ async function handleContactSubmission(request, env) {
   }
 
   const data = {
-    gender: clean(payload.gender),
-    firstName: clean(payload.firstName),
-    name: clean(payload.name),
-    company: clean(payload.company),
-    email: clean(payload.email).toLowerCase(),
-    topic: clean(payload.topic),
-    message: clean(payload.message),
-    phone: clean(payload.phone),
+    gender: clean(payload.gender, 40),
+    firstName: clean(payload.firstName, 80),
+    name: clean(payload.name, 80),
+    company: clean(payload.company, 120),
+    email: clean(payload.email, 160).toLowerCase(),
+    topic: clean(payload.topic, 140),
+    message: cleanMultiline(payload.message, 4000),
+    phone: clean(payload.phone, 80),
     callbackRequested: payload.callbackRequested === true,
     consent: payload.consent === true,
-    assessment: clean(payload.assessment),
-    website: clean(payload.website)
+    assessment: cleanMultiline(payload.assessment, 1500),
+    website: clean(payload.website, 200)
   };
 
+  // Honeypot: echte Nutzer sehen dieses Feld nicht.
   if (data.website) {
     return json({ ok: true, message: 'Anfrage erfolgreich abgesendet.' }, 202);
   }
 
-  if (!data.gender || !['male', 'female', 'diverse'].includes(data.gender)) {
+  const allowedGenderValues = ['', 'male', 'female', 'other', 'diverse'];
+  if (!allowedGenderValues.includes(data.gender)) {
     return json({ ok: false, message: 'Bitte eine gültige Anrede auswählen.' }, 400);
   }
 
@@ -59,6 +61,14 @@ async function handleContactSubmission(request, env) {
     return json({ ok: false, message: 'Bitte eine gültige E-Mail-Adresse eingeben.' }, 400);
   }
 
+  if (!data.topic) {
+    return json({ ok: false, message: 'Bitte ein Thema auswählen.' }, 400);
+  }
+
+  if (!data.message || data.message.length < 20) {
+    return json({ ok: false, message: 'Bitte den Ablauf kurz mit mindestens 20 Zeichen beschreiben.' }, 400);
+  }
+
   if (data.callbackRequested && !isValidPhone(data.phone)) {
     return json({ ok: false, message: 'Bitte eine Telefonnummer für den Rückruf angeben.' }, 400);
   }
@@ -69,6 +79,7 @@ async function handleContactSubmission(request, env) {
 
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const userAgent = request.headers.get('User-Agent') || '';
+  const origin = request.headers.get('Origin') || '';
   const rateKey = `contact-rate:${ip}`;
   const lastSubmission = await env.CONTACT_FORMS.get(rateKey);
 
@@ -83,21 +94,25 @@ async function handleContactSubmission(request, env) {
     submittedAt,
     ip,
     userAgent,
+    origin,
+    source: 'website-contact-form',
     ...data
   };
 
   await Promise.all([
-    env.CONTACT_FORMS.put(entryId, JSON.stringify(record)),
+    env.CONTACT_FORMS.put(entryId, JSON.stringify(record), { expirationTtl: getContactTtl(env) }),
     env.CONTACT_FORMS.put(rateKey, String(Date.now()), { expirationTtl: 120 })
   ]);
 
+  const webhookUrl = env.N8N_WEBHOOK_URL || 'https://maxde.app.n8n.cloud/webhook/cloudflare-contact';
+
   try {
-    await sendToN8N(record);
+    await sendToN8N(record, webhookUrl, env.N8N_CONTACT_SECRET);
   } catch {
     return json(
       {
         ok: false,
-        message: 'Anfrage wurde gespeichert, aber die E-Mail-Weiterleitung hat nicht funktioniert.'
+        message: 'Anfrage wurde gespeichert, aber die Weiterleitung an den Workflow hat nicht funktioniert.'
       },
       502
     );
@@ -106,12 +121,22 @@ async function handleContactSubmission(request, env) {
   return json({ ok: true, message: 'Anfrage erfolgreich abgesendet.' }, 200);
 }
 
-async function sendToN8N(record) {
-  const response = await fetch(N8N_WEBHOOK_URL, {
+async function sendToN8N(record, webhookUrl, secret) {
+  if (!webhookUrl) {
+    throw new Error('n8n webhook missing');
+  }
+
+  const headers = {
+    'Content-Type': 'application/json; charset=utf-8'
+  };
+
+  if (secret) {
+    headers['X-Contact-Secret'] = secret;
+  }
+
+  const response = await fetch(webhookUrl, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8'
-    },
+    headers,
     body: JSON.stringify(record)
   });
 
@@ -121,8 +146,12 @@ async function sendToN8N(record) {
   }
 }
 
-function clean(value) {
-  return String(value || '').trim().replace(/\s+/g, ' ');
+function clean(value, maxLength = 500) {
+  return String(value || '').trim().replace(/\s+/g, ' ').slice(0, maxLength);
+}
+
+function cleanMultiline(value, maxLength = 4000) {
+  return String(value || '').trim().replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').slice(0, maxLength);
 }
 
 function isValidEmail(value) {
@@ -132,6 +161,11 @@ function isValidEmail(value) {
 function isValidPhone(value) {
   const normalized = String(value || '').trim().replace(/[^\d+]/g, '');
   return normalized.length >= 7;
+}
+
+function getContactTtl(env) {
+  const parsed = Number(env.CONTACT_TTL_SECONDS || DEFAULT_CONTACT_TTL_SECONDS);
+  return Number.isFinite(parsed) && parsed > 0 ? Math.round(parsed) : DEFAULT_CONTACT_TTL_SECONDS;
 }
 
 function json(payload, status) {

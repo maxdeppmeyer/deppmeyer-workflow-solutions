@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://deppmeyer-workflow-solutions.pages.dev/sitemap.xml
+
+Sitemap: https://deine-domain.de/sitemap.xml

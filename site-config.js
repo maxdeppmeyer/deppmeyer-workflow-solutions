@@ -1,13 +1,15 @@
+// Zentrale Platzhalter für sichtbare Unternehmensdaten.
+// Später nur diese Werte ändern, dann werden Header/Footer/Kontaktbereiche automatisch aktualisiert.
 window.siteConfig = {
   companyName: "Deppmeyer Workflow Solutions",
   shortName: "Deppmeyer",
-  tagline: "Praxisnahe Prozessoptimierung und Workflow-Lösungen",
-  email: "deppmeyer.workflow@solutions.de",
+  tagline: "Digitale Lösungen, Automatisierungen und Business-Apps",
+  email: "kontakt@deine-domain.de",
   phone: "",
-  location: "Deutschlandweit, mit Standort in Hannover",
+  location: "Deutschlandweit digital, Standort Hannover",
   serviceArea: "Deutschlandweit digital, Standort Hannover",
   legalName: "Max Deppmeyer",
   street: "[Straße und Hausnummer ergänzen]",
   cityZip: "[PLZ und Ort ergänzen]",
-  domain: "https://deppmeyer-workflow-solutions.pages.dev"
+  domain: "https://deine-domain.de"
 };
