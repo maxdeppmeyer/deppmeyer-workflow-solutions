@@ -481,6 +481,11 @@
     const input = document.querySelector('[data-example-filter]');
     const chips = [...document.querySelectorAll('[data-example-chip]')];
     const cards = [...document.querySelectorAll('[data-example-card]')];
+    const emptyState = document.querySelector('[data-example-empty]');
+    const filterNote = document.querySelector('[data-example-filter-note]');
+    const flowSection = document.querySelector('.example-flow-section');
+    const cardGrid = document.querySelector('.solution-example-grid');
+    const cardSection = cardGrid ? cardGrid.closest('section') : null;
     if (!cards.length) return;
 
     let activeChip = 'all';
@@ -491,17 +496,35 @@
 
     const applyFilter = () => {
       const query = input ? (input.value || '').trim().toLowerCase() : '';
+      let visibleCount = 0;
       cards.forEach((card) => {
         const text = `${card.getAttribute('data-example-filter-text') || ''} ${card.textContent || ''}`.toLowerCase();
         const category = (card.getAttribute('data-example-category') || '').toLowerCase();
         const chipMatches = activeChip === 'all' || category === activeChip || text.includes(activeChip);
         const queryMatches = !query || text.includes(query);
-        card.classList.toggle('is-filter-hidden', !(chipMatches && queryMatches));
+        const visible = chipMatches && queryMatches;
+        card.classList.toggle('is-filter-hidden', !visible);
+        if (visible) visibleCount += 1;
       });
+      if (flowSection) {
+        const visibleFlows = [...flowSection.querySelectorAll('[data-example-card]')].some((card) => !card.classList.contains('is-filter-hidden'));
+        flowSection.hidden = !visibleFlows;
+      }
+      if (cardSection) {
+        const visibleCards = [...cardSection.querySelectorAll('[data-example-card]')].some((card) => !card.classList.contains('is-filter-hidden'));
+        cardSection.hidden = !visibleCards;
+      }
+      if (emptyState) emptyState.hidden = visibleCount > 0;
+      if (filterNote) filterNote.textContent = visibleCount > 0
+        ? `Suche und Filter berücksichtigen Titel, Branche, Problem, Nutzen und Ablauf. Sichtbar: ${visibleCount} passende Beispiele.`
+        : 'Keine Treffer mit der aktuellen Suche. Bitte Suchbegriff kürzen oder „Alle“ wählen.';
       return getFirstVisibleCard();
     };
 
-    if (input) input.addEventListener('input', applyFilter);
+    if (input) input.addEventListener('input', () => {
+      stopActiveWorkflow();
+      applyFilter();
+    });
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
         activeChip = chip.getAttribute('data-example-chip') || 'all';
@@ -612,6 +635,56 @@
         { title: 'Dokumentation erstellt', description: 'Der Vorgang wird einheitlich festgehalten.' },
         { title: 'Zuweisung ausgelöst', description: 'Die richtige Stelle übernimmt automatisch.' },
         { title: 'Status abgeschlossen', description: 'Alle Beteiligten sehen den aktuellen Stand.' }
+      ]
+    },
+    locksmith: {
+      steps: [
+        { title: 'Auftrag wird geöffnet', description: 'Der Mitarbeiter startet den neuen Einsatz direkt vor Ort.' },
+        { title: 'Ausweis wird gescannt', description: 'OCR erkennt relevante Kundendaten und bereitet sie zur Prüfung vor.' },
+        { title: 'Daten werden bestätigt', description: 'Der Mitarbeiter kontrolliert die erkannten Angaben und ergänzt fehlende Informationen.' },
+        { title: 'Leistungen werden gewählt', description: 'Fahrt, Einsatzart, Material und Hinweise werden mit wenigen Klicks erfasst.' },
+        { title: 'Rechnung wird erzeugt', description: 'Aus den geprüften Daten entsteht automatisch ein sauberes PDF.' },
+        { title: 'Vorgang ist abgeschlossen', description: 'Rechnung und Einsatzdaten sind gespeichert und können später nachvollzogen werden.' }
+      ]
+    },
+    offer: {
+      steps: [
+        { title: 'Anfrage kommt rein', description: 'Formular, E-Mail oder Anhang werden als neuer Vorgang erkannt.' },
+        { title: 'Kundendaten werden sortiert', description: 'Kontaktdaten, Leistungswunsch und Unterlagen werden strukturiert.' },
+        { title: 'Fehlende Angaben fallen auf', description: 'Unklare Punkte werden markiert, bevor Zeit in ein falsches Angebot fließt.' },
+        { title: 'Angebotsgrundlage entsteht', description: 'Die wichtigsten Informationen werden für die Angebotserstellung vorbereitet.' },
+        { title: 'Prüfung wird möglich', description: 'Eine Person kann den Vorschlag prüfen, ergänzen oder freigeben.' },
+        { title: 'Angebot ist vorbereitet', description: 'Der Vorgang ist sauber dokumentiert und bereit für den nächsten Schritt.' }
+      ]
+    },
+    inbox: {
+      steps: [
+        { title: 'Neue E-Mail erkannt', description: 'Eine Kundenanfrage wird automatisch aus dem Postfach übernommen.' },
+        { title: 'Inhalt wird gelesen', description: 'Betreff, Absender, Thema und mögliche Dringlichkeit werden ausgewertet.' },
+        { title: 'Kategorie wird gesetzt', description: 'Die Anfrage wird zum passenden Bereich oder Bearbeitungsweg sortiert.' },
+        { title: 'Antwort wird vorbereitet', description: 'Eine passende Erstreaktion oder interne Notiz wird erzeugt.' },
+        { title: 'Zuständigkeit wird gesetzt', description: 'Die richtige Person oder der richtige Workflow übernimmt den Vorgang.' },
+        { title: 'Status bleibt sichtbar', description: 'Bearbeitung und nächste Schritte sind nachvollziehbar statt nur im Postfach versteckt.' }
+      ]
+    },
+    documents: {
+      steps: [
+        { title: 'Datei wird hochgeladen', description: 'Rechnung, Nachweis, Formular oder Anhang kommen in den digitalen Eingang.' },
+        { title: 'Dokumenttyp wird erkannt', description: 'Der Ablauf erkennt, ob es sich um Rechnung, Nachweis oder Kundenunterlage handelt.' },
+        { title: 'Name wird erzeugt', description: 'Die Datei bekommt eine einheitliche Bezeichnung mit Datum, Kunde oder Vorgang.' },
+        { title: 'Ablageort wird gewählt', description: 'Das Dokument wird automatisch dem richtigen Ordner oder Vorgang zugeordnet.' },
+        { title: 'Information wird weitergegeben', description: 'Bei Bedarf wird eine Benachrichtigung oder Freigabe ausgelöst.' },
+        { title: 'Dokument ist auffindbar', description: 'Die Ablage ist sauber, einheitlich und später besser nachvollziehbar.' }
+      ]
+    },
+    statusflow: {
+      steps: [
+        { title: 'Auftrag wird erfasst', description: 'Ein neuer Vorgang entsteht aus Anfrage, Formular oder interner Eingabe.' },
+        { title: 'Zuständigkeit wird gesetzt', description: 'Der passende Mitarbeiter oder Bereich wird automatisch vorgeschlagen.' },
+        { title: 'Status wird aktualisiert', description: 'Der aktuelle Bearbeitungsstand wird sichtbar statt per Zuruf geklärt.' },
+        { title: 'Rückfrage wird vorbereitet', description: 'Fehlende Informationen werden gesammelt und gezielt angefragt.' },
+        { title: 'Übergabe wird dokumentiert', description: 'Alle relevanten Angaben bleiben am Vorgang und gehen nicht in Chats verloren.' },
+        { title: 'Abschluss wird gemeldet', description: 'Kunde oder Team erhalten die passende Rückmeldung zum Ergebnis.' }
       ]
     }
   };
@@ -1116,8 +1189,13 @@
     const openCheck = () => {
       shell.hidden = false;
       toggle.textContent = toggleCloseLabel;
-      updateStep(0, { instant: true });
-      if (isMobile()) scrollTargetIntoView(shell, { block: 'start', force: true, padding: 16, delay: 18 });
+      updateStep(0, { instant: true, scroll: false });
+      scrollTargetIntoView(shell, {
+        block: 'center',
+        force: true,
+        padding: isMobileViewport() ? 18 : 30,
+        delay: 35
+      });
     };
     const closeCheck = () => {
       shell.hidden = true;
@@ -1226,6 +1304,7 @@
     const responseNote = contactForm.querySelector('[data-contact-note]');
     const defaultResponseNote = responseNote ? responseNote.textContent.trim() : '';
     const responseWrap = contactForm.querySelector('.contact-response');
+    const submitHint = contactForm.querySelector('[data-contact-submit-hint]');
     const callbackHintNote = (() => {
       if (!responseWrap) return null;
       const existing = responseWrap.querySelector('[data-callback-choice-note]');
@@ -1245,25 +1324,11 @@
       const existing = responseWrap.querySelector('[data-contact-validation-note]');
       if (existing) return existing;
       const note = document.createElement('div');
-      note.className = 'note';
+      note.className = 'note contact-validation-note';
       note.hidden = true;
       note.setAttribute('role', 'status');
       note.setAttribute('aria-live', 'polite');
       note.setAttribute('data-contact-validation-note', '');
-      Object.assign(note.style, {
-        display: 'block',
-        flexBasis: '100%',
-        width: '100%',
-        padding: '10px 14px',
-        borderRadius: '14px',
-        background: 'rgba(255,255,255,.06)',
-        border: '1px solid rgba(200,74,100,.18)',
-        color: 'var(--muted-2)',
-        lineHeight: '1.55',
-        fontSize: '0.94rem',
-        fontWeight: '500',
-        boxSizing: 'border-box'
-      });
       if (submitButton) responseWrap.insertBefore(note, submitButton);
       else if (callbackHintNote) responseWrap.insertBefore(note, callbackHintNote);
       else if (responseNote) responseWrap.insertBefore(note, responseNote);
@@ -1606,8 +1671,14 @@
         validationIssues.push('alle Pflichtfelder ausfüllen');
       }
       setValidationHint(validationIssues);
+      const canProceed = emailState.valid && consentGiven && phoneState.valid && requiredFieldsValid() && !isSubmitting;
+      if (submitHint) {
+        submitHint.textContent = canProceed
+          ? 'Alle Pflichtfelder sind ausgefüllt. Du kannst die Anfrage jetzt absenden.'
+          : 'Bitte fülle alle Pflichtfelder aus und bestätige den Datenschutz, damit du die Anfrage absenden kannst.';
+        submitHint.classList.toggle('is-ready', canProceed);
+      }
       if (submitButton) {
-        const canProceed = emailState.valid && consentGiven && phoneState.valid && requiredFieldsValid() && !isSubmitting;
         submitButton.disabled = !canProceed;
         submitButton.setAttribute('aria-disabled', String(!canProceed));
         submitButton.classList.toggle('is-disabled', !canProceed);
