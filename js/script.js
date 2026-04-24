@@ -778,20 +778,17 @@
   document.querySelectorAll('[data-workflow]').forEach(initWorkflow);
 
   const searchItems = [
-    { title: 'KMU-Fokus', text: 'Workflow-Lösungen vor allem für kleine und mittelständische Unternehmen mit wiederkehrenden Abläufen.', url: 'index.html#hero' },
-    { title: 'Workflows entwickeln und betreuen', text: 'Ich entwickle und betreue Workflows, die Unternehmen bei wiederkehrenden Prozessen spürbar entlasten.', url: 'index.html#hero' },
-    { title: 'Automatische Kundenantworten', text: 'Standardanfragen erkennen, passende Erstantworten vorbereiten und schneller reagieren.', url: 'beispiele.html#beispiel-autoantwort' },
-    { title: 'Automatische Terminbuchung', text: 'Terminwünsche übernehmen, Kalender prüfen, bestätigen und erinnern.', url: 'beispiele.html#beispiel-terminbuchung' },
-    { title: 'Angebotsvorbereitung', text: 'Angaben aus E-Mails, Formularen oder Dokumenten für Angebote strukturieren.', url: 'beispiele.html#beispiel-angebotsvorbereitung' },
-    { title: 'Leistungsüberblick', text: 'Analyse, Beratung, Planung und Umsetzung, Übergabe und Optimierung sowie Betreuung.', url: 'leistungen.html#leistungen-ueberblick' },
-    { title: 'Praxisbeispiele', text: 'Zwanzig praxisnahe Beispiele zu E-Mail, Terminen, Dokumenten, Support und internen Abläufen.', url: 'beispiele.html' },
-    { title: 'Einsatzbereiche', text: 'Wo Workflow-Lösungen bei E-Mail-Prozessen, Terminabläufen, Dokumenten und Übergaben helfen.', url: 'einsatzbereiche.html' },
-    { title: 'Kontaktformular', text: 'Kurzes Formular mit Name, Unternehmen, E-Mail, Thema und Beschreibung.', url: 'kontakt.html#kontaktformular' },
-    { title: 'FAQ', text: 'Häufige Fragen zu Zusammenarbeit, Technik, Terminen, Dokumenten, KI und Betreuung.', url: 'index.html#faq' },
-    { title: 'FAQ-Thema Zusammenarbeit', text: 'Weitere Fragen zu Ablauf, Kommunikation und sinnvollem Projektstart.', url: 'index.html#faq' },
-    { title: 'FAQ-Thema Technik & Tools', text: 'Fragen zu vorhandenen Tools, Integrationen und technischer Umsetzung.', url: 'index.html#faq' },
-    { title: 'Postfach-Automatisierung', text: 'Postfächer automatisch überwachen, Anfragen erkennen, sortieren und mit Antwort- oder Weiterleitungslogik verbinden.', url: 'beispiele.html#beispiel-autoantwort', keywords: 'postfach inbox posteingang mail eingang sortierung erstantwort autoantwort' },
-    { title: 'Schnellcheck Workflow', text: 'Zehn Fragen zeigen, welcher Workflow zuerst den größten Nutzen bringt.', url: 'index.html#workflow-check', keywords: 'fragebogen schnellcheck workflow check analyse orientierung' },
+    { title: 'Digitale Lösungen', text: 'Individuelle Apps, Automatisierungen und Tools für konkrete Probleme im Arbeitsalltag.', url: 'index.html#hero', keywords: 'app business app workflow automatisierung tool lösung problem' },
+    { title: 'Schlüsseldienst-App', text: 'Ausweis per OCR scannen, Kundendaten übernehmen und Rechnungen direkt vor Ort als PDF erstellen.', url: 'beispiele.html#beispiel-schluesseldienst-app', keywords: 'schlüsseldienst schluesseldienst ocr ausweis rechnung pdf app' },
+    { title: 'Business-Apps', text: 'Kleine Web- oder App-Lösungen für interne Abläufe, Außendienst und Datenerfassung.', url: 'leistungen.html#apps', keywords: 'app tool webapp intern außendienst aussendienst' },
+    { title: 'Workflow-Automatisierung', text: 'Wiederkehrende Aufgaben automatisieren, Anfragen sortieren und Informationen weiterleiten.', url: 'leistungen.html#automatisierung', keywords: 'workflow n8n automatisierung email formular webhook' },
+    { title: 'OCR und Dokumente', text: 'Daten aus Ausweisen, Formularen oder Dokumenten erfassen und weiterverarbeiten.', url: 'leistungen.html#ocr', keywords: 'ocr scan ausweis dokumente erfassung' },
+    { title: 'Rechnungen und PDFs', text: 'Aus einmal erfassten Daten automatisch Rechnungen, Angebote oder PDF-Dokumente erzeugen.', url: 'leistungen.html#pdf', keywords: 'rechnung angebot pdf dokument' },
+    { title: 'Schnittstellen', text: 'Bestehende Tools verbinden, damit Daten nicht doppelt übertragen werden müssen.', url: 'leistungen.html#schnittstellen', keywords: 'schnittstelle api tool verbinden' },
+    { title: 'Praxisbeispiele', text: 'Konkrete Beispiele für Apps, OCR, Dokumentenprozesse, Kontaktformulare und Automatisierungen.', url: 'beispiele.html', keywords: 'beispiele use cases lösungen' },
+    { title: 'Einsatzbereiche', text: 'Handwerk, Dienstleister, Außendienst, Büros mit vielen Anfragen und interne Abläufe.', url: 'einsatzbereiche.html', keywords: 'handwerk dienstleister außendienst office dokumente' },
+    { title: 'Kontaktformular', text: 'Anfrage mit Thema, Beschreibung, Rückrufoption und n8n-Anbindung senden.', url: 'kontakt.html#kontaktformular', keywords: 'kontakt anfrage formular rückruf n8n' },
+    { title: 'Schnellcheck', text: 'Kurzer Check, welche digitale Lösung als erster Schritt sinnvoll sein könnte.', url: 'index.html#workflow-check', keywords: 'schnellcheck fragebogen workflow check analyse orientierung' },
   ];
 
   document.querySelectorAll('.search-input').forEach((input) => {
@@ -832,11 +829,12 @@
     const synonymGroups = {
       email: ['email','e mail','mail','postfach','postfaecher','posteingang','inbox','kundenantwort','autoantwort','erstantwort'],
       termine: ['termin','termine','kalender','buchung','terminbuchung','erinnerung','rueckruf'],
-      dokumente: ['dokument','dokumente','datei','dateien','angebot','angebote','rechnung','ablage','anhang'],
+      dokumente: ['dokument','dokumente','datei','dateien','angebot','angebote','rechnung','rechnungen','pdf','ablage','anhang'],
       support: ['support','service','ticket','reklamation','hilfe'],
       intern: ['intern','weiterleitung','zustaendigkeit','status','uebergabe'],
+      app: ['app','apps','webapp','business app','tool','software','ocr','scan','ausweis'],
       faq: ['faq','fragen','hilfe','info'],
-      workflow: ['workflow','automatisierung','prozess','prozesse','ablauf','ablaeufe']
+      workflow: ['workflow','automatisierung','prozess','prozesse','ablauf','ablaeufe','n8n','webhook']
     };
 
     const buildKeywords = (item) => {
@@ -1045,14 +1043,14 @@
         copy: 'Ihre Antworten deuten darauf hin, dass eingehende Nachrichten, Standardanfragen oder wiederkehrende Rückfragen im Postfach besonders viel Zeit binden. Ein durchdachter E-Mail-Workflow sorgt dafür, dass Anfragen schneller sortiert, zugewiesen und mit einer passenden Erstantwort vorbereitet werden.',
         bullets: ['Typisch sinnvoll bei vielen ähnlichen Kundenanfragen oder zentralen Funktionspostfächern.', 'Möglich sind automatische Sortierung, Erstantwort, Anhänge, Weiterleitung und Statuslogik.', 'Gerade im Tagesgeschäft sinken Rückfragen und unnötige manuelle Zwischenschritte spürbar.'],
         topic: 'E-Mail- und Postfachprozesse',
-        examples: 'beispiele.html#beispiel-autoantwort'
+        examples: 'beispiele.html#beispiel-email-sortierung'
       },
       termine: {
         title: 'Besonders sinnvoll: Automatische Terminbuchung und Rückmeldelogik',
         copy: 'Ihre Antworten passen besonders gut zu einem Ablauf, der Terminwünsche übernimmt, freie Zeiten prüft und Bestätigungen oder Erinnerungen automatisch vorbereitet. So wird aus einem zeitaufwendigen Hin und Her ein verlässlicher Prozess.',
         bullets: ['Typisch sinnvoll bei Beratungs-, Service- oder Vor-Ort-Terminen.', 'Möglich sind Terminabgleich, Bestätigung, Erinnerungen und saubere Dokumentation.', 'Gerade bei wiederkehrenden Terminprozessen lassen sich viele Minuten pro Vorgang sparen.'],
         topic: 'Automatische Terminbuchung',
-        examples: 'beispiele.html#beispiel-terminbuchung'
+        examples: 'beispiele.html#beispiel-terminprozess'
       },
       dokumente: {
         title: 'Besonders sinnvoll: Angebots- und Dokumentenabläufe strukturieren',
@@ -1066,14 +1064,14 @@
         copy: 'Ihre Antworten deuten darauf hin, dass vor allem interne Übergaben, Freigaben oder Rückmeldungen geordneter laufen sollten. Ein strukturierter Ablauf bündelt Informationen, weist Zuständigkeiten sauber zu und hält den aktuellen Stand sichtbar.',
         bullets: ['Typisch sinnvoll bei internen Anfragen, Freigaben oder Rückmeldungen zwischen Teams.', 'Möglich sind Zuständigkeitslogik, Statusmeldungen und nachvollziehbare Übergaben.', 'Dadurch sinken Suchaufwand, Abstimmungsrunden und personengebundene Sonderwege.'],
         topic: 'Interne Weiterleitungen und Zuständigkeiten',
-        examples: 'beispiele.html#beispiel-intern'
+        examples: 'beispiele.html#beispiel-interne-freigabe'
       },
       mix: {
         title: 'Besonders sinnvoll: Mit einem kleinen Kern-Workflow starten',
         copy: 'Ihre Antworten zeigen, dass nicht nur ein einzelner Schritt Zeit kostet, sondern mehrere kleine Abläufe zusammenspielen. In solchen Fällen ist meist ein Start mit dem größten Engpass am sinnvollsten, damit Entlastung schnell spürbar wird und später sinnvoll erweitert werden kann.',
         bullets: ['Typisch sinnvoll, wenn E-Mails, Termine, Dokumente und Übergaben gleichzeitig eine Rolle spielen.', 'Empfohlen wird ein schlanker Start mit dem größten Zeitfresser und einer sinnvollen Ausbauperspektive.', 'So entsteht keine unnötig große Lösung, sondern ein Schritt, der im Alltag sofort hilft.'],
         topic: 'Allgemeine Prozessoptimierung',
-        examples: 'beispiele.html#beispiel-multichannel'
+        examples: 'beispiele.html#beispiel-schluesseldienst-app'
       }
     };
 
@@ -1277,6 +1275,7 @@
     const consentInput = contactForm.querySelector('#consent');
     const consentFeedback = contactForm.querySelector('[data-consent-feedback]');
     const requiredWrappers = [...contactForm.querySelectorAll('[data-required-field]')];
+    const requiredFieldsValid = () => requiredWrappers.every((wrapper) => requiredFieldFilled(wrapper));
     let isSubmitting = false;
     let shouldRevealValidationHint = false;
     const setResponseNote = (message) => {
@@ -1603,9 +1602,12 @@
       if (!consentGiven) {
         validationIssues.push('Datenschutz-Einwilligung bestätigen');
       }
+      if (!requiredFieldsValid()) {
+        validationIssues.push('alle Pflichtfelder ausfüllen');
+      }
       setValidationHint(validationIssues);
       if (submitButton) {
-        const canProceed = emailState.valid && consentGiven && phoneState.valid && !isSubmitting;
+        const canProceed = emailState.valid && consentGiven && phoneState.valid && requiredFieldsValid() && !isSubmitting;
         submitButton.disabled = !canProceed;
         submitButton.setAttribute('aria-disabled', String(!canProceed));
         submitButton.classList.toggle('is-disabled', !canProceed);
@@ -1626,10 +1628,13 @@
       const consentGiven = Boolean(formData.get('consent'));
       const callbackRequested = Boolean(formData.get('callbackRequested'));
       const phoneState = callbackRequested ? validatePhoneValue(formData.get('phone')) : { valid: true };
-      if (!emailState.valid || !consentGiven || !phoneState.valid) {
+      const missingRequired = requiredWrappers.find((wrapper) => !requiredFieldFilled(wrapper));
+      if (!emailState.valid || !consentGiven || !phoneState.valid || missingRequired) {
         shouldRevealValidationHint = true;
         updateSummary();
-        if (!emailState.valid && emailInput) emailInput.focus();
+        const missingControl = missingRequired ? getRequiredControl(missingRequired) : null;
+        if (missingControl) missingControl.focus();
+        else if (!emailState.valid && emailInput) emailInput.focus();
         else if (!phoneState.valid && phoneInput) phoneInput.focus();
         else if (consentInput) consentInput.focus();
         return;
