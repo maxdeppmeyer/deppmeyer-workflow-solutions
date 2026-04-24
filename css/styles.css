@@ -3612,7 +3612,6 @@ body[data-page="einsatzbereiche.html"] .einsatz-card .accordion-action{
 }
 
 
-}
 
 /* stable final overrides: preserve current look while removing regressions */
 .faq-search{
@@ -6206,4 +6205,296 @@ body[data-theme="light"] .hero-trust-row span{background:rgba(255,255,255,.72);b
 }
 @media (prefers-reduced-motion:reduce){
   .solution-orbit,.scan-line,.floating-chip,.app-metric,.flow-dot.active,.flow-line::after{animation:none!important}
+}
+
+/* === v014 finale Korrekturen: FAQ, Schnellcheck, Beispiele, Kontakt === */
+body[data-page="index.html"] #faq .section-head{
+  max-width:860px;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
+body[data-page="index.html"] #faq .section-head p{
+  margin-left:auto;
+  margin-right:auto;
+  max-width:72ch;
+}
+body[data-page="index.html"] #faq .solution-faq{
+  max-width:980px;
+  margin-left:auto;
+  margin-right:auto;
+}
+body[data-page="index.html"] #faq .faq-visible-list{
+  gap:16px;
+}
+body[data-page="index.html"] #faq .faq-item{
+  border-radius:24px;
+  border:1px solid rgba(120,164,220,.20);
+  background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.08));
+  box-shadow:0 18px 42px rgba(7,22,48,.10);
+}
+body[data-page="index.html"] #faq .faq-question{
+  min-height:68px;
+  align-items:center;
+}
+body[data-page="index.html"] #faq .faq-more-compact{
+  justify-content:center !important;
+  margin-top:22px;
+}
+body[data-page="index.html"] #faq .faq-explorer{
+  max-width:1100px;
+  margin:24px auto 0 !important;
+}
+body[data-page="index.html"] #faq .faq-explorer-head,
+body[data-page="index.html"] #faq .faq-explorer-intro,
+body[data-page="index.html"] #faq .faq-topic-bar{
+  text-align:center !important;
+  justify-content:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] #faq .faq-search{
+  width:min(100%,720px);
+  margin:0 auto;
+}
+body[data-page="index.html"] #faq .faq-topic-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  max-width:1000px;
+  margin:0 auto;
+}
+body[data-page="index.html"] #workflow-check .section-head,
+body[data-page="index.html"] #workflow-check .workflow-check-head,
+body[data-page="index.html"] #workflow-check .workflow-check-intro{
+  text-align:center !important;
+  justify-items:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-head h2,
+body[data-page="index.html"] #workflow-check .workflow-check-head p{
+  text-align:center !important;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-toggle-row{
+  justify-content:center !important;
+}
+body[data-page="index.html"] #workflow-check .workflow-check-shell{
+  max-width:920px;
+  margin:18px auto 0 !important;
+  justify-self:center;
+}
+body[data-page="index.html"] #workflow-check .workflow-question-card{
+  text-align:left;
+}
+
+body[data-page="beispiele.html"] .examples-tools-section .container{
+  display:grid;
+  gap:12px;
+}
+.example-filter-note{
+  margin:0;
+  text-align:center;
+  font-size:.94rem;
+  color:var(--muted-2);
+}
+.example-empty-state{
+  max-width:760px;
+  margin:12px auto 0;
+  padding:16px 18px;
+  text-align:center;
+  border-radius:20px;
+  border:1px solid rgba(255,184,203,.30);
+  background:rgba(255,255,255,.08);
+  color:var(--heading);
+  font-weight:700;
+}
+.example-flow-section{
+  padding-top:76px;
+}
+.flow-demo-grid{
+  display:grid;
+  gap:26px;
+}
+.flow-demo-card{
+  display:grid;
+  grid-template-columns:minmax(260px,.46fr) minmax(0,1fr);
+  gap:22px;
+  align-items:stretch;
+  border-radius:34px;
+  padding:24px;
+  border:1px solid rgba(140,185,235,.24);
+  background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,255,255,.065));
+  box-shadow:0 22px 58px rgba(7,22,48,.14);
+  overflow:hidden;
+}
+.flow-demo-copy{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:10px;
+  min-width:0;
+}
+.flow-demo-copy .tag{
+  width:max-content;
+  max-width:100%;
+}
+.flow-demo-copy h3{
+  margin-bottom:0;
+}
+.flow-demo-copy p{
+  margin:0;
+}
+.flow-demo-dashboard{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  align-items:stretch;
+  padding:18px;
+  min-height:260px;
+}
+.flow-demo-dashboard .workflow-node{
+  min-height:150px;
+  padding:16px;
+  transform-origin:center;
+}
+.flow-demo-dashboard .workflow-node.active{
+  transform:translateY(-4px) scale(1.018);
+}
+.flow-demo-dashboard .workflow-current{
+  grid-column:1/-1;
+  min-height:auto;
+  padding:20px 22px;
+}
+.flow-demo-dashboard.workflow-complete .workflow-node{
+  display:flex !important;
+}
+.flow-demo-dashboard.workflow-complete .workflow-node.active{
+  border-color:rgba(159,244,203,.55);
+}
+.solution-example-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  justify-content:center;
+  align-items:stretch;
+}
+.solution-example-card{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  min-height:320px;
+  padding:26px !important;
+  border-radius:30px;
+  background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.07));
+  border:1px solid rgba(140,185,235,.24);
+  box-shadow:0 20px 52px rgba(7,22,48,.12);
+}
+.solution-example-card h3{
+  margin-bottom:0;
+}
+.solution-example-card p{
+  margin-bottom:0;
+}
+.solution-example-card .example-meta-toggle{
+  margin-top:auto;
+  border-radius:22px;
+  background:rgba(255,255,255,.06);
+}
+.solution-example-card .example-meta-toggle summary{
+  min-height:54px;
+  align-items:center;
+  padding:14px 16px;
+}
+.solution-example-card .example-meta-toggle .accordion-content{
+  padding:0 16px 18px !important;
+}
+.solution-example-card .accordion-action{
+  margin-left:auto;
+  flex:0 0 auto;
+}
+body[data-theme="light"] .flow-demo-card,
+body[data-theme="light"] .solution-example-card{
+  background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(244,250,255,.80));
+  border-color:rgba(86,132,190,.22);
+  box-shadow:0 20px 50px rgba(24,56,102,.10);
+}
+
+body[data-page="kontakt.html"] .solution-contact-form{
+  overflow:visible;
+}
+body[data-page="kontakt.html"] .contact-summary-panel{
+  grid-template-columns:minmax(0,1fr) minmax(320px,.78fr);
+  align-items:stretch;
+  overflow:visible;
+}
+body[data-page="kontakt.html"] .contact-summary-panel > div{
+  min-width:0;
+  overflow:hidden;
+}
+body[data-page="kontakt.html"] .contact-response{
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:space-between !important;
+  align-items:stretch !important;
+  gap:14px !important;
+  min-height:100%;
+}
+body[data-page="kontakt.html"] [data-contact-validation-note][hidden],
+body[data-page="kontakt.html"] [data-callback-choice-note][hidden]{
+  display:none !important;
+}
+body[data-page="kontakt.html"] .contact-validation-note,
+body[data-page="kontakt.html"] .contact-submit-hint{
+  display:block;
+  width:100%;
+  padding:10px 14px;
+  border-radius:16px;
+  line-height:1.55;
+  font-size:.94rem;
+}
+body[data-page="kontakt.html"] .contact-validation-note{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(200,74,100,.18);
+  color:var(--muted-2);
+}
+body[data-page="kontakt.html"] .contact-submit-hint{
+  margin-top:auto;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(140,185,235,.22);
+  color:var(--muted-2);
+}
+body[data-page="kontakt.html"] .contact-submit-hint.is-ready{
+  border-color:rgba(31,185,128,.34);
+  background:rgba(159,244,203,.12);
+  color:var(--heading);
+}
+.btn.is-disabled,
+.btn:disabled,
+button[aria-disabled="true"]{
+  cursor:not-allowed;
+  opacity:.55;
+  filter:saturate(.65);
+  transform:none !important;
+  box-shadow:none !important;
+}
+body[data-page="kontakt.html"] [data-contact-submit]{
+  width:100%;
+  min-height:56px;
+  margin-top:0;
+}
+
+@media (max-width:1100px){
+  .flow-demo-card{grid-template-columns:1fr}
+  .flow-demo-dashboard{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .solution-example-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  body[data-page="index.html"] #faq .faq-topic-grid,
+  .flow-demo-dashboard,
+  .solution-example-grid,
+  body[data-page="kontakt.html"] .contact-summary-panel{grid-template-columns:1fr}
+  .flow-demo-card{padding:18px;border-radius:28px}
+  .flow-demo-dashboard{padding:14px}
+  .flow-demo-dashboard .workflow-node{min-height:auto}
+  .solution-example-card{min-height:auto;padding:20px !important}
+  body[data-page="index.html"] #faq .faq-topic-bar{justify-content:center !important}
 }
