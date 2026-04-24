@@ -262,9 +262,12 @@
 
     const apply = () => {
       let visibleCount = 0;
+      const maxVisible = 8;
       items.forEach((item) => {
         const topic = item.getAttribute('data-faq-topic-item') || '';
-        const visible = !activeTopic || activeTopic === 'all' || topic === activeTopic;
+        const isDefault = item.getAttribute('data-faq-default') === 'true';
+        const topicMatch = !activeTopic || (activeTopic === 'all' ? isDefault : topic === activeTopic);
+        const visible = topicMatch && visibleCount < maxVisible;
         item.classList.toggle('is-hidden', !visible);
         if (visible) visibleCount += 1;
       });
@@ -825,7 +828,7 @@
         clearTimer();
         return;
       }
-      const mobileDelay = window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse)').matches ? 2050 : 1450;
+      const mobileDelay = window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse)').matches ? 2450 : 2350;
       timer = setTimeout(() => runStep(stepIndex + 1), mobileDelay);
     };
 
