@@ -6498,3 +6498,222 @@ body[data-page="kontakt.html"] [data-contact-submit]{
   .solution-example-card{min-height:auto;padding:20px !important}
   body[data-page="index.html"] #faq .faq-topic-bar{justify-content:center !important}
 }
+
+/* === v015 Korrekturen: FAQ-Suche, FAQ-Raster, Beispiele oben, mobile Feinabstimmung === */
+body[data-page="index.html"] #faq .solution-faq.faq-visible-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  max-width:1120px;
+  align-items:stretch;
+}
+body[data-page="index.html"] #faq .faq-visible-list .faq-item{
+  height:100%;
+  min-height:104px;
+  display:flex;
+  flex-direction:column;
+}
+body[data-page="index.html"] #faq .faq-visible-list .faq-question{
+  min-height:104px;
+  padding:24px 26px;
+  line-height:1.32;
+}
+body[data-page="index.html"] #faq .faq-answer-inner p{
+  margin-bottom:0;
+}
+body[data-page="index.html"] #faq .faq-topic-grid{
+  align-items:stretch;
+  grid-auto-rows:minmax(104px,auto);
+}
+body[data-page="index.html"] #faq .faq-topic-grid .faq-item{
+  height:100%;
+  min-height:104px;
+}
+body[data-page="index.html"] #faq .faq-search{
+  width:min(100%,760px);
+  max-width:760px;
+  margin:2px auto 22px;
+  position:relative;
+}
+body[data-page="index.html"] #faq .faq-search .search-icon{
+  left:22px;
+  top:30px;
+  transform:translateY(-50%);
+  pointer-events:none;
+  opacity:.9;
+}
+body[data-page="index.html"] #faq .faq-search input{
+  display:block;
+  width:100%;
+  min-height:60px;
+  padding:0 22px 0 58px;
+  border-radius:24px;
+  border:1px solid rgba(222,235,255,.24);
+  background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.075));
+  color:var(--text);
+  outline:none;
+  box-shadow:0 18px 40px rgba(7,22,48,.12), inset 0 1px 0 rgba(255,255,255,.08);
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+body[data-page="index.html"] #faq .faq-search input::placeholder{
+  color:var(--muted-2);
+  opacity:1;
+}
+body[data-page="index.html"] #faq .faq-search input:focus{
+  border-color:rgba(159,238,255,.58);
+  box-shadow:0 0 0 4px rgba(159,238,255,.12),0 18px 40px rgba(7,22,48,.12);
+}
+body[data-theme="light"][data-page="index.html"] #faq .faq-search input{
+  background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(242,248,255,.88));
+  border-color:rgba(91,132,190,.28);
+  box-shadow:0 18px 38px rgba(24,56,102,.10), inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+body[data-page="beispiele.html"] .flow-demo-grid{
+  gap:30px;
+}
+body[data-page="beispiele.html"] .flow-demo-card{
+  grid-template-columns:1fr;
+  max-width:1120px;
+  width:100%;
+  margin:0 auto;
+  padding:30px;
+  gap:22px;
+}
+body[data-page="beispiele.html"] .flow-demo-copy{
+  align-items:center;
+  justify-content:start;
+  text-align:center;
+  max-width:780px;
+  margin:0 auto;
+}
+body[data-page="beispiele.html"] .flow-demo-copy h3{
+  max-width:100%;
+  font-size:clamp(1.45rem,2.5vw,2rem);
+  line-height:1.12;
+}
+body[data-page="beispiele.html"] .flow-demo-copy p{
+  max-width:70ch;
+  margin:0 auto;
+}
+body[data-page="beispiele.html"] .flow-demo-dashboard{
+  width:100%;
+  max-width:980px;
+  margin:0 auto;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+body[data-page="beispiele.html"] .flow-demo-dashboard .workflow-toolbar{
+  justify-content:center !important;
+  margin-bottom:4px;
+}
+body[data-page="beispiele.html"] .flow-demo-dashboard .workflow-toolbar .btn-row{
+  justify-content:center;
+}
+body[data-page="beispiele.html"] .flow-demo-dashboard .workflow-current{
+  text-align:left;
+}
+body[data-page="beispiele.html"] .solution-example-card{
+  padding:30px 28px !important;
+  overflow:hidden;
+}
+body[data-page="beispiele.html"] .solution-example-card h3{
+  margin:2px 0 0;
+  padding-right:8px;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  hyphens:auto;
+  line-height:1.24;
+}
+body[data-page="beispiele.html"] .solution-example-card .example-card-top{
+  gap:12px;
+  min-height:40px;
+  margin-bottom:10px;
+}
+body[data-page="beispiele.html"] .solution-example-card .tag{
+  max-width:calc(100% - 52px);
+  white-space:normal;
+}
+body[data-page="beispiele.html"] .solution-example-card .example-number{
+  flex:0 0 auto;
+}
+body[data-page="beispiele.html"] .solution-example-card p,
+body[data-page="beispiele.html"] .solution-example-card summary span:first-child{
+  overflow-wrap:anywhere;
+}
+
+@media (max-width:900px){
+  body[data-page="index.html"] #faq .solution-faq.faq-visible-list,
+  body[data-page="index.html"] #faq .faq-topic-grid{
+    grid-template-columns:1fr;
+    max-width:720px;
+  }
+  body[data-page="index.html"] #faq .faq-visible-list .faq-item,
+  body[data-page="index.html"] #faq .faq-topic-grid .faq-item{
+    min-height:auto;
+  }
+  body[data-page="index.html"] #faq .faq-visible-list .faq-question{
+    min-height:auto;
+    padding:20px 22px;
+  }
+  body[data-page="beispiele.html"] .flow-demo-dashboard{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media (max-width:760px){
+  body[data-page="index.html"] #faq .faq-search{
+    width:100%;
+    margin-bottom:18px;
+  }
+  body[data-page="index.html"] #faq .faq-search input{
+    min-height:56px;
+    padding-left:52px;
+    border-radius:20px;
+    font-size:16px;
+  }
+  body[data-page="index.html"] #faq .faq-search .search-icon{
+    left:18px;
+    top:28px;
+  }
+  body[data-page="beispiele.html"] .flow-demo-card{
+    padding:18px;
+    border-radius:26px;
+    gap:18px;
+  }
+  body[data-page="beispiele.html"] .flow-demo-copy{
+    text-align:center;
+    align-items:center;
+  }
+  body[data-page="beispiele.html"] .flow-demo-copy h3{
+    font-size:clamp(1.28rem,6vw,1.62rem);
+  }
+  body[data-page="beispiele.html"] .flow-demo-dashboard{
+    grid-template-columns:1fr;
+    min-height:auto;
+    padding:12px;
+    gap:12px;
+  }
+  body[data-page="beispiele.html"] .flow-demo-dashboard .workflow-node,
+  body[data-page="beispiele.html"] .flow-demo-dashboard .workflow-current{
+    min-height:auto;
+    padding:16px;
+  }
+  body[data-page="beispiele.html"] .flow-demo-dashboard .workflow-node.active{
+    transform:none;
+  }
+  body[data-page="beispiele.html"] .flow-demo-dashboard .workflow-current-copy{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  body[data-page="beispiele.html"] .flow-demo-dashboard .workflow-toolbar .btn-row,
+  body[data-page="beispiele.html"] .flow-demo-dashboard .workflow-toolbar .btn{
+    width:100%;
+  }
+  body[data-page="beispiele.html"] .solution-example-card{
+    padding:22px !important;
+  }
+  body[data-page="beispiele.html"] .solution-example-card h3{
+    padding-right:0;
+    font-size:1.18rem;
+  }
+}
