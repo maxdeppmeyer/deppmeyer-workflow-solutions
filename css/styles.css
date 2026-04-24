@@ -7439,3 +7439,19 @@ body[data-theme="dark"][data-page="index.html"] .premium-flow-item{
     animation:none;
   }
 }
+
+
+/* v008: Startseite Problem-Text links unter der Überschrift ausrichten */
+body[data-page="index.html"] .problem-overview-section .section-head{
+  text-align:left !important;
+  align-items:flex-start !important;
+}
+body[data-page="index.html"] .problem-overview-section .section-head h2,
+body[data-page="index.html"] .problem-overview-section .section-head p{
+  margin-left:0 !important;
+  margin-right:auto !important;
+  text-align:left !important;
+}
+body[data-page="index.html"] .problem-overview-section .section-head p{
+  max-width:68ch;
+}
