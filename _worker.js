@@ -8,7 +8,6 @@ const CHAT_FALLBACK_MESSAGE = 'Dazu kann ich hier keine sichere Einschätzung ge
 const CHAT_SITE_LINKS = {
   'index.html#hero': 'Startseite öffnen',
   'index.html#faq': 'FAQ ansehen',
-  'index.html#workflow-check': 'Schnellcheck öffnen',
   'leistungen.html#leistungen-ueberblick': 'Leistungen ansehen',
   'leistungen.html#apps': 'Interne Apps ansehen',
   'leistungen.html#automatisierung': 'Workflow-Automatisierung ansehen',
@@ -27,7 +26,6 @@ const CHAT_WEBSITE_CONTEXT = `
 Wichtige Seiten und erlaubte Links der Webseite:
 - Startseite / Überblick: index.html#hero
 - FAQ und weitere Fragen: index.html#faq
-- Schnellcheck für Abläufe: index.html#workflow-check
 - Leistungen allgemein: leistungen.html#leistungen-ueberblick
 - Webseiten, Landingpages mit Funktion, interne Apps und kleine Business-Tools: leistungen.html#apps
 - Workflow-Automatisierung: leistungen.html#automatisierung
