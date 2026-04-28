@@ -864,7 +864,6 @@
     { title: 'Praxisbeispiele', text: 'Konkrete Beispiele für Apps, OCR, Dokumentenprozesse, Kontaktformulare und Automatisierungen.', url: 'beispiele.html', keywords: 'beispiele use cases lösungen' },
     { title: 'Einsatzbereiche', text: 'Handwerk, Dienstleister, Außendienst, Büros mit vielen Anfragen und interne Abläufe.', url: 'einsatzbereiche.html', keywords: 'handwerk dienstleister außendienst office dokumente' },
     { title: 'Kontaktformular', text: 'Anfrage mit Thema, Beschreibung, Rückrufoption und n8n-Anbindung senden.', url: 'kontakt.html#kontaktformular', keywords: 'kontakt anfrage formular rückruf n8n' },
-    { title: 'Schnellcheck', text: 'Kurzer Check, welche digitale Lösung als erster Schritt sinnvoll sein könnte.', url: 'index.html#workflow-check', keywords: 'schnellcheck fragebogen workflow check analyse orientierung' },
   ];
 
   document.querySelectorAll('.search-input').forEach((input) => {
@@ -2049,12 +2048,11 @@
     if (document.querySelector('[data-chat-assistant]')) return;
 
     const storageKey = 'deppmeyerChatAssistantConversationV2';
-    const openStorageKey = 'deppmeyerChatAssistantOpenV2';
+    const openStorageKey = 'deppmeyerChatAssistantOpenV3';
     const greeting = 'Hallo, ich bin dein Ablauf-Assistent. Ich beantworte kurze Fragen zur Webseite und kann grob einschätzen, welche digitale Lösung zu deinem Ablauf passen könnte.';
     const linkLabels = {
       'index.html#hero': 'Startseite öffnen',
       'index.html#faq': 'FAQ ansehen',
-      'index.html#workflow-check': 'Schnellcheck öffnen',
       'leistungen.html#leistungen-ueberblick': 'Leistungen ansehen',
       'leistungen.html#apps': 'Interne Apps ansehen',
       'leistungen.html#automatisierung': 'Workflow-Automatisierung ansehen',
