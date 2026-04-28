@@ -9650,3 +9650,44 @@ body[data-page="kontakt.html"] .form-grid > .field.field-full{
     min-height:0;
   }
 }
+
+
+/* v028 - Kontaktformular: kompaktere gleichmäßige Feldabstände */
+body[data-page="kontakt.html"] .form-grid{
+  column-gap:16px !important;
+  row-gap:18px !important;
+  align-items:start !important;
+}
+body[data-page="kontakt.html"] .form-grid > .field{
+  gap:7px !important;
+  min-height:0 !important;
+}
+body[data-page="kontakt.html"] .form-grid > .field:not(.field-full){
+  min-height:0 !important;
+}
+body[data-page="kontakt.html"] .form-grid > .field .field-help{
+  min-height:0 !important;
+  margin-top:6px !important;
+  line-height:1.45 !important;
+}
+body[data-page="kontakt.html"] .field input,
+body[data-page="kontakt.html"] .field select{
+  min-height:54px !important;
+}
+body[data-page="kontakt.html"] .field textarea{
+  min-height:148px !important;
+}
+body[data-page="kontakt.html"] .consent-wrap{
+  margin-top:18px !important;
+}
+body[data-page="kontakt.html"] .turnstile-wrap{
+  margin-top:14px !important;
+}
+body[data-page="kontakt.html"] .contact-response--solo{
+  margin-top:18px !important;
+}
+@media (max-width:760px){
+  body[data-page="kontakt.html"] .form-grid{
+    row-gap:14px !important;
+  }
+}
