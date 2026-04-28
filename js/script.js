@@ -864,7 +864,6 @@
     { title: 'Praxisbeispiele', text: 'Konkrete Beispiele für Apps, OCR, Dokumentenprozesse, Kontaktformulare und Automatisierungen.', url: 'beispiele.html', keywords: 'beispiele use cases lösungen' },
     { title: 'Einsatzbereiche', text: 'Handwerk, Dienstleister, Außendienst, Büros mit vielen Anfragen und interne Abläufe.', url: 'einsatzbereiche.html', keywords: 'handwerk dienstleister außendienst office dokumente' },
     { title: 'Kontaktformular', text: 'Anfrage mit Thema, Beschreibung, Rückrufoption und n8n-Anbindung senden.', url: 'kontakt.html#kontaktformular', keywords: 'kontakt anfrage formular rückruf n8n' },
-    { title: 'Schnellcheck', text: 'Kurzer Check, welche digitale Lösung als erster Schritt sinnvoll sein könnte.', url: 'index.html#workflow-check', keywords: 'schnellcheck fragebogen workflow check analyse orientierung' },
   ];
 
   document.querySelectorAll('.search-input').forEach((input) => {
@@ -1891,183 +1890,11 @@
 
   initLeistungenNetwork();
 
-  const initSolutionFinder = () => {
-    const root = document.querySelector('[data-solution-finder]');
-    if (!root) return;
-
-    const data = {
-      excel: {
-        label: 'Excel-Listen',
-        title: 'Excel-Chaos wird zum Dashboard.',
-        copy: 'Daten werden einmal sauber erfasst, automatisch geprüft und als übersichtliche Ansicht nutzbar gemacht.',
-        bullets: ['Daten einmal erfassen', 'Regeln automatisch prüfen', 'Ergebnis als Übersicht nutzen'],
-        link: 'leistungen.html#apps',
-        linkText: 'Interne Apps ansehen'
-      },
-      email: {
-        label: 'E-Mails',
-        title: 'Aus Postfach-Chaos wird ein klarer Workflow.',
-        copy: 'Wiederkehrende Anfragen können erkannt, sortiert und für die nächste Reaktion vorbereitet werden.',
-        bullets: ['Anfrage erkennen', 'Priorität oder Thema setzen', 'Antwort oder Aufgabe vorbereiten'],
-        link: 'leistungen.html#automatisierung',
-        linkText: 'Workflows ansehen'
-      },
-      forms: {
-        label: 'Formulare',
-        title: 'Aus losen Angaben wird strukturierte Datenerfassung.',
-        copy: 'Formulare sammeln die wichtigen Informationen direkt richtig ein und geben sie an den nächsten Schritt weiter.',
-        bullets: ['Pflichtdaten abfragen', 'Fehler reduzieren', 'Daten weiterleiten'],
-        link: 'leistungen.html#apps',
-        linkText: 'Formularlösungen ansehen'
-      },
-      pdf: {
-        label: 'PDFs/Rechnungen',
-        title: 'Aus Eingaben entstehen automatisch fertige Dokumente.',
-        copy: 'Rechnungen, Angebote oder Nachweise können aus vorhandenen Daten vorbereitet und als PDF erzeugt werden.',
-        bullets: ['Daten übernehmen', 'Vorlage befüllen', 'PDF bereitstellen'],
-        link: 'leistungen.html#pdf',
-        linkText: 'PDF-Erstellung ansehen'
-      },
-      web: {
-        label: 'Webseite',
-        title: 'Aus einer Webseite wird ein geschäftlicher Prozess.',
-        copy: 'Wenn eine Webseite nicht nur informieren, sondern Anfragen, Formulare oder Abläufe auslösen soll, kann eine digitale Lösung geprüft werden.',
-        bullets: ['Ziel klären', 'Formular oder Ablauf einbinden', 'Anfrage strukturiert weitergeben'],
-        link: 'leistungen.html#apps',
-        linkText: 'Webbasierte Lösungen ansehen'
-      },
-      internal: {
-        label: 'Interne Abläufe',
-        title: 'Aus Übergaben wird ein nachvollziehbarer Prozess.',
-        copy: 'Status, Zuständigkeiten und nächste Schritte werden sichtbar, statt in Nachrichten oder Notizen verloren zu gehen.',
-        bullets: ['Status festlegen', 'Team informieren', 'Aufgaben nachvollziehbar machen'],
-        link: 'beispiele.html#animierte-ablaeufe',
-        linkText: 'Beispiele ansehen'
-      }
-    };
-
-    const chips = [...root.querySelectorAll('[data-finder-key]')];
-    const label = root.querySelector('[data-finder-label]');
-    const title = root.querySelector('[data-finder-title]');
-    const copy = root.querySelector('[data-finder-copy]');
-    const bullets = root.querySelector('[data-finder-bullets]');
-    const link = root.querySelector('[data-finder-link]');
-
-    const render = (key) => {
-      const item = data[key] || data.excel;
-      chips.forEach((chip) => chip.classList.toggle('is-active', chip.dataset.finderKey === key));
-      if (label) label.textContent = item.label;
-      if (title) title.textContent = item.title;
-      if (copy) copy.textContent = item.copy;
-      if (bullets) {
-        bullets.innerHTML = '';
-        item.bullets.forEach((text) => {
-          const li = document.createElement('li');
-          li.textContent = text;
-          bullets.appendChild(li);
-        });
-      }
-      if (link) {
-        link.href = item.link;
-        link.textContent = item.linkText;
-      }
-    };
-
-    chips.forEach((chip) => chip.addEventListener('click', () => render(chip.dataset.finderKey)));
-  };
-
-  initSolutionFinder();
-
-  const initContactConfigurator = () => {
-    const root = document.querySelector('[data-contact-configurator]');
-    if (!root) return;
-
-    const map = {
-      app: {
-        topic: 'Individuelle App / internes Tool',
-        prefix: 'Ich möchte prüfen lassen, ob eine App oder ein internes Tool sinnvoll ist.',
-        example: 'Aktuell werden Daten mehrfach erfasst oder intern per Nachricht weitergegeben.'
-      },
-      workflow: {
-        topic: 'Workflow-Automatisierung',
-        prefix: 'Ich möchte prüfen lassen, ob ein Workflow automatisiert werden kann.',
-        example: 'Aktuell werden E-Mails, Statusmeldungen oder Aufgaben manuell sortiert und weitergegeben.'
-      },
-      pdf: {
-        topic: 'Rechnung / Angebot / PDF-Erstellung',
-        prefix: 'Ich möchte prüfen lassen, ob Rechnungen, Angebote oder PDFs automatisch erstellt werden können.',
-        example: 'Aktuell werden Daten erst gesammelt und später manuell in Vorlagen übertragen.'
-      },
-      ocr: {
-        topic: 'OCR / Dokumentenerfassung',
-        prefix: 'Ich möchte prüfen lassen, ob Daten aus Dokumenten oder Fotos automatisch erkannt werden können.',
-        example: 'Aktuell werden Informationen aus Dokumenten manuell abgetippt oder kopiert.'
-      },
-      website: {
-        topic: 'Kontaktformular / Kundenanfragen',
-        prefix: 'Ich möchte prüfen lassen, ob eine Webseite, Landingpage oder ein Formular mit einem digitalen Ablauf verbunden werden kann.',
-        example: 'Aktuell sollen Anfragen über die Webseite strukturierter erfasst und weiterverarbeitet werden.'
-      }
-    };
-
-    let activeKey = 'app';
-    const chips = [...root.querySelectorAll('[data-config-topic]')];
-    const configText = root.querySelector('[data-contact-config-text]');
-    const insertButton = root.querySelector('[data-contact-config-insert]');
-    const topicField = document.querySelector('#topic');
-    const messageField = document.querySelector('#message');
-    const form = document.querySelector('[data-contact-form]');
-
-    chips.forEach((chip) => {
-      chip.addEventListener('click', () => {
-        activeKey = chip.dataset.configTopic || 'app';
-        chips.forEach((item) => item.classList.toggle('is-active', item === chip));
-      });
-    });
-
-    insertButton?.addEventListener('click', () => {
-      const item = map[activeKey] || map.app;
-      const detail = String(configText?.value || '').trim() || item.example;
-      if (topicField) {
-        const option = [...topicField.options].find((entry) => entry.textContent.trim() === item.topic);
-        if (option) topicField.value = option.value || option.textContent;
-        topicField.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-      if (messageField) {
-        const text = `${item.prefix}\n\nAktueller Ablauf:\n${detail}`;
-        messageField.value = messageField.value.trim() ? `${messageField.value.trim()}\n\n${text}` : text;
-        messageField.dispatchEvent(new Event('input', { bubbles: true }));
-        messageField.focus();
-      }
-      form?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    });
-  };
-
-  initContactConfigurator();
-
   const initChatAssistant = () => {
     if (document.querySelector('[data-chat-assistant]')) return;
 
-    const storageKey = 'deppmeyerChatAssistantConversationV2';
-    const openStorageKey = 'deppmeyerChatAssistantOpenV2';
-    const greeting = 'Hallo, ich bin dein Ablauf-Assistent. Ich beantworte kurze Fragen zur Webseite und kann grob einschätzen, welche digitale Lösung zu deinem Ablauf passen könnte.';
-    const linkLabels = {
-      'index.html#hero': 'Startseite öffnen',
-      'index.html#faq': 'FAQ ansehen',
-      'index.html#workflow-check': 'Schnellcheck öffnen',
-      'leistungen.html#leistungen-ueberblick': 'Leistungen ansehen',
-      'leistungen.html#apps': 'Interne Apps ansehen',
-      'leistungen.html#automatisierung': 'Workflow-Automatisierung ansehen',
-      'leistungen.html#ocr': 'OCR & Dokumente ansehen',
-      'leistungen.html#pdf': 'PDF-Erstellung ansehen',
-      'leistungen.html#schnittstellen': 'Schnittstellen ansehen',
-      'leistungen.html#analyse': 'Analyse & Planung ansehen',
-      'beispiele.html#animierte-ablaeufe': 'Praxisbeispiele ansehen',
-      'beispiele.html#beispiel-schluesseldienst-app': 'Schlüsseldienst-Beispiel ansehen',
-      'einsatzbereiche.html#einsatz-ueberblick': 'Einsatzbereiche ansehen',
-      'ueber-mich.html#arbeitsweise': 'Arbeitsweise ansehen',
-      'kontakt.html#kontaktformular': 'Kontaktformular öffnen'
-    };
+    const storageKey = 'deppmeyerChatAssistantConversation';
+    const greeting = 'Hallo, ich bin dein persönlicher KI-Assistent für digitale Abläufe. Ich kann dir allgemeine Fragen zur Webseite beantworten und grob einschätzen, welche Lösungswege für manuelle Prozesse, Apps, Workflows, OCR, PDFs oder Schnittstellen sinnvoll sein könnten.';
 
     const root = document.createElement('section');
     root.className = 'chat-assistant';
@@ -2081,7 +1908,7 @@
       <div class="chat-assistant-panel" id="chat-assistant-panel" data-chat-panel hidden>
         <div class="chat-assistant-head">
           <div>
-            <span class="chat-assistant-kicker">Ablauf-Assistent</span>
+            <span class="chat-assistant-kicker">KI-Assistent</span>
             <h2>Wie kann ich dir helfen?</h2>
           </div>
           <button class="chat-assistant-close" data-chat-close type="button" aria-label="Assistent schließen">×</button>
@@ -2115,48 +1942,6 @@
     let isSending = false;
     let typingBubble = null;
 
-    const normalizeLinkHref = (value) => {
-      const raw = String(value || '').trim().replace(/[).,;:!?]+$/, '');
-      if (linkLabels[raw]) return raw;
-      try {
-        const url = new URL(raw, window.location.origin);
-        const href = `${url.pathname.replace(/^\//, '')}${url.hash}`;
-        return linkLabels[href] ? href : '';
-      } catch (error) {
-        return '';
-      }
-    };
-
-    const uniqueLinks = (links = []) => {
-      const seen = new Set();
-      return links
-        .map((link) => {
-          const href = normalizeLinkHref(typeof link === 'string' ? link : link?.href);
-          if (!href || seen.has(href)) return null;
-          seen.add(href);
-          const customLabel = typeof link === 'object' && typeof link.label === 'string' ? link.label.trim() : '';
-          return { href, label: customLabel || linkLabels[href] };
-        })
-        .filter(Boolean)
-        .slice(0, 3);
-    };
-
-    const extractLinksFromText = (text) => {
-      const safeText = String(text || '');
-      const matches = safeText.match(/(?:[\w-]+\.html(?:#[\w-]+)?|https?:\/\/[^\s)]+|\/[\w-]+\.html(?:#[\w-]+)?)/g) || [];
-      return uniqueLinks(matches);
-    };
-
-    const stripLinkReferences = (text) => {
-      let cleaned = String(text || '');
-      cleaned = cleaned.replace(/(?:\n|^)[ \t]*(?:siehe auch|passende seiten|mehr dazu|links?)\s*:\s*[\s\S]*$/i, '');
-      Object.keys(linkLabels).forEach((href) => {
-        const escaped = href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        cleaned = cleaned.replace(new RegExp(`(?:https?:\\/\\/[^\\s]+\\/)?${escaped}`, 'gi'), '');
-      });
-      return cleaned.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
-    };
-
     const saveConversation = () => {
       try {
         sessionStorage.setItem(storageKey, JSON.stringify(conversation.slice(-10)));
@@ -2169,36 +1954,17 @@
         if (!Array.isArray(stored)) return [];
         return stored
           .filter((message) => (message.role === 'user' || message.role === 'assistant') && typeof message.content === 'string')
-          .map((message) => ({
-            role: message.role,
-            content: message.content.slice(0, 1800),
-            links: uniqueLinks(message.links)
-          }))
+          .map((message) => ({ role: message.role, content: message.content.slice(0, 1800) }))
           .slice(-10);
       } catch (error) {
         return [];
       }
     };
 
-    const saveOpenState = (nextOpen) => {
-      try {
-        sessionStorage.setItem(openStorageKey, nextOpen ? 'open' : 'closed');
-      } catch (error) {}
-    };
-
-    const loadOpenState = () => {
-      try {
-        return sessionStorage.getItem(openStorageKey) === 'open';
-      } catch (error) {
-        return false;
-      }
-    };
-
-    const setOpen = (nextOpen, { persist = true } = {}) => {
+    const setOpen = (nextOpen) => {
       root.classList.toggle('is-open', nextOpen);
       toggleButton.setAttribute('aria-expanded', String(nextOpen));
       panel.hidden = !nextOpen;
-      if (persist) saveOpenState(nextOpen);
       if (nextOpen) window.setTimeout(() => input.focus(), 80);
     };
 
@@ -2207,47 +1973,50 @@
       status.dataset.state = state;
     };
 
-    const addLinkCards = (bubble, links) => {
-      const cleanLinks = uniqueLinks(links);
-      if (!cleanLinks.length) return;
-      const group = document.createElement('div');
-      group.className = 'chat-link-cards';
-      cleanLinks.forEach((link) => {
-        const anchor = document.createElement('a');
-        anchor.className = 'chat-link-card';
-        anchor.href = link.href;
-        const label = document.createElement('span');
-        label.textContent = link.label;
-        const arrow = document.createElement('span');
-        arrow.setAttribute('aria-hidden', 'true');
-        arrow.textContent = '→';
-        anchor.append(label, arrow);
-        group.appendChild(anchor);
-      });
-      bubble.appendChild(group);
+    const appendTextWithLinks = (container, text) => {
+      const safeText = String(text || '');
+      const linkPattern = /((?:https?:\/\/[^\s]+)|(?:[\w-]+\.html(?:#[\w-]+)?))/g;
+      let lastIndex = 0;
+      let match;
+
+      while ((match = linkPattern.exec(safeText)) !== null) {
+        const before = safeText.slice(lastIndex, match.index);
+        if (before) container.appendChild(document.createTextNode(before));
+
+        const rawUrl = match[0].replace(/[).,;:!?]+$/, '');
+        const trailing = match[0].slice(rawUrl.length);
+        const isLocal = /^[\w-]+\.html(?:#[\w-]+)?$/.test(rawUrl);
+        const isSameOrigin = rawUrl.startsWith(`${window.location.origin}/`) || rawUrl.startsWith('/');
+
+        if (isLocal || isSameOrigin) {
+          const link = document.createElement('a');
+          link.href = rawUrl;
+          link.textContent = rawUrl;
+          link.className = 'chat-message-link';
+          container.appendChild(link);
+        } else {
+          container.appendChild(document.createTextNode(rawUrl));
+        }
+
+        if (trailing) container.appendChild(document.createTextNode(trailing));
+        lastIndex = match.index + match[0].length;
+      }
+
+      const rest = safeText.slice(lastIndex);
+      if (rest) container.appendChild(document.createTextNode(rest));
     };
 
-    const scrollMessageToTop = (bubble, behavior = 'smooth') => {
-      if (!bubble) return;
-      const top = Math.max(0, bubble.offsetTop - 10);
-      messagesBox.scrollTo({ top, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : behavior });
-    };
-
-    const addMessage = (role, text, { save = true, links = [], scroll = 'bottom' } = {}) => {
-      const linkCards = role === 'assistant' ? uniqueLinks(links.length ? links : extractLinksFromText(text)) : [];
-      const displayText = role === 'assistant' ? stripLinkReferences(text) : String(text || '').trim();
+    const addMessage = (role, text, { save = true } = {}) => {
       const bubble = document.createElement('div');
       bubble.className = `chat-message chat-message--${role}`;
       const label = document.createElement('span');
       label.className = 'chat-message-label';
       label.textContent = role === 'user' ? 'Du' : 'Assistent';
       const content = document.createElement('p');
-      content.textContent = displayText || (role === 'assistant' ? 'Dazu kann ich dir hier nur eine grobe Orientierung geben.' : text);
+      appendTextWithLinks(content, text);
       bubble.append(label, content);
-      addLinkCards(bubble, linkCards);
       messagesBox.appendChild(bubble);
-      if (scroll === 'bottom') messagesBox.scrollTop = messagesBox.scrollHeight;
-      if (scroll === 'top') requestAnimationFrame(() => scrollMessageToTop(bubble));
+      messagesBox.scrollTop = messagesBox.scrollHeight;
       if (save) saveConversation();
       return bubble;
     };
@@ -2259,6 +2028,7 @@
       typingBubble.setAttribute('aria-label', 'Assistent schreibt');
       typingBubble.innerHTML = '<span class="chat-message-label">Assistent</span><div class="chat-typing-dots" aria-hidden="true"><span></span><span></span><span></span></div>';
       messagesBox.appendChild(typingBubble);
+      messagesBox.scrollTop = messagesBox.scrollHeight;
     };
 
     const hideTyping = () => {
@@ -2285,8 +2055,7 @@
 
     const renderConversation = () => {
       messagesBox.innerHTML = '';
-      conversation.forEach((message) => addMessage(message.role, message.content, { save: false, links: message.links, scroll: 'none' }));
-      messagesBox.scrollTop = messagesBox.scrollHeight;
+      conversation.forEach((message) => addMessage(message.role, message.content, { save: false }));
       updateContactHref();
     };
 
@@ -2299,11 +2068,10 @@
       sendButton.disabled = true;
       sendButton.classList.add('is-disabled');
       setStatus('Assistent denkt nach ...', 'loading');
-      conversation.push({ role: 'user', content: userText, links: [] });
-      const userBubble = addMessage('user', userText, { scroll: 'top' });
+      conversation.push({ role: 'user', content: userText });
+      addMessage('user', userText);
       updateContactHref();
       showTyping();
-      requestAnimationFrame(() => scrollMessageToTop(userBubble));
 
       try {
         const response = await fetch('/api/chat', {
@@ -2313,7 +2081,7 @@
             'Accept': 'application/json'
           },
           body: JSON.stringify({
-            messages: conversation.slice(-8).map((message) => ({ role: message.role, content: message.content })),
+            messages: conversation.slice(-8),
             page: {
               title: document.title,
               path: window.location.pathname,
@@ -2323,37 +2091,30 @@
         });
         const result = await response.json().catch(() => ({}));
         const reply = result.reply || result.message || 'Der Assistent konnte gerade keine Antwort erstellen. Bitte nutze alternativ das Kontaktformular.';
-        const links = uniqueLinks(result.links || extractLinksFromText(reply));
         hideTyping();
-        const assistantMessage = { role: 'assistant', content: stripLinkReferences(reply), links };
-        conversation.push(assistantMessage);
-        addMessage('assistant', assistantMessage.content, { links, scroll: 'none' });
-        requestAnimationFrame(() => scrollMessageToTop(userBubble, 'auto'));
+        conversation.push({ role: 'assistant', content: reply });
+        addMessage('assistant', reply);
         setStatus(result.limited ? 'Bei konkreten Abläufen hilft das Kontaktformular weiter.' : 'Du kannst jederzeit nachfragen.', result.limited ? 'limited' : 'ready');
       } catch (error) {
         const fallback = 'Der Assistent ist gerade nicht erreichbar. Bitte nutze alternativ das Kontaktformular.';
-        const fallbackLinks = uniqueLinks(['kontakt.html#kontaktformular']);
         hideTyping();
-        conversation.push({ role: 'assistant', content: fallback, links: fallbackLinks });
-        addMessage('assistant', fallback, { links: fallbackLinks, scroll: 'none' });
-        requestAnimationFrame(() => scrollMessageToTop(userBubble, 'auto'));
+        conversation.push({ role: 'assistant', content: fallback });
+        addMessage('assistant', fallback);
         setStatus('Verbindung fehlgeschlagen.', 'error');
       } finally {
         isSending = false;
         sendButton.disabled = false;
         sendButton.classList.remove('is-disabled');
         updateContactHref();
-        saveConversation();
       }
     };
 
     conversation = loadConversation();
     if (!conversation.length) {
-      conversation = [{ role: 'assistant', content: greeting, links: [] }];
+      conversation = [{ role: 'assistant', content: greeting }];
       saveConversation();
     }
     renderConversation();
-    setOpen(loadOpenState(), { persist: false });
 
     toggleButton.addEventListener('click', () => setOpen(!root.classList.contains('is-open')));
     closeButton.addEventListener('click', () => setOpen(false));
@@ -2380,7 +2141,6 @@
   };
 
   initChatAssistant();
-
 
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth > 1024) {
     document.querySelectorAll('.card,.workflow-node,.problem-card,.service-card,.usage-card,.contact-card,.contact-form,.example-card,.timeline-card,.step-card,.dashboard-shell,.overview-card,.workflow-current,.cta-panel,.quote-box').forEach((el) => {
