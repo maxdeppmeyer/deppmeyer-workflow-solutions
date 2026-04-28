@@ -43,6 +43,9 @@
     const max = document.documentElement.scrollHeight - window.innerHeight;
     const percent = max > 0 ? window.scrollY / max : 0;
     if (progress) progress.style.width = `${Math.min(1, percent) * 100}%`;
+    const nearTop = window.scrollY < 42;
+    body.classList.toggle('page-at-top', nearTop);
+    body.classList.toggle('page-has-scrolled', !nearTop);
     if (topbar) topbar.classList.toggle('scrolled', window.scrollY > 12);
     setHeaderOffset();
   };
@@ -726,7 +729,11 @@
       if (currentTitle) currentTitle.textContent = 'Bereit zum Start';
       if (descriptionText) descriptionText.textContent = 'Starte den Workflow, um den Ablauf Schritt für Schritt zu sehen.';
       if (progressText) progressText.textContent = `0 / ${config.steps.length}`;
-      if (trigger) trigger.textContent = 'Workflow starten';
+      if (trigger) {
+        trigger.textContent = 'Workflow starten';
+        trigger.classList.remove('is-running', 'is-complete');
+        trigger.removeAttribute('aria-busy');
+      }
       if (activeWorkflowController === controller) activeWorkflowController = null;
     };
 
@@ -755,7 +762,12 @@
       if (stepIndex >= config.steps.length - 1) {
         if (statusText) statusText.textContent = 'Abgeschlossen';
         if (progressText) progressText.textContent = `${config.steps.length} / ${config.steps.length}`;
-        if (trigger) trigger.textContent = 'Erneut starten';
+        if (trigger) {
+          trigger.textContent = 'Erneut starten';
+          trigger.classList.remove('is-running');
+          trigger.classList.add('is-complete');
+          trigger.removeAttribute('aria-busy');
+        }
         clearTimer();
         return;
       }
@@ -772,7 +784,12 @@
       activeWorkflowController = controller;
       clearTimer();
       nodes.forEach((node) => node.classList.remove('active', 'done'));
-      if (trigger) trigger.textContent = 'Workflow läuft …';
+      if (trigger) {
+        trigger.textContent = 'Workflow läuft …';
+        trigger.classList.add('is-running');
+        trigger.classList.remove('is-complete');
+        trigger.setAttribute('aria-busy', 'true');
+      }
       runStep(0);
     };
 
@@ -1658,11 +1675,13 @@
       }
       if (isSubmitting) return;
       isSubmitting = true;
+      let submitSucceeded = false;
       if (submitButton) {
         submitButton.textContent = 'Wird gesendet...';
         submitButton.disabled = true;
         submitButton.setAttribute('aria-disabled', 'true');
-        submitButton.classList.add('is-disabled');
+        submitButton.classList.add('is-disabled', 'is-loading');
+        submitButton.classList.remove('is-success');
       }
       setResponseNote('Anfrage wird gesendet...');
       try {
@@ -1693,6 +1712,12 @@
         contactForm.reset();
         applyAssessmentPrefill();
         shouldRevealValidationHint = false;
+        submitSucceeded = true;
+        if (submitButton) {
+          submitButton.textContent = 'Anfrage gesendet';
+          submitButton.classList.remove('is-loading');
+          submitButton.classList.add('is-success');
+        }
         updateSummary();
         setResponseNote(result.message || 'Anfrage erfolgreich gesendet.');
       } catch (error) {
@@ -1700,7 +1725,16 @@
       } finally {
         isSubmitting = false;
         if (submitButton) {
-          submitButton.textContent = submitDefaultLabel;
+          submitButton.classList.remove('is-loading');
+          if (submitSucceeded) {
+            window.setTimeout(() => {
+              submitButton.classList.remove('is-success');
+              submitButton.textContent = submitDefaultLabel;
+              updateSummary();
+            }, 1800);
+          } else {
+            submitButton.textContent = submitDefaultLabel;
+          }
         }
         updateSummary();
       }
