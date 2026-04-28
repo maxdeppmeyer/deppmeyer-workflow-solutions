@@ -8858,3 +8858,72 @@ body[data-page="beispiele.html"] .case-snapshot strong{
     min-height:auto !important;
   }
 }
+
+
+/* v022: Hero-Visual ruhiger, Chat-Anker klarer, Überschriften kompakter */
+body[data-page="index.html"] .workflow-pipeline,
+body[data-page="index.html"] .premium-hero-visual::after{
+  display:none !important;
+}
+body[data-page="index.html"] .premium-hero h1{
+  max-width:760px !important;
+  font-size:clamp(3rem,4vw,3.85rem) !important;
+  line-height:1.02 !important;
+  letter-spacing:-.052em !important;
+  overflow-wrap:normal !important;
+  word-break:normal !important;
+  hyphens:none !important;
+}
+html body[data-page="leistungen.html"] .page-hero h1,
+html body[data-page="beispiele.html"] .page-hero h1,
+html body[data-page="einsatzbereiche.html"] .page-hero h1,
+html body[data-page="ueber-mich.html"] .page-hero h1,
+html body[data-page="kontakt.html"] .page-hero h1,
+html body[data-page="ablauf.html"] h1,
+html body[data-page="404.html"] .page-hero h1,
+html body[data-page="impressum.html"] .page-hero h1,
+html body[data-page="datenschutz.html"] .page-hero h1{
+  max-width:min(100%,980px) !important;
+  font-size:clamp(2.35rem,4.1vw,4rem) !important;
+  line-height:1.04 !important;
+  letter-spacing:-.045em !important;
+  overflow-wrap:normal !important;
+  word-break:normal !important;
+  hyphens:auto !important;
+}
+html body[data-page="leistungen.html"] .leistungen-copy h1,
+html body[data-page="einsatzbereiche.html"] .einsatz-copy h1,
+html body[data-page="ueber-mich.html"] .ueber-copy h1,
+html body[data-page="kontakt.html"] .page-hero h1{
+  max-width:min(100%,1040px) !important;
+}
+.anchor-focus-highlight{
+  animation:anchorFocusPulse 2.1s ease-out 1;
+  outline:3px solid rgba(47,124,255,.46);
+  outline-offset:8px;
+  border-radius:inherit;
+}
+@keyframes anchorFocusPulse{
+  0%{box-shadow:0 0 0 0 rgba(47,124,255,.34)}
+  55%{box-shadow:0 0 0 18px rgba(47,124,255,.08)}
+  100%{box-shadow:0 0 0 24px rgba(47,124,255,0)}
+}
+@media (max-width:1050px){
+  body[data-page="index.html"] .premium-hero h1{
+    max-width:780px !important;
+    font-size:clamp(2.75rem,7vw,4.4rem) !important;
+  }
+}
+@media (max-width:760px){
+  body[data-page="index.html"] .premium-hero h1,
+  html body .page-hero h1,
+  html body[data-page="ablauf.html"] h1{
+    max-width:100% !important;
+    font-size:clamp(2.05rem,9.2vw,3.1rem) !important;
+    line-height:1.05 !important;
+    letter-spacing:-.036em !important;
+  }
+  .anchor-focus-highlight{
+    outline-offset:5px;
+  }
+}
