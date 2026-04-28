@@ -9513,3 +9513,25 @@ body[data-page="beispiele.html"] .example-flow-section .section-head p{
     font-size:clamp(2rem,8.4vw,2.75rem) !important;
   }
 }
+
+/* === v027 Livegang-Härtung: Turnstile und Weiterleitung === */
+.turnstile-wrap{
+  display:grid;
+  gap:10px;
+  padding:16px;
+  border:1px solid rgba(80,132,202,.18);
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.78), rgba(242,248,255,.72));
+  box-shadow:0 16px 34px rgba(24,56,102,.08);
+}
+.turnstile-wrap[hidden]{display:none!important}
+.turnstile-box{min-height:65px;display:flex;align-items:center;justify-content:flex-start;overflow:hidden}
+body[data-theme="dark"] .turnstile-wrap{
+  border-color:rgba(205,221,255,.15);
+  background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.045));
+}
+.redirect-title{font-size:2.4rem}
+@media (max-width:760px){
+  .turnstile-wrap{padding:14px;border-radius:18px}
+  .turnstile-box{transform-origin:left center;max-width:100%;overflow:auto}
+}
