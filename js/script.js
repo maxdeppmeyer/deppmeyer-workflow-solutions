@@ -1894,8 +1894,26 @@
   const initChatAssistant = () => {
     if (document.querySelector('[data-chat-assistant]')) return;
 
-    const storageKey = 'deppmeyerChatAssistantConversation';
-    const greeting = 'Hallo, ich bin dein persönlicher KI-Assistent für digitale Abläufe. Ich kann dir allgemeine Fragen zur Webseite beantworten und grob einschätzen, welche Lösungswege für manuelle Prozesse, Apps, Workflows, OCR, PDFs oder Schnittstellen sinnvoll sein könnten.';
+    const storageKey = 'deppmeyerChatAssistantConversationV2';
+    const openStorageKey = 'deppmeyerChatAssistantOpenV2';
+    const greeting = 'Hallo, ich bin dein KI-Assistent für digitale Abläufe. Ich beantworte Fragen zur Webseite und kann grob einschätzen, welche Lösung zu deinem manuellen Prozess passen könnte.';
+    const linkLabels = {
+      'index.html#hero': 'Startseite öffnen',
+      'index.html#faq': 'FAQ ansehen',
+      'index.html#workflow-check': 'Schnellcheck öffnen',
+      'leistungen.html#leistungen-ueberblick': 'Leistungen ansehen',
+      'leistungen.html#apps': 'Interne Apps ansehen',
+      'leistungen.html#automatisierung': 'Workflow-Automatisierung ansehen',
+      'leistungen.html#ocr': 'OCR & Dokumente ansehen',
+      'leistungen.html#pdf': 'PDF-Erstellung ansehen',
+      'leistungen.html#schnittstellen': 'Schnittstellen ansehen',
+      'leistungen.html#analyse': 'Analyse & Planung ansehen',
+      'beispiele.html#animierte-ablaeufe': 'Praxisbeispiele ansehen',
+      'beispiele.html#beispiel-schluesseldienst-app': 'Schlüsseldienst-Beispiel ansehen',
+      'einsatzbereiche.html#einsatz-ueberblick': 'Einsatzbereiche ansehen',
+      'ueber-mich.html#arbeitsweise': 'Arbeitsweise ansehen',
+      'kontakt.html#kontaktformular': 'Kontaktformular öffnen'
+    };
 
     const root = document.createElement('section');
     root.className = 'chat-assistant';
@@ -1943,6 +1961,48 @@
     let isSending = false;
     let typingBubble = null;
 
+    const normalizeLinkHref = (value) => {
+      const raw = String(value || '').trim().replace(/[).,;:!?]+$/, '');
+      if (linkLabels[raw]) return raw;
+      try {
+        const url = new URL(raw, window.location.origin);
+        const href = `${url.pathname.replace(/^\//, '')}${url.hash}`;
+        return linkLabels[href] ? href : '';
+      } catch (error) {
+        return '';
+      }
+    };
+
+    const uniqueLinks = (links = []) => {
+      const seen = new Set();
+      return links
+        .map((link) => {
+          const href = normalizeLinkHref(typeof link === 'string' ? link : link?.href);
+          if (!href || seen.has(href)) return null;
+          seen.add(href);
+          const customLabel = typeof link === 'object' && typeof link.label === 'string' ? link.label.trim() : '';
+          return { href, label: customLabel || linkLabels[href] };
+        })
+        .filter(Boolean)
+        .slice(0, 3);
+    };
+
+    const extractLinksFromText = (text) => {
+      const safeText = String(text || '');
+      const matches = safeText.match(/(?:[\w-]+\.html(?:#[\w-]+)?|https?:\/\/[^\s)]+|\/[\w-]+\.html(?:#[\w-]+)?)/g) || [];
+      return uniqueLinks(matches);
+    };
+
+    const stripLinkReferences = (text) => {
+      let cleaned = String(text || '');
+      cleaned = cleaned.replace(/(?:\n|^)[ \t]*(?:siehe auch|passende seiten|mehr dazu|links?)\s*:\s*[\s\S]*$/i, '');
+      Object.keys(linkLabels).forEach((href) => {
+        const escaped = href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        cleaned = cleaned.replace(new RegExp(`(?:https?:\\/\\/[^\\s]+\\/)?${escaped}`, 'gi'), '');
+      });
+      return cleaned.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+    };
+
     const saveConversation = () => {
       try {
         sessionStorage.setItem(storageKey, JSON.stringify(conversation.slice(-10)));
@@ -1955,17 +2015,36 @@
         if (!Array.isArray(stored)) return [];
         return stored
           .filter((message) => (message.role === 'user' || message.role === 'assistant') && typeof message.content === 'string')
-          .map((message) => ({ role: message.role, content: message.content.slice(0, 1800) }))
+          .map((message) => ({
+            role: message.role,
+            content: message.content.slice(0, 1800),
+            links: uniqueLinks(message.links)
+          }))
           .slice(-10);
       } catch (error) {
         return [];
       }
     };
 
-    const setOpen = (nextOpen) => {
+    const saveOpenState = (nextOpen) => {
+      try {
+        sessionStorage.setItem(openStorageKey, nextOpen ? 'open' : 'closed');
+      } catch (error) {}
+    };
+
+    const loadOpenState = () => {
+      try {
+        return sessionStorage.getItem(openStorageKey) === 'open';
+      } catch (error) {
+        return false;
+      }
+    };
+
+    const setOpen = (nextOpen, { persist = true } = {}) => {
       root.classList.toggle('is-open', nextOpen);
       toggleButton.setAttribute('aria-expanded', String(nextOpen));
       panel.hidden = !nextOpen;
+      if (persist) saveOpenState(nextOpen);
       if (nextOpen) window.setTimeout(() => input.focus(), 80);
     };
 
@@ -1974,48 +2053,38 @@
       status.dataset.state = state;
     };
 
-    const appendTextWithLinks = (container, text) => {
-      const safeText = String(text || '');
-      const linkPattern = /((?:https?:\/\/[^\s]+)|(?:[\w-]+\.html(?:#[\w-]+)?))/g;
-      let lastIndex = 0;
-      let match;
-
-      while ((match = linkPattern.exec(safeText)) !== null) {
-        const before = safeText.slice(lastIndex, match.index);
-        if (before) container.appendChild(document.createTextNode(before));
-
-        const rawUrl = match[0].replace(/[).,;:!?]+$/, '');
-        const trailing = match[0].slice(rawUrl.length);
-        const isLocal = /^[\w-]+\.html(?:#[\w-]+)?$/.test(rawUrl);
-        const isSameOrigin = rawUrl.startsWith(`${window.location.origin}/`) || rawUrl.startsWith('/');
-
-        if (isLocal || isSameOrigin) {
-          const link = document.createElement('a');
-          link.href = rawUrl;
-          link.textContent = rawUrl;
-          link.className = 'chat-message-link';
-          container.appendChild(link);
-        } else {
-          container.appendChild(document.createTextNode(rawUrl));
-        }
-
-        if (trailing) container.appendChild(document.createTextNode(trailing));
-        lastIndex = match.index + match[0].length;
-      }
-
-      const rest = safeText.slice(lastIndex);
-      if (rest) container.appendChild(document.createTextNode(rest));
+    const addLinkCards = (bubble, links) => {
+      const cleanLinks = uniqueLinks(links);
+      if (!cleanLinks.length) return;
+      const group = document.createElement('div');
+      group.className = 'chat-link-cards';
+      cleanLinks.forEach((link) => {
+        const anchor = document.createElement('a');
+        anchor.className = 'chat-link-card';
+        anchor.href = link.href;
+        const label = document.createElement('span');
+        label.textContent = link.label;
+        const arrow = document.createElement('span');
+        arrow.setAttribute('aria-hidden', 'true');
+        arrow.textContent = '→';
+        anchor.append(label, arrow);
+        group.appendChild(anchor);
+      });
+      bubble.appendChild(group);
     };
 
-    const addMessage = (role, text, { save = true } = {}) => {
+    const addMessage = (role, text, { save = true, links = [] } = {}) => {
+      const linkCards = role === 'assistant' ? uniqueLinks(links.length ? links : extractLinksFromText(text)) : [];
+      const displayText = role === 'assistant' ? stripLinkReferences(text) : String(text || '').trim();
       const bubble = document.createElement('div');
       bubble.className = `chat-message chat-message--${role}`;
       const label = document.createElement('span');
       label.className = 'chat-message-label';
       label.textContent = role === 'user' ? 'Du' : 'Assistent';
       const content = document.createElement('p');
-      appendTextWithLinks(content, text);
+      content.textContent = displayText || (role === 'assistant' ? 'Dazu kann ich dir hier nur eine grobe Orientierung geben.' : text);
       bubble.append(label, content);
+      addLinkCards(bubble, linkCards);
       messagesBox.appendChild(bubble);
       messagesBox.scrollTop = messagesBox.scrollHeight;
       if (save) saveConversation();
@@ -2056,7 +2125,7 @@
 
     const renderConversation = () => {
       messagesBox.innerHTML = '';
-      conversation.forEach((message) => addMessage(message.role, message.content, { save: false }));
+      conversation.forEach((message) => addMessage(message.role, message.content, { save: false, links: message.links }));
       updateContactHref();
     };
 
@@ -2069,7 +2138,7 @@
       sendButton.disabled = true;
       sendButton.classList.add('is-disabled');
       setStatus('Assistent denkt nach ...', 'loading');
-      conversation.push({ role: 'user', content: userText });
+      conversation.push({ role: 'user', content: userText, links: [] });
       addMessage('user', userText);
       updateContactHref();
       showTyping();
@@ -2082,7 +2151,7 @@
             'Accept': 'application/json'
           },
           body: JSON.stringify({
-            messages: conversation.slice(-8),
+            messages: conversation.slice(-8).map((message) => ({ role: message.role, content: message.content })),
             page: {
               title: document.title,
               path: window.location.pathname,
@@ -2092,30 +2161,35 @@
         });
         const result = await response.json().catch(() => ({}));
         const reply = result.reply || result.message || 'Der Assistent konnte gerade keine Antwort erstellen. Bitte nutze alternativ das Kontaktformular.';
+        const links = uniqueLinks(result.links || extractLinksFromText(reply));
         hideTyping();
-        conversation.push({ role: 'assistant', content: reply });
-        addMessage('assistant', reply);
+        const assistantMessage = { role: 'assistant', content: stripLinkReferences(reply), links };
+        conversation.push(assistantMessage);
+        addMessage('assistant', assistantMessage.content, { links });
         setStatus(result.limited ? 'Bei konkreten Abläufen hilft das Kontaktformular weiter.' : 'Du kannst jederzeit nachfragen.', result.limited ? 'limited' : 'ready');
       } catch (error) {
         const fallback = 'Der Assistent ist gerade nicht erreichbar. Bitte nutze alternativ das Kontaktformular.';
+        const fallbackLinks = uniqueLinks(['kontakt.html#kontaktformular']);
         hideTyping();
-        conversation.push({ role: 'assistant', content: fallback });
-        addMessage('assistant', fallback);
+        conversation.push({ role: 'assistant', content: fallback, links: fallbackLinks });
+        addMessage('assistant', fallback, { links: fallbackLinks });
         setStatus('Verbindung fehlgeschlagen.', 'error');
       } finally {
         isSending = false;
         sendButton.disabled = false;
         sendButton.classList.remove('is-disabled');
         updateContactHref();
+        saveConversation();
       }
     };
 
     conversation = loadConversation();
     if (!conversation.length) {
-      conversation = [{ role: 'assistant', content: greeting }];
+      conversation = [{ role: 'assistant', content: greeting, links: [] }];
       saveConversation();
     }
     renderConversation();
+    setOpen(loadOpenState(), { persist: false });
 
     toggleButton.addEventListener('click', () => setOpen(!root.classList.contains('is-open')));
     closeButton.addEventListener('click', () => setOpen(false));
@@ -2142,6 +2216,7 @@
   };
 
   initChatAssistant();
+
 
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth > 1024) {
     document.querySelectorAll('.card,.workflow-node,.problem-card,.service-card,.usage-card,.contact-card,.contact-form,.example-card,.timeline-card,.step-card,.dashboard-shell,.overview-card,.workflow-current,.cta-panel,.quote-box').forEach((el) => {
