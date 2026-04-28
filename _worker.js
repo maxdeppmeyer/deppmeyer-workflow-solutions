@@ -86,7 +86,7 @@ Antwortregeln:
 - Wenn du unsicher bist, sage das klar und verweise auf kontakt.html#kontaktformular.
 - Keine erfundenen Details.
 - Keine HTML-Ausgabe, keine Markdown-Tabellen und möglichst keine langen Markdown-Listen.
-- Wenn es zur Antwort passt, füge am Ende einen Abschnitt „Siehe auch:“ mit 1 bis 3 passenden Linkpfaden aus der folgenden Website-Liste hinzu. Nutze nur exakt diese Linkpfade und erfinde keine anderen Anker. Die Webseite stellt diese Links später als Buttons dar.
+- Wenn es zur Antwort passt, füge am Ende einen Abschnitt „Siehe auch:“ mit 1 bis 3 wirklich unterschiedlichen Linkpfaden aus der folgenden Website-Liste hinzu. Nutze nur exakt diese Linkpfade und erfinde keine anderen Anker. Die Webseite stellt diese Links später als Buttons dar. Wähle nicht drei sehr ähnliche Links, wenn ein Kontaktformular-Link oder eine Beispielseite besser passt.
 
 ${CHAT_WEBSITE_CONTEXT}`;
 
@@ -390,8 +390,16 @@ function inferRecommendedLinks(messages, reply, currentLinks = []) {
     add('leistungen.html#apps', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
   }
 
-  if (/e-mail|email|postfach|workflow|automatis|formular|anfrage|benachrichtigung|schnittstelle|api|excel|daten/.test(combinedText)) {
-    add('leistungen.html#automatisierung', 'leistungen.html#schnittstellen', 'beispiele.html#animierte-ablaeufe');
+  if (/e-mail|email|postfach|workflow|automatis|formular|anfrage|benachrichtigung/.test(combinedText)) {
+    add('leistungen.html#automatisierung', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
+  }
+
+  if (/schnittstelle|api|import|export|datenübertragung/.test(combinedText)) {
+    add('leistungen.html#schnittstellen', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
+  }
+
+  if (/excel|daten|dashboard|liste|auswertung/.test(combinedText)) {
+    add('leistungen.html#apps', 'leistungen.html#automatisierung', 'kontakt.html#kontaktformular');
   }
 
   if (!existing.length && !inferred.length) {
