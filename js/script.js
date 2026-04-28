@@ -1892,8 +1892,10 @@
   initLeistungenNetwork();
 
   const initChatAssistant = () => {
-    const blockedPages = new Set(['impressum.html', 'datenschutz.html', '404.html']);
-    if (blockedPages.has(body.dataset.page || '') || document.querySelector('[data-chat-assistant]')) return;
+    if (document.querySelector('[data-chat-assistant]')) return;
+
+    const storageKey = 'deppmeyerChatAssistantConversation';
+    const greeting = 'Hallo, ich bin dein persönlicher KI-Assistent für digitale Abläufe. Ich kann dir allgemeine Fragen zur Webseite beantworten und grob einschätzen, welche Lösungswege für manuelle Prozesse, Apps, Workflows, OCR, PDFs oder Schnittstellen sinnvoll sein könnten.';
 
     const root = document.createElement('section');
     root.className = 'chat-assistant';
@@ -1902,33 +1904,26 @@
     root.innerHTML = `
       <button class="chat-assistant-toggle" data-chat-toggle type="button" aria-expanded="false" aria-controls="chat-assistant-panel">
         <span class="chat-toggle-icon" aria-hidden="true">✦</span>
-        <span class="chat-toggle-text">Ablauf-Assistent</span>
+        <span class="chat-toggle-text">KI-Assistent</span>
       </button>
       <div class="chat-assistant-panel" id="chat-assistant-panel" data-chat-panel hidden>
         <div class="chat-assistant-head">
           <div>
             <span class="chat-assistant-kicker">KI-Assistent</span>
-            <h2>Frag nach einem groben Lösungsweg.</h2>
+            <h2>Wie kann ich dir helfen?</h2>
           </div>
           <button class="chat-assistant-close" data-chat-close type="button" aria-label="Assistent schließen">×</button>
         </div>
-        <p class="chat-assistant-note">Begrenzt auf Automatisierung, Workflows, Apps, OCR, PDFs, Formulare, Dashboards und Prozessoptimierung.</p>
         <div class="chat-assistant-messages" data-chat-messages aria-live="polite"></div>
-        <div class="chat-assistant-prompts" aria-label="Beispielfragen">
-          <button type="button" data-chat-prompt="Wir bekommen viele Anfragen per E-Mail und tragen Daten danach manuell in Excel ein. Welcher Lösungsweg wäre grob sinnvoll?">E-Mail → Excel</button>
-          <button type="button" data-chat-prompt="Wir erstellen Angebote oder PDFs aktuell manuell aus vorhandenen Daten. Wie könnte man das vereinfachen?">PDFs automatisch</button>
-          <button type="button" data-chat-prompt="Wir erfassen Informationen aus Dokumenten oder Fotos manuell. Wäre OCR dafür sinnvoll?">OCR prüfen</button>
-          <button type="button" data-chat-prompt="Wir brauchen ein kleines internes Tool für wiederkehrende Abläufe. Was wäre ein sinnvoller erster Schritt?">Internes Tool</button>
-        </div>
         <form class="chat-assistant-form" data-chat-form>
-          <textarea data-chat-input aria-label="Frage an den Ablauf-Assistenten" maxlength="900" rows="3" placeholder="Beschreibe kurz deinen Ablauf, z. B. was aktuell manuell passiert."></textarea>
+          <textarea data-chat-input aria-label="Frage an den KI-Assistenten" maxlength="900" rows="2" placeholder="Schreib deine Frage ..."></textarea>
           <div class="chat-assistant-actions">
-            <span class="chat-assistant-status" data-chat-status>Keine verbindliche Beratung – nur eine erste Orientierung.</span>
-            <button class="btn btn-small" data-chat-send type="submit">Frage senden</button>
+            <span class="chat-assistant-status" data-chat-status>Allgemeine Orientierung – keine verbindliche Beratung.</span>
+            <button class="btn btn-small" data-chat-send type="submit">Senden</button>
           </div>
         </form>
         <div class="chat-assistant-footer">
-          <a class="chat-contact-link" data-chat-contact href="kontakt.html#kontaktformular">Ablauf ins Kontaktformular übernehmen</a>
+          <a class="chat-contact-link" data-chat-contact href="kontakt.html#kontaktformular">Kontaktformular öffnen</a>
         </div>
       </div>
     `;
@@ -1944,8 +1939,28 @@
     const status = root.querySelector('[data-chat-status]');
     const sendButton = root.querySelector('[data-chat-send]');
     const contactLink = root.querySelector('[data-chat-contact]');
-    const conversation = [];
+    let conversation = [];
     let isSending = false;
+    let typingBubble = null;
+
+    const saveConversation = () => {
+      try {
+        sessionStorage.setItem(storageKey, JSON.stringify(conversation.slice(-10)));
+      } catch (error) {}
+    };
+
+    const loadConversation = () => {
+      try {
+        const stored = JSON.parse(sessionStorage.getItem(storageKey) || '[]');
+        if (!Array.isArray(stored)) return [];
+        return stored
+          .filter((message) => (message.role === 'user' || message.role === 'assistant') && typeof message.content === 'string')
+          .map((message) => ({ role: message.role, content: message.content.slice(0, 1800) }))
+          .slice(-10);
+      } catch (error) {
+        return [];
+      }
+    };
 
     const setOpen = (nextOpen) => {
       root.classList.toggle('is-open', nextOpen);
@@ -1959,25 +1974,77 @@
       status.dataset.state = state;
     };
 
-    const addMessage = (role, text) => {
+    const appendTextWithLinks = (container, text) => {
+      const safeText = String(text || '');
+      const linkPattern = /((?:https?:\/\/[^\s]+)|(?:[\w-]+\.html(?:#[\w-]+)?))/g;
+      let lastIndex = 0;
+      let match;
+
+      while ((match = linkPattern.exec(safeText)) !== null) {
+        const before = safeText.slice(lastIndex, match.index);
+        if (before) container.appendChild(document.createTextNode(before));
+
+        const rawUrl = match[0].replace(/[).,;:!?]+$/, '');
+        const trailing = match[0].slice(rawUrl.length);
+        const isLocal = /^[\w-]+\.html(?:#[\w-]+)?$/.test(rawUrl);
+        const isSameOrigin = rawUrl.startsWith(`${window.location.origin}/`) || rawUrl.startsWith('/');
+
+        if (isLocal || isSameOrigin) {
+          const link = document.createElement('a');
+          link.href = rawUrl;
+          link.textContent = rawUrl;
+          link.className = 'chat-message-link';
+          container.appendChild(link);
+        } else {
+          container.appendChild(document.createTextNode(rawUrl));
+        }
+
+        if (trailing) container.appendChild(document.createTextNode(trailing));
+        lastIndex = match.index + match[0].length;
+      }
+
+      const rest = safeText.slice(lastIndex);
+      if (rest) container.appendChild(document.createTextNode(rest));
+    };
+
+    const addMessage = (role, text, { save = true } = {}) => {
       const bubble = document.createElement('div');
       bubble.className = `chat-message chat-message--${role}`;
       const label = document.createElement('span');
       label.className = 'chat-message-label';
       label.textContent = role === 'user' ? 'Du' : 'Assistent';
       const content = document.createElement('p');
-      content.textContent = text;
+      appendTextWithLinks(content, text);
       bubble.append(label, content);
       messagesBox.appendChild(bubble);
       messagesBox.scrollTop = messagesBox.scrollHeight;
+      if (save) saveConversation();
+      return bubble;
+    };
+
+    const showTyping = () => {
+      hideTyping();
+      typingBubble = document.createElement('div');
+      typingBubble.className = 'chat-message chat-message--assistant chat-message--typing';
+      typingBubble.setAttribute('aria-label', 'Assistent schreibt');
+      typingBubble.innerHTML = '<span class="chat-message-label">Assistent</span><div class="chat-typing-dots" aria-hidden="true"><span></span><span></span><span></span></div>';
+      messagesBox.appendChild(typingBubble);
+      messagesBox.scrollTop = messagesBox.scrollHeight;
+    };
+
+    const hideTyping = () => {
+      if (typingBubble) {
+        typingBubble.remove();
+        typingBubble = null;
+      }
     };
 
     const buildContactText = () => {
       const userMessages = conversation.filter((message) => message.role === 'user').map((message) => message.content).slice(-3);
       const lastReply = [...conversation].reverse().find((message) => message.role === 'assistant')?.content || '';
       const parts = [];
-      if (userMessages.length) parts.push(`Beschriebener Ablauf:\n${userMessages.join('\n\n')}`);
-      if (lastReply) parts.push(`Erste grobe Einschätzung des Assistenten:\n${lastReply}`);
+      if (userMessages.length) parts.push(`Beschriebene Fragen / Abläufe:\n${userMessages.join('\n\n')}`);
+      if (lastReply) parts.push(`Letzte grobe Einschätzung des Assistenten:\n${lastReply}`);
       return (parts.join('\n\n') || 'Ich möchte einen manuellen Ablauf prüfen lassen.').slice(0, 1200);
     };
 
@@ -1987,18 +2054,25 @@
       contactLink.href = `kontakt.html?${params.toString()}#kontaktformular`;
     };
 
+    const renderConversation = () => {
+      messagesBox.innerHTML = '';
+      conversation.forEach((message) => addMessage(message.role, message.content, { save: false }));
+      updateContactHref();
+    };
+
     const sendMessage = async (text) => {
       const userText = String(text || '').trim();
-      if (userText.length < 3 || isSending) return;
+      if (userText.length < 2 || isSending) return;
       isSending = true;
       input.value = '';
       input.style.height = '';
       sendButton.disabled = true;
       sendButton.classList.add('is-disabled');
-      setStatus('Antwort wird erstellt...', 'loading');
+      setStatus('Assistent denkt nach ...', 'loading');
       conversation.push({ role: 'user', content: userText });
       addMessage('user', userText);
       updateContactHref();
+      showTyping();
 
       try {
         const response = await fetch('/api/chat', {
@@ -2007,15 +2081,24 @@
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
-          body: JSON.stringify({ messages: conversation.slice(-8) })
+          body: JSON.stringify({
+            messages: conversation.slice(-8),
+            page: {
+              title: document.title,
+              path: window.location.pathname,
+              hash: window.location.hash
+            }
+          })
         });
         const result = await response.json().catch(() => ({}));
         const reply = result.reply || result.message || 'Der Assistent konnte gerade keine Antwort erstellen. Bitte nutze alternativ das Kontaktformular.';
+        hideTyping();
         conversation.push({ role: 'assistant', content: reply });
         addMessage('assistant', reply);
-        setStatus(result.limited ? 'Thema begrenzt – bei konkreten Abläufen bitte Kontaktformular nutzen.' : 'Du kannst nachfragen oder den Ablauf ins Kontaktformular übernehmen.', result.limited ? 'limited' : 'ready');
+        setStatus(result.limited ? 'Bei konkreten Abläufen hilft das Kontaktformular weiter.' : 'Du kannst jederzeit nachfragen.', result.limited ? 'limited' : 'ready');
       } catch (error) {
         const fallback = 'Der Assistent ist gerade nicht erreichbar. Bitte nutze alternativ das Kontaktformular.';
+        hideTyping();
         conversation.push({ role: 'assistant', content: fallback });
         addMessage('assistant', fallback);
         setStatus('Verbindung fehlgeschlagen.', 'error');
@@ -2027,8 +2110,12 @@
       }
     };
 
-    addMessage('assistant', 'Hallo! Beschreibe kurz einen manuellen oder unübersichtlichen Ablauf. Ich schlage dir dann grob vor, ob eher App, Workflow, OCR, PDF-Automatisierung oder Schnittstelle sinnvoll wäre.');
-    updateContactHref();
+    conversation = loadConversation();
+    if (!conversation.length) {
+      conversation = [{ role: 'assistant', content: greeting }];
+      saveConversation();
+    }
+    renderConversation();
 
     toggleButton.addEventListener('click', () => setOpen(!root.classList.contains('is-open')));
     closeButton.addEventListener('click', () => setOpen(false));
@@ -2036,17 +2123,16 @@
       if (event.key === 'Escape' && root.classList.contains('is-open')) setOpen(false);
     });
 
-    root.querySelectorAll('[data-chat-prompt]').forEach((button) => {
-      button.addEventListener('click', () => {
-        input.value = button.getAttribute('data-chat-prompt') || '';
-        input.focus();
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-      });
-    });
-
     input.addEventListener('input', () => {
       input.style.height = 'auto';
-      input.style.height = `${Math.min(input.scrollHeight, 160)}px`;
+      input.style.height = `${Math.min(input.scrollHeight, 140)}px`;
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        form.requestSubmit();
+      }
     });
 
     form.addEventListener('submit', (event) => {
