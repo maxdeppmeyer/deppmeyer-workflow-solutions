@@ -3,14 +3,35 @@ const DEFAULT_CHAT_RATE_LIMIT_WINDOW_SECONDS = 60;
 const DEFAULT_CHAT_RATE_LIMIT_MAX_REQUESTS = 8;
 const DEFAULT_CHAT_MODEL = 'gpt-4.1-mini';
 
-const CHAT_FALLBACK_MESSAGE = 'Dazu kann ich hier keine verlässliche Antwort geben. Der Assistent ist auf digitale Abläufe, Automatisierung, interne Tools, Formulare, PDFs, OCR, Workflows, Schnittstellen und Prozessoptimierung begrenzt. Wenn es um einen konkreten Ablauf in deinem Unternehmen geht, beschreibe ihn bitte kurz im Kontaktformular.';
+const CHAT_FALLBACK_MESSAGE = 'Dazu kann ich hier keine verlässliche Antwort geben. Der Assistent ist auf allgemeine Fragen zur Webseite und auf digitale Abläufe, Automatisierung, interne Tools, Formulare, PDFs, OCR, Workflows, Schnittstellen und Prozessoptimierung begrenzt. Wenn es um einen konkreten Ablauf in deinem Unternehmen geht, beschreibe ihn bitte kurz im Kontaktformular: kontakt.html#kontaktformular';
+
+const CHAT_WEBSITE_CONTEXT = `
+Wichtige Seiten und erlaubte Links der Webseite:
+- Startseite / Überblick: index.html#hero
+- FAQ und weitere Fragen: index.html#faq
+- Schnellcheck für Abläufe: index.html#workflow-check
+- Leistungen allgemein: leistungen.html#leistungen-ueberblick
+- Interne Apps und kleine Business-Tools: leistungen.html#apps
+- Workflow-Automatisierung: leistungen.html#automatisierung
+- OCR und Dokumentenverarbeitung: leistungen.html#ocr
+- PDF-Erstellung, Rechnungen, Angebote und Nachweise: leistungen.html#pdf
+- Schnittstellen und Datenübertragung: leistungen.html#schnittstellen
+- Analyse und Planung: leistungen.html#analyse
+- Praxisbeispiele und animierte Abläufe: beispiele.html#animierte-ablaeufe
+- Beispiel Schlüsseldienst-App: beispiele.html#beispiel-schluesseldienst-app
+- Einsatzbereiche: einsatzbereiche.html#einsatz-ueberblick
+- Arbeitsweise / Über mich: ueber-mich.html#arbeitsweise
+- Kontaktformular: kontakt.html#kontaktformular
+`;
 
 const CHAT_SYSTEM_PROMPT = `Du bist der begrenzte Website-Assistent von Deppmeyer Workflow Solutions.
 
 Deine Aufgabe:
-Du hilfst Besuchern dabei, grob einzuschätzen, ob sich ein manueller, wiederkehrender oder unübersichtlicher Geschäftsprozess digitalisieren oder automatisieren lässt.
+Du beantwortest allgemeine Fragen zur Webseite und hilfst Besuchern dabei, grob einzuschätzen, ob sich ein manueller, wiederkehrender oder unübersichtlicher Geschäftsprozess digitalisieren oder automatisieren lässt.
 
 Erlaubte Themen:
+- Fragen zur Webseite, zu Leistungen, Beispielen, Einsatzbereichen, Arbeitsweise und Kontakt
+- kurze höfliche Smalltalk-Fragen wie Begrüßung, Danke oder „Wie geht es dir?“
 - Automatisierung von Arbeitsabläufen
 - interne Web-Apps und kleine Business-Tools
 - Formulare, Datenerfassung und digitale Eingaben
@@ -21,6 +42,7 @@ Erlaubte Themen:
 - Schnittstellen zwischen Tools
 - Prozessoptimierung im Unternehmensalltag
 - grobe Lösungswege und sinnvolle nächste Schritte
+- allgemeine Preisfragen ohne konkrete Preisangaben
 
 Nicht erlaubt:
 - medizinische, rechtliche oder finanzielle Beratung
@@ -30,6 +52,7 @@ Nicht erlaubt:
 - feste Zeit- oder Erfolgsgarantien
 - Behauptungen über Möglichkeiten, wenn wichtige Informationen fehlen
 - erfundene Referenzen, Projekte, Zertifikate oder Kundennamen
+- erfundene Links, Seiten oder Website-Inhalte
 
 Antwortregeln:
 - Antworte auf Deutsch.
@@ -37,19 +60,27 @@ Antwortregeln:
 - Gib maximal 4 kurze Absätze oder eine kurze Liste aus.
 - Erkläre nur grobe Lösungswege, keine verbindlichen Zusagen.
 - Wenn Informationen fehlen, stelle höchstens 2 sinnvolle Rückfragen.
-- Wenn eine Frage nicht in die erlaubten Themen passt, lehne freundlich ab und verweise auf das Kontaktformular.
-- Wenn du unsicher bist, sage das klar und verweise auf das Kontaktformular.
+- Bei Preisfragen: Erkläre, dass Preise individuell nach Projektumfang, Komplexität, Schnittstellen, Datenmenge, Design-/App-Aufwand und gewünschtem Ergebnis kalkuliert werden. Verweise für konkrete Preisfragen auf kontakt.html#kontaktformular.
+- Bei Smalltalk: Antworte freundlich kurz und lenke danach wieder auf digitale Abläufe oder Fragen zur Webseite.
+- Wenn eine Frage nicht in die erlaubten Themen passt, lehne freundlich ab und verweise auf kontakt.html#kontaktformular.
+- Wenn du unsicher bist, sage das klar und verweise auf kontakt.html#kontaktformular.
 - Keine erfundenen Details.
-- Keine HTML-Ausgabe, kein Markdown mit Tabellen.`;
+- Keine HTML-Ausgabe, kein Markdown mit Tabellen.
+- Wenn es zur Antwort passt, füge am Ende „Siehe auch:“ mit 1 bis 3 passenden Links aus der folgenden Website-Liste hinzu. Nutze nur exakt diese Linkpfade und erfinde keine anderen Anker.
+
+${CHAT_WEBSITE_CONTEXT}`;
 
 const CHAT_TOPIC_KEYWORDS = [
   'ablauf', 'abläufe', 'prozess', 'prozesse', 'workflow', 'workflows', 'automatis', 'digitalis', 'manuell', 'nacharbeit',
   'formular', 'formulare', 'e-mail', 'email', 'mail', 'postfach', 'benachrichtigung', 'antwort', 'anfrage', 'kundenanfrage',
   'excel', 'liste', 'listen', 'csv', 'daten', 'dashboard', 'auswertung', 'report', 'tabelle', 'datenbank',
   'pdf', 'rechnung', 'rechnungen', 'angebot', 'angebote', 'nachweis', 'dokument', 'dokumente', 'ocr', 'scan', 'foto',
-  'app', 'web-app', 'tool', 'software', 'internes system', 'kundenportal', 'formularstrecke',
+  'app', 'apps', 'web-app', 'tool', 'software', 'internes system', 'kundenportal', 'formularstrecke',
   'schnittstelle', 'api', 'import', 'export', 'zapier', 'make', 'n8n', 'cloudflare',
-  'termin', 'termine', 'kalender', 'rückmeldung', 'status', 'übergabe', 'auftrag', 'aufträge', 'disposition'
+  'termin', 'termine', 'kalender', 'rückmeldung', 'status', 'übergabe', 'auftrag', 'aufträge', 'disposition',
+  'leistung', 'leistungen', 'beispiel', 'beispiele', 'einsatzbereich', 'einsatzbereiche', 'webseite', 'seite', 'kontakt',
+  'preis', 'preise', 'kosten', 'kostet', 'budget', 'stundensatz', 'pauschale', 'abrechnung',
+  'hallo', 'hi', 'hey', 'moin', 'guten tag', 'guten morgen', 'guten abend', 'wie geht', 'danke', 'dankeschön'
 ];
 
 export default {
@@ -124,7 +155,7 @@ async function handleChatRequest(request, env, ctx) {
       ...messages.map((message) => ({ role: message.role, content: message.content }))
     ],
     temperature: 0.25,
-    max_output_tokens: 520
+    max_output_tokens: 650
   };
 
   let aiResponse;
@@ -180,8 +211,27 @@ function normalizeChatMessages(messages) {
 }
 
 function isAllowedChatTopic(messages) {
-  const text = messages.map((message) => message.content).join(' ').toLowerCase();
-  return CHAT_TOPIC_KEYWORDS.some((keyword) => text.includes(keyword));
+  const userMessages = messages
+    .filter((message) => message.role === 'user')
+    .map((message) => message.content.toLowerCase());
+
+  const latest = userMessages.at(-1) || '';
+  const hasAllowedKeyword = (text) => CHAT_TOPIC_KEYWORDS.some((keyword) => text.includes(keyword));
+
+  if (hasAllowedKeyword(latest)) {
+    return true;
+  }
+
+  const isFollowUp = [
+    'mehr', 'genauer', 'erklär', 'erklaer', 'wie genau', 'warum', 'was bedeutet',
+    'nächster schritt', 'naechster schritt', 'weiter', 'ok', 'okay', 'ja'
+  ].some((keyword) => latest.includes(keyword));
+
+  if (!isFollowUp) {
+    return false;
+  }
+
+  return hasAllowedKeyword(userMessages.slice(0, -1).join(' '));
 }
 
 async function checkChatRateLimit(request, env, headers) {
