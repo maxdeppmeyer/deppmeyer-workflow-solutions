@@ -1255,20 +1255,7 @@
     const defaultResponseNote = responseNote ? responseNote.textContent.trim() : '';
     const responseWrap = contactForm.querySelector('.contact-response');
     const submitHint = contactForm.querySelector('[data-contact-submit-hint]');
-    const callbackHintNote = (() => {
-      if (!responseWrap) return null;
-      const existing = responseWrap.querySelector('[data-callback-choice-note]');
-      if (existing) return existing;
-      const note = document.createElement('span');
-      note.className = 'note';
-      note.hidden = true;
-      note.setAttribute('aria-live', 'polite');
-      note.setAttribute('data-callback-choice-note', '');
-      note.textContent = 'Hinweis: Es kann nur eine Option gewählt werden. Mit ausgewähltem Rückruf wird die Anfrage als Rückrufwunsch behandelt.';
-      if (responseNote) responseWrap.insertBefore(note, responseNote);
-      else responseWrap.appendChild(note);
-      return note;
-    })();
+    const callbackHintNote = null;
     const validationHintNote = (() => {
       if (!responseWrap) return null;
       const existing = responseWrap.querySelector('[data-contact-validation-note]');
@@ -2316,12 +2303,12 @@
     };
 
     const buildContactText = () => {
-      const userMessages = conversation.filter((message) => message.role === 'user').map((message) => message.content).slice(-3);
-      const lastReply = [...conversation].reverse().find((message) => message.role === 'assistant')?.content || '';
-      const parts = [];
-      if (userMessages.length) parts.push(`Beschriebene Fragen / Abläufe:\n${userMessages.join('\n\n')}`);
-      if (lastReply) parts.push(`Letzte grobe Einschätzung des Assistenten:\n${lastReply}`);
-      return (parts.join('\n\n') || 'Ich möchte einen manuellen Ablauf prüfen lassen.').slice(0, 1200);
+      const userMessages = conversation
+        .filter((message) => message.role === 'user')
+        .map((message) => String(message.content || '').trim())
+        .filter(Boolean)
+        .slice(-3);
+      return (userMessages.join('\n\n') || 'Ich möchte einen manuellen Ablauf prüfen lassen.').slice(0, 1200);
     };
 
     const updateContactHref = () => {
