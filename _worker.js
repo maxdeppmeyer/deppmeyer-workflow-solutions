@@ -726,8 +726,6 @@ async function verifyTurnstile(token, request, env) {
     : { ok: false, message: 'Der Formularschutz wurde nicht bestätigt. Bitte versuche es erneut.' };
 }
 
-function clean
-
 function clean(value, maxLength = 500) {
   return String(value || '').trim().replace(/\s+/g, ' ').slice(0, maxLength);
 }
