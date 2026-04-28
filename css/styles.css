@@ -9742,3 +9742,30 @@ body[data-page="kontakt.html"] .contact-intro--simple .eyebrow{
     font-size:clamp(2rem,9vw,2.65rem) !important;
   }
 }
+
+
+/* v031 - KI-Assistent Kontakt-Übergabe bewusst auswählen */
+.chat-assistant-footer{
+  display:grid !important;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+.chat-contact-link--transfer{
+  background:linear-gradient(180deg, rgba(47,124,255,.10), rgba(37,207,255,.07));
+  border-color:rgba(47,124,255,.22);
+}
+.chat-contact-link.is-disabled,
+.chat-contact-link[aria-disabled="true"]{
+  opacity:.48;
+  cursor:not-allowed;
+  pointer-events:auto;
+}
+.chat-contact-link.is-disabled:hover,
+.chat-contact-link[aria-disabled="true"]:hover{
+  background:rgba(47,124,255,.06);
+}
+@media (max-width:760px){
+  .chat-assistant-footer{
+    gap:7px;
+  }
+}
