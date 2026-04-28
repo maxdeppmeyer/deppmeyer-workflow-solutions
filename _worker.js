@@ -3,7 +3,7 @@ const DEFAULT_CHAT_RATE_LIMIT_WINDOW_SECONDS = 60;
 const DEFAULT_CHAT_RATE_LIMIT_MAX_REQUESTS = 8;
 const DEFAULT_CHAT_MODEL = 'gpt-4.1-mini';
 
-const CHAT_FALLBACK_MESSAGE = 'Dazu kann ich hier keine verlässliche Antwort geben. Der Assistent ist auf allgemeine Fragen zur Webseite und auf digitale Abläufe, Automatisierung, interne Tools, Formulare, PDFs, OCR, Workflows, Schnittstellen und Prozessoptimierung begrenzt. Wenn es um einen konkreten Ablauf in deinem Unternehmen geht, beschreibe ihn bitte kurz über das Kontaktformular.';
+const CHAT_FALLBACK_MESSAGE = 'Dazu kann ich hier keine sichere Einschätzung geben. Wenn es um eine digitale Lösung, Webseite, App, Automatisierung, PDF, OCR, Schnittstelle oder einen konkreten Ablauf geht, beschreibe den Bedarf bitte kurz über das Kontaktformular.';
 
 const CHAT_SITE_LINKS = {
   'index.html#hero': 'Startseite öffnen',
@@ -29,7 +29,7 @@ Wichtige Seiten und erlaubte Links der Webseite:
 - FAQ und weitere Fragen: index.html#faq
 - Schnellcheck für Abläufe: index.html#workflow-check
 - Leistungen allgemein: leistungen.html#leistungen-ueberblick
-- Interne Apps und kleine Business-Tools: leistungen.html#apps
+- Webseiten, Landingpages mit Funktion, interne Apps und kleine Business-Tools: leistungen.html#apps
 - Workflow-Automatisierung: leistungen.html#automatisierung
 - OCR und Dokumentenverarbeitung: leistungen.html#ocr
 - PDF-Erstellung, Rechnungen, Angebote und Nachweise: leistungen.html#pdf
@@ -51,6 +51,7 @@ Erlaubte Themen:
 - Fragen zur Webseite, zu Leistungen, Beispielen, Einsatzbereichen, Arbeitsweise und Kontakt
 - kurze höfliche Smalltalk-Fragen wie Begrüßung, Danke oder „Wie geht es dir?“
 - Automatisierung von Arbeitsabläufen
+- Webseiten, Landingpages mit Formularen oder geschäftlicher Funktion
 - interne Web-Apps und kleine Business-Tools
 - Formulare, Datenerfassung und digitale Eingaben
 - PDF-Erstellung, Rechnungen, Angebote und Nachweise
@@ -74,16 +75,19 @@ Nicht erlaubt:
 
 Antwortregeln:
 - Antworte auf Deutsch.
-- Bleibe kurz, konkret und verständlich.
-- Gib maximal 4 kurze Absätze oder eine kurze Liste aus.
+- Sprich als Website-Assistent über Deppmeyer Workflow Solutions, nicht über dich als KI. Sage also nicht „ich selbst baue keine Webseiten“.
+- Halte Antworten sehr kurz: meistens 2 bis 5 Sätze, maximal 90 Wörter.
+- Nutze höchstens 3 kurze Aufzählungspunkte, wenn eine Liste wirklich hilft.
+- Verneine digitale Lösungen nicht hart. Webseiten, Landingpages, Web-Apps, Formulare, Apps, Workflows, OCR, PDFs, Dashboards, Schnittstellen und Automatisierungen können grundsätzlich geprüft werden.
+- Wenn etwas nicht der Hauptschwerpunkt ist, sage: „Das ist nicht der Hauptschwerpunkt, kann aber geprüft werden, wenn es zu einem geschäftlichen Ablauf oder Ziel passt.“
 - Erkläre nur grobe Lösungswege, keine verbindlichen Zusagen.
-- Wenn Informationen fehlen, stelle höchstens 2 sinnvolle Rückfragen.
-- Bei Preisfragen: Erkläre, dass Preise individuell nach Projektumfang, Komplexität, Schnittstellen, Datenmenge, Design-/App-Aufwand und gewünschtem Ergebnis kalkuliert werden. Verweise für konkrete Preisfragen auf kontakt.html#kontaktformular.
-- Bei Smalltalk: Antworte freundlich kurz und lenke danach wieder auf digitale Abläufe oder Fragen zur Webseite.
-- Wenn eine Frage nicht in die erlaubten Themen passt, lehne freundlich ab und verweise auf kontakt.html#kontaktformular.
+- Wenn Informationen fehlen, stelle höchstens 1 kurze Rückfrage oder verweise auf kontakt.html#kontaktformular.
+- Bei Preisfragen: Keine konkreten Preise nennen. Kurz sagen, dass Preise individuell nach Projektumfang, Komplexität, Schnittstellen, Datenmenge, Design-/App-Aufwand und gewünschtem Ergebnis kalkuliert werden. Immer auf kontakt.html#kontaktformular verweisen.
+- Bei Smalltalk: Antworte freundlich in 1 bis 2 Sätzen und biete danach Hilfe zu digitalen Abläufen oder Fragen zur Webseite an.
+- Wenn eine Frage nicht in die erlaubten Themen passt, lehne freundlich kurz ab und verweise auf kontakt.html#kontaktformular.
 - Wenn du unsicher bist, sage das klar und verweise auf kontakt.html#kontaktformular.
 - Keine erfundenen Details.
-- Keine HTML-Ausgabe, kein Markdown mit Tabellen.
+- Keine HTML-Ausgabe, keine Markdown-Tabellen und möglichst keine langen Markdown-Listen.
 - Wenn es zur Antwort passt, füge am Ende einen Abschnitt „Siehe auch:“ mit 1 bis 3 passenden Linkpfaden aus der folgenden Website-Liste hinzu. Nutze nur exakt diese Linkpfade und erfinde keine anderen Anker. Die Webseite stellt diese Links später als Buttons dar.
 
 ${CHAT_WEBSITE_CONTEXT}`;
@@ -93,7 +97,7 @@ const CHAT_TOPIC_KEYWORDS = [
   'formular', 'formulare', 'e-mail', 'email', 'mail', 'postfach', 'benachrichtigung', 'antwort', 'anfrage', 'kundenanfrage',
   'excel', 'liste', 'listen', 'csv', 'daten', 'dashboard', 'auswertung', 'report', 'tabelle', 'datenbank',
   'pdf', 'rechnung', 'rechnungen', 'angebot', 'angebote', 'nachweis', 'dokument', 'dokumente', 'ocr', 'scan', 'foto',
-  'app', 'apps', 'web-app', 'tool', 'software', 'internes system', 'kundenportal', 'formularstrecke',
+  'app', 'apps', 'web-app', 'webapp', 'website', 'webseite', 'webseiten', 'landingpage', 'landingpages', 'homepage', 'internetauftritt', 'tool', 'software', 'internes system', 'kundenportal', 'formularstrecke',
   'schnittstelle', 'api', 'import', 'export', 'zapier', 'make', 'n8n', 'cloudflare',
   'termin', 'termine', 'kalender', 'rückmeldung', 'status', 'übergabe', 'auftrag', 'aufträge', 'disposition',
   'leistung', 'leistungen', 'beispiel', 'beispiele', 'einsatzbereich', 'einsatzbereiche', 'webseite', 'seite', 'kontakt',
@@ -173,7 +177,7 @@ async function handleChatRequest(request, env, ctx) {
       ...messages.map((message) => ({ role: message.role, content: message.content }))
     ],
     temperature: 0.25,
-    max_output_tokens: 650
+    max_output_tokens: 320
   };
 
   let aiResponse;
@@ -202,8 +206,9 @@ async function handleChatRequest(request, env, ctx) {
   }
 
   const rawReply = cleanAiReply(extractOpenAiText(result));
-  const links = extractRecommendedLinks(rawReply);
-  const reply = stripRecommendedLinkSection(rawReply);
+  const initialLinks = extractRecommendedLinks(rawReply);
+  const reply = limitChatReply(stripRecommendedLinkSection(rawReply));
+  const links = inferRecommendedLinks(messages, reply, initialLinks);
 
   if (!reply) {
     return json({ ok: true, reply: CHAT_FALLBACK_MESSAGE, links: getChatLinks(['kontakt.html#kontaktformular']), limited: true }, 200, headers);
@@ -336,6 +341,66 @@ function stripRecommendedLinkSection(reply) {
   return cleanMultiline(cleaned, 1800)
     .replace(/\n{3,}/g, '\n\n')
     .trim();
+}
+
+function limitChatReply(reply) {
+  const cleaned = cleanMultiline(reply, 1200).trim();
+  if (!cleaned) return '';
+
+  const paragraphs = cleaned
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    .slice(0, 2);
+  const compact = paragraphs.join('\n\n').trim();
+
+  if (compact.length <= 620) return compact;
+
+  const sentences = compact.match(/[^.!?]+[.!?]+/g) || [];
+  const shortened = sentences.slice(0, 4).join(' ').trim();
+  if (shortened && shortened.length <= 680) return shortened;
+
+  return `${compact.slice(0, 600).replace(/\s+\S*$/, '')} ...`;
+}
+
+function inferRecommendedLinks(messages, reply, currentLinks = []) {
+  const combinedText = `${messages.map((message) => message.content || '').join(' ')} ${reply || ''}`.toLowerCase();
+  const existing = currentLinks.map((link) => typeof link === 'string' ? link : link?.href).filter(Boolean);
+  const inferred = [];
+
+  const add = (...hrefs) => {
+    hrefs.forEach((href) => inferred.push(href));
+  };
+
+  if (/preis|preise|kosten|kostet|budget|angebot|pauschale|stundensatz/.test(combinedText)) {
+    add('kontakt.html#kontaktformular', 'leistungen.html#leistungen-ueberblick');
+  }
+
+  if (/webseite|webseiten|website|landingpage|homepage|internetauftritt|web-app|webapp/.test(combinedText)) {
+    add('leistungen.html#apps', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
+  }
+
+  if (/rechnung|rechnungen|pdf|angebot|angebote|nachweis/.test(combinedText)) {
+    add('leistungen.html#pdf', 'beispiele.html#beispiel-schluesseldienst-app', 'kontakt.html#kontaktformular');
+  }
+
+  if (/ocr|scan|ausweis|dokument|dokumente|foto/.test(combinedText)) {
+    add('leistungen.html#ocr', 'beispiele.html#beispiel-schluesseldienst-app', 'kontakt.html#kontaktformular');
+  }
+
+  if (/app|apps|tool|interne lösung|internes system|dashboard|kundenportal/.test(combinedText)) {
+    add('leistungen.html#apps', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
+  }
+
+  if (/e-mail|email|postfach|workflow|automatis|formular|anfrage|benachrichtigung|schnittstelle|api|excel|daten/.test(combinedText)) {
+    add('leistungen.html#automatisierung', 'leistungen.html#schnittstellen', 'beispiele.html#animierte-ablaeufe');
+  }
+
+  if (!existing.length && !inferred.length) {
+    add('leistungen.html#leistungen-ueberblick', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
+  }
+
+  return getChatLinks([...existing, ...inferred, 'kontakt.html#kontaktformular']);
 }
 
 function buildChatRecord(request, messages, reply, links = []) {
