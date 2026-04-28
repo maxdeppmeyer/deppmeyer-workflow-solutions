@@ -1255,7 +1255,20 @@
     const defaultResponseNote = responseNote ? responseNote.textContent.trim() : '';
     const responseWrap = contactForm.querySelector('.contact-response');
     const submitHint = contactForm.querySelector('[data-contact-submit-hint]');
-    const callbackHintNote = null;
+    const callbackHintNote = (() => {
+      if (!responseWrap) return null;
+      const existing = responseWrap.querySelector('[data-callback-choice-note]');
+      if (existing) return existing;
+      const note = document.createElement('span');
+      note.className = 'note';
+      note.hidden = true;
+      note.setAttribute('aria-live', 'polite');
+      note.setAttribute('data-callback-choice-note', '');
+      note.textContent = 'Hinweis: Es kann nur eine Option gewählt werden. Mit ausgewähltem Rückruf wird die Anfrage als Rückrufwunsch behandelt.';
+      if (responseNote) responseWrap.insertBefore(note, responseNote);
+      else responseWrap.appendChild(note);
+      return note;
+    })();
     const validationHintNote = (() => {
       if (!responseWrap) return null;
       const existing = responseWrap.querySelector('[data-contact-validation-note]');
@@ -2129,6 +2142,7 @@
         </form>
         <div class="chat-assistant-footer">
           <a class="chat-contact-link" data-chat-contact href="kontakt.html#kontaktformular">Kontaktformular öffnen</a>
+          <a class="chat-contact-link chat-contact-link--transfer" data-chat-transfer href="kontakt.html#kontaktformular" aria-disabled="true">Chat in Anfrage übernehmen</a>
         </div>
       </div>
     `;
@@ -2144,6 +2158,7 @@
     const status = root.querySelector('[data-chat-status]');
     const sendButton = root.querySelector('[data-chat-send]');
     const contactLink = root.querySelector('[data-chat-contact]');
+    const transferLink = root.querySelector('[data-chat-transfer]');
     let conversation = [];
     let isSending = false;
     let typingBubble = null;
@@ -2305,22 +2320,45 @@
     const buildContactText = () => {
       const userMessages = conversation
         .filter((message) => message.role === 'user')
-        .map((message) => String(message.content || '').trim())
+        .map((message) => message.content)
         .filter(Boolean)
-        .slice(-3);
-      return (userMessages.join('\n\n') || 'Ich möchte einen manuellen Ablauf prüfen lassen.').slice(0, 1200);
+        .slice(-4);
+      const assistantMessages = conversation
+        .filter((message) => message.role === 'assistant' && message.content !== greeting)
+        .map((message) => message.content)
+        .filter(Boolean)
+        .slice(-2);
+      const parts = [];
+      if (userMessages.length) parts.push(`Meine Fragen / mein beschriebener Ablauf:\n${userMessages.join('\n\n')}`);
+      if (assistantMessages.length) parts.push(`Kurze Einordnung aus dem KI-Assistenten:\n${assistantMessages.join('\n\n')}`);
+      return parts.join('\n\n').slice(0, 1200);
     };
 
     const updateContactHref = () => {
-      const params = new URLSearchParams();
-      params.set('chat', buildContactText());
-      contactLink.href = `kontakt.html?${params.toString()}#kontaktformular`;
+      const transferText = buildContactText();
+      if (contactLink) contactLink.href = 'kontakt.html#kontaktformular';
+      if (!transferLink) return;
+      if (transferText) {
+        const params = new URLSearchParams();
+        params.set('chat', transferText);
+        transferLink.href = `kontakt.html?${params.toString()}#kontaktformular`;
+        transferLink.removeAttribute('aria-disabled');
+        transferLink.classList.remove('is-disabled');
+      } else {
+        transferLink.href = 'kontakt.html#kontaktformular';
+        transferLink.setAttribute('aria-disabled', 'true');
+        transferLink.classList.add('is-disabled');
+      }
     };
 
-    const closeAssistantFromLink = (target) => {
+    const closeAssistantFromLink = (target, event = null) => {
       const link = target instanceof Element ? target.closest('a') : null;
       if (!link) return;
       if (!root.contains(link) || link.hasAttribute('data-chat-toggle') || link.hasAttribute('data-chat-close')) return;
+      if (link.getAttribute('aria-disabled') === 'true') {
+        if (event) event.preventDefault();
+        return;
+      }
       setOpen(false);
     };
 
@@ -2399,7 +2437,7 @@
     toggleButton.addEventListener('click', () => setOpen(!root.classList.contains('is-open')));
     closeButton.addEventListener('click', () => setOpen(false));
     panel.addEventListener('click', (event) => {
-      closeAssistantFromLink(event.target);
+      closeAssistantFromLink(event.target, event);
     });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && root.classList.contains('is-open')) setOpen(false);
