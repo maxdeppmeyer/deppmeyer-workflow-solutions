@@ -1396,6 +1396,12 @@
     const topicField = contactForm.querySelector('#topic');
     const phoneInput = contactForm.querySelector('#phone');
     const callbackInput = contactForm.querySelector('#callbackRequested');
+    const turnstileWrap = contactForm.querySelector('[data-turnstile-wrap]');
+    const turnstileWidget = contactForm.querySelector('[data-turnstile-widget]');
+    let turnstileToken = '';
+    let turnstileWidgetId = null;
+    const turnstileSiteKey = String(window.siteConfig?.turnstileSiteKey || '').trim();
+    const turnstileEnabled = Boolean(turnstileSiteKey && turnstileWidget);
     const callbackFeedback = contactForm.querySelector('[data-callback-feedback]');
     const callbackTrigger = contactForm.querySelector('[data-contact-callback-trigger]');
     let pendingStoredAssessment = readStoredWorkflowResult();
@@ -1421,7 +1427,67 @@
 
     const getAssessmentMessage = () => {
       const text = getAssessmentText();
-      return text ? `Schnellcheck-Ergebnis: ${text}` : '';
+      return text ? `Übernommene Zusammenfassung: ${text}` : '';
+    };
+
+    const ensureTurnstileScript = () => new Promise((resolve, reject) => {
+      if (!turnstileEnabled) {
+        resolve();
+        return;
+      }
+      if (window.turnstile?.render) {
+        resolve();
+        return;
+      }
+      const existing = document.querySelector('script[data-turnstile-script]');
+      if (existing) {
+        existing.addEventListener('load', () => resolve(), { once: true });
+        existing.addEventListener('error', () => reject(new Error('Turnstile konnte nicht geladen werden.')), { once: true });
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      script.setAttribute('data-turnstile-script', '');
+      script.addEventListener('load', () => resolve(), { once: true });
+      script.addEventListener('error', () => reject(new Error('Turnstile konnte nicht geladen werden.')), { once: true });
+      document.head.appendChild(script);
+    });
+
+    const resetTurnstileProtection = () => {
+      if (!turnstileEnabled) return;
+      turnstileToken = '';
+      if (window.turnstile?.reset && turnstileWidgetId !== null) {
+        try { window.turnstile.reset(turnstileWidgetId); } catch (error) {}
+      }
+    };
+
+    const initTurnstileProtection = async () => {
+      if (!turnstileEnabled) return;
+      if (turnstileWrap) turnstileWrap.hidden = false;
+      try {
+        await ensureTurnstileScript();
+        if (!window.turnstile?.render || turnstileWidgetId !== null) return;
+        turnstileWidgetId = window.turnstile.render(turnstileWidget, {
+          sitekey: turnstileSiteKey,
+          theme: body.dataset.theme === 'dark' ? 'dark' : 'light',
+          callback: (token) => {
+            turnstileToken = String(token || '');
+            updateSummary();
+          },
+          'expired-callback': () => {
+            turnstileToken = '';
+            updateSummary();
+          },
+          'error-callback': () => {
+            turnstileToken = '';
+            updateSummary();
+          }
+        });
+      } catch (error) {
+        setResponseNote('Der Formularschutz konnte nicht geladen werden. Bitte lade die Seite neu oder versuche es später erneut.');
+      }
     };
 
     const syncAssessmentPrefillState = () => {
@@ -1429,11 +1495,11 @@
       if (assessmentText) {
         if (prefillBox && prefillText) {
           prefillBox.hidden = false;
-          prefillText.textContent = `Übernommenes Schnellcheck-Ergebnis: ${assessmentText}`;
+          prefillText.textContent = `Übernommene Zusammenfassung: ${assessmentText}`;
         }
         if (prefillClearButton) {
           prefillClearButton.hidden = false;
-          prefillClearButton.textContent = 'Schnellcheck entfernen';
+          prefillClearButton.textContent = 'Zusammenfassung entfernen';
           prefillClearButton.dataset.prefillMode = 'clear';
         }
         return;
@@ -1442,11 +1508,11 @@
       if (pendingStoredAssessment?.title && pendingStoredAssessment?.summary) {
         if (prefillBox && prefillText) {
           prefillBox.hidden = false;
-          prefillText.textContent = `Gespeichertes Schnellcheck-Ergebnis verfügbar: ${pendingStoredAssessment.title}. ${pendingStoredAssessment.summary}`;
+          prefillText.textContent = `Gespeicherte Zusammenfassung verfügbar: ${pendingStoredAssessment.title}. ${pendingStoredAssessment.summary}`;
         }
         if (prefillClearButton) {
           prefillClearButton.hidden = false;
-          prefillClearButton.textContent = 'Schnellcheck einfügen';
+          prefillClearButton.textContent = 'Zusammenfassung einfügen';
           prefillClearButton.dataset.prefillMode = 'insert';
         }
         return;
@@ -1458,7 +1524,7 @@
       }
       if (prefillClearButton) {
         prefillClearButton.hidden = true;
-        prefillClearButton.textContent = 'Schnellcheck entfernen';
+        prefillClearButton.textContent = 'Zusammenfassung entfernen';
         prefillClearButton.dataset.prefillMode = '';
       }
     };
@@ -1543,6 +1609,7 @@
       const formData = new FormData(contactForm);
       const emailState = validateEmailValue(formData.get('email'));
       const consentGiven = Boolean(formData.get('consent'));
+      const turnstileReady = !turnstileEnabled || Boolean(turnstileToken);
       const callbackRequested = Boolean(formData.get('callbackRequested'));
       if (callbackHintNote) callbackHintNote.hidden = !callbackRequested;
       const phoneState = callbackRequested ? validatePhoneValue(formData.get('phone')) : { valid: true, state: 'idle', message: 'Rückruf ist optional.' };
@@ -1561,11 +1628,19 @@
         ['Rückruf', callbackRequested ? 'Gewünscht' : 'Nicht angefragt'],
         ['Thema', formData.get('topic') || '—'],
         ['Text', formData.get('message') || '—'],
-        ['Schnellcheck', getAssessmentText() || '—'],
+        ['Übernahme', getAssessmentText() || '—'],
         ['Einwilligung', consentGiven ? 'Bestätigt' : 'Ausstehend']
       ];
       if (summary) {
-        summary.innerHTML = lines.map(([label, value]) => `<div><strong>${label}:</strong> ${String(value).replace(/</g, '&lt;')}</div>`).join('');
+        summary.replaceChildren();
+        lines.forEach(([label, value]) => {
+          const row = document.createElement('div');
+          const strong = document.createElement('strong');
+          strong.textContent = `${label}:`;
+          row.appendChild(strong);
+          row.appendChild(document.createTextNode(` ${String(value || '—')}`));
+          summary.appendChild(row);
+        });
       }
       syncRequiredMarkers();
       if (emailInput) {
@@ -1617,11 +1692,14 @@
       if (!consentGiven) {
         validationIssues.push('Datenschutz-Einwilligung bestätigen');
       }
+      if (!turnstileReady) {
+        validationIssues.push('Formularschutz bestätigen');
+      }
       if (!requiredFieldsValid()) {
         validationIssues.push('alle Pflichtfelder ausfüllen');
       }
       setValidationHint(validationIssues);
-      const canProceed = emailState.valid && consentGiven && phoneState.valid && requiredFieldsValid() && !isSubmitting;
+      const canProceed = emailState.valid && consentGiven && turnstileReady && phoneState.valid && requiredFieldsValid() && !isSubmitting;
       if (submitHint) {
         submitHint.textContent = canProceed
           ? 'Alle Pflichtfelder sind ausgefüllt. Du kannst die Anfrage jetzt absenden.'
@@ -1634,6 +1712,8 @@
         submitButton.classList.toggle('is-disabled', !canProceed);
       }
     };
+
+    initTurnstileProtection();
 
     const applyChatAssistantPrefill = () => {
       const params = new URLSearchParams(window.location.search);
@@ -1660,10 +1740,11 @@
       const formData = new FormData(contactForm);
       const emailState = validateEmailValue(formData.get('email'));
       const consentGiven = Boolean(formData.get('consent'));
+      const turnstileReady = !turnstileEnabled || Boolean(turnstileToken);
       const callbackRequested = Boolean(formData.get('callbackRequested'));
       const phoneState = callbackRequested ? validatePhoneValue(formData.get('phone')) : { valid: true };
       const missingRequired = requiredWrappers.find((wrapper) => !requiredFieldFilled(wrapper));
-      if (!emailState.valid || !consentGiven || !phoneState.valid || missingRequired) {
+      if (!emailState.valid || !consentGiven || !turnstileReady || !phoneState.valid || missingRequired) {
         shouldRevealValidationHint = true;
         updateSummary();
         const missingControl = missingRequired ? getRequiredControl(missingRequired) : null;
@@ -1702,7 +1783,8 @@
   phone: String(formData.get('phone') || '').trim(),
   callbackRequested: Boolean(formData.get('callbackRequested')),
   consent: consentGiven,
-  assessment: getAssessmentText()
+  assessment: getAssessmentText(),
+  turnstileToken
 })
         });
         const result = await response.json().catch(() => ({}));
@@ -1724,6 +1806,7 @@
         setResponseNote(error && error.message ? error.message : 'Die Anfrage konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.');
       } finally {
         isSubmitting = false;
+        resetTurnstileProtection();
         if (submitButton) {
           submitButton.classList.remove('is-loading');
           if (submitSucceeded) {
