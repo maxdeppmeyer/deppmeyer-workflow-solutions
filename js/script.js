@@ -2047,8 +2047,8 @@
   const initChatAssistant = () => {
     if (document.querySelector('[data-chat-assistant]')) return;
 
-    const storageKey = 'deppmeyerChatAssistantConversationV2';
-    const openStorageKey = 'deppmeyerChatAssistantOpenV3';
+    const storageKey = 'deppmeyerChatAssistantConversationV4';
+    const openStorageKey = 'deppmeyerChatAssistantOpenV4';
     const greeting = 'Hallo, ich bin dein Ablauf-Assistent. Ich beantworte kurze Fragen zur Webseite und kann grob einschätzen, welche digitale Lösung zu deinem Ablauf passen könnte.';
     const linkLabels = {
       'index.html#hero': 'Startseite öffnen',
@@ -2214,6 +2214,7 @@
         const anchor = document.createElement('a');
         anchor.className = 'chat-link-card';
         anchor.href = link.href;
+        anchor.dataset.chatSmartLink = '';
         const label = document.createElement('span');
         label.textContent = link.label;
         const arrow = document.createElement('span');
@@ -2378,6 +2379,40 @@
   };
 
   initChatAssistant();
+
+  const focusHashTarget = (hash = window.location.hash, behavior = 'smooth') => {
+    if (!hash || hash.length < 2) return;
+    const id = decodeURIComponent(hash.slice(1));
+    let target = null;
+    try {
+      target = document.getElementById(id) || document.querySelector(`[name="${CSS.escape(id)}"]`);
+    } catch (error) {
+      target = document.getElementById(id);
+    }
+    if (!target) return;
+    const topbar = document.querySelector('.topbar');
+    const topbarHeight = topbar ? topbar.getBoundingClientRect().height : 0;
+    const targetRect = target.getBoundingClientRect();
+    const targetTop = window.scrollY + targetRect.top;
+    const viewportSpace = Math.max(0, window.innerHeight - topbarHeight);
+    const centeredTop = targetTop - topbarHeight - Math.max(18, (viewportSpace - Math.min(targetRect.height, viewportSpace * .72)) / 2);
+    window.scrollTo({ top: Math.max(0, centeredTop), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : behavior });
+    target.classList.add('anchor-focus-highlight');
+    window.setTimeout(() => target.classList.remove('anchor-focus-highlight'), 2200);
+  };
+
+  window.addEventListener('load', () => window.setTimeout(() => focusHashTarget(window.location.hash, 'auto'), 90));
+  window.addEventListener('hashchange', () => window.setTimeout(() => focusHashTarget(window.location.hash, 'smooth'), 30));
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[data-chat-smart-link]');
+    if (!link) return;
+    const url = new URL(link.href, window.location.href);
+    const samePage = url.pathname === window.location.pathname;
+    if (!samePage || !url.hash) return;
+    event.preventDefault();
+    if (window.location.hash !== url.hash) history.pushState(null, '', url.hash);
+    focusHashTarget(url.hash, 'smooth');
+  });
 
 
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth > 1024) {
