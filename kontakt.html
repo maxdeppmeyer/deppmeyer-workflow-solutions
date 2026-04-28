@@ -71,11 +71,6 @@
 </div>
 
 <form class="contact-form solution-contact-form" data-contact-form="">
-<div class="contact-prefill" data-contact-prefill="" hidden="">
-<p data-contact-prefill-text=""></p>
-<button class="btn ghost btn-small" data-contact-prefill-clear="" type="button">Zusammenfassung entfernen</button>
-</div>
-
 <div class="form-grid">
 <div class="field"><label for="gender">Anrede</label><select id="gender" name="gender"><option value="">Keine Angabe</option><option value="female">Frau</option><option value="male">Herr</option><option value="other">Divers / keine Angabe</option></select></div>
 <div class="field" data-required-field=""><label for="firstName">Vorname</label><input id="firstName" name="firstName" autocomplete="given-name" required="" type="text"/></div>
@@ -105,21 +100,12 @@
 
 <div class="turnstile-wrap" data-turnstile-wrap="" hidden="">
 <div class="turnstile-box" data-turnstile-widget=""></div>
-<span class="field-help">Formularschutz gegen Spam. Wird nur angezeigt, wenn Cloudflare Turnstile eingerichtet ist.</span>
 </div>
 
 <input autocomplete="off" class="hp-field" name="website" tabindex="-1" type="text"/>
 
-<div class="contact-summary-panel">
-<div>
-<h3>Zusammenfassung</h3>
-<div class="contact-summary" data-contact-summary=""></div>
-</div>
-<div class="contact-response">
-<span class="note" data-contact-note="">Nach dem Absenden wird die Anfrage über den Cloudflare Worker geprüft und an den verbundenen n8n-Workflow übergeben.</span>
-<span class="contact-submit-hint" data-contact-submit-hint>Bitte fülle alle Pflichtfelder aus und bestätige den Datenschutz, damit du die Anfrage absenden kannst.</span>
+<div class="contact-response contact-response--solo">
 <button class="btn" data-contact-submit="" type="submit" disabled aria-disabled="true">Ablauf kostenlos prüfen lassen</button>
-</div>
 </div>
 </form>
 </div>
