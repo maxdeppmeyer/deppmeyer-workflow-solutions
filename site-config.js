@@ -12,6 +12,7 @@ window.siteConfig = {
   street: "[Straße und Hausnummer ergänzen]",
   cityZip: "[PLZ und Ort ergänzen]",
   domain: "https://deine-domain.de",
-  // Optional: Cloudflare Turnstile Site Key für das Kontaktformular. Leer lassen, bis Turnstile in Cloudflare eingerichtet ist.
-  turnstileSiteKey: ""
+  // Cloudflare Turnstile Site Key für das Kontaktformular.
+  // Wichtig: Nur der Sitekey gehört in diese Datei. Der Secretkey gehört ausschließlich in Cloudflare Variables and Secrets.
+  turnstileSiteKey: "0x4AAAAAADE3hCvRhJRgtys8"
 };
