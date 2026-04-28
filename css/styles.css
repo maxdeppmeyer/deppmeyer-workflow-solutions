@@ -9691,3 +9691,48 @@ body[data-page="kontakt.html"] .contact-response--solo{
     row-gap:14px !important;
   }
 }
+
+
+/* v029 - Kontaktseite: kurzer Einstieg, kein Rückruf-Hinweis, KI-Übernahme nur Nutzertext */
+body[data-page="kontakt.html"] main > .kontakt-form-section{
+  padding-top:44px !important;
+}
+body[data-page="kontakt.html"] .contact-form-wrap{
+  row-gap:18px !important;
+}
+body[data-page="kontakt.html"] .contact-intro-simple{
+  max-width:760px !important;
+  margin:0 auto 10px !important;
+  text-align:center !important;
+  display:grid;
+  justify-items:center;
+  gap:10px;
+}
+body[data-page="kontakt.html"] .contact-intro-simple h1{
+  margin:0 !important;
+  max-width:18ch !important;
+  font-size:clamp(2.35rem,4.8vw,4.05rem) !important;
+  line-height:1.02 !important;
+  letter-spacing:-.055em !important;
+  color:var(--heading);
+}
+body[data-page="kontakt.html"] .contact-intro-simple p{
+  margin:0 auto !important;
+  max-width:62ch !important;
+  text-align:center !important;
+}
+body[data-page="kontakt.html"] [data-callback-choice-note]{
+  display:none !important;
+}
+@media (max-width:760px){
+  body[data-page="kontakt.html"] main > .kontakt-form-section{
+    padding-top:30px !important;
+  }
+  body[data-page="kontakt.html"] .contact-intro-simple{
+    margin-bottom:6px !important;
+  }
+  body[data-page="kontakt.html"] .contact-intro-simple h1{
+    max-width:12ch !important;
+    font-size:clamp(2.05rem,10vw,3rem) !important;
+  }
+}
