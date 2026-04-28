@@ -1783,6 +1783,36 @@
   }
 
 
+  const alignExampleHashTarget = () => {
+    if (body.dataset.page !== 'beispiele.html' || !window.location.hash) return;
+    let target = null;
+    try {
+      target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+    } catch (error) {
+      target = null;
+    }
+    if (!target || !target.matches('[data-example-card], .flow-demo-card, .solution-example-card')) return;
+    window.setTimeout(() => {
+      scrollTargetIntoView(target, {
+        block: 'start',
+        force: true,
+        padding: isMobileViewport() ? 18 : 34,
+        instant: true
+      });
+    }, 80);
+    window.setTimeout(() => {
+      scrollTargetIntoView(target, {
+        block: 'start',
+        force: true,
+        padding: isMobileViewport() ? 18 : 34
+      });
+    }, 320);
+  };
+
+  alignExampleHashTarget();
+  window.addEventListener('hashchange', alignExampleHashTarget);
+
+
   const initLeistungenNetwork = () => {
     const root = document.querySelector('[data-logo-network="leistungen"]');
     if (!root) return;
