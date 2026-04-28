@@ -3,7 +3,25 @@ const DEFAULT_CHAT_RATE_LIMIT_WINDOW_SECONDS = 60;
 const DEFAULT_CHAT_RATE_LIMIT_MAX_REQUESTS = 8;
 const DEFAULT_CHAT_MODEL = 'gpt-4.1-mini';
 
-const CHAT_FALLBACK_MESSAGE = 'Dazu kann ich hier keine verlässliche Antwort geben. Der Assistent ist auf allgemeine Fragen zur Webseite und auf digitale Abläufe, Automatisierung, interne Tools, Formulare, PDFs, OCR, Workflows, Schnittstellen und Prozessoptimierung begrenzt. Wenn es um einen konkreten Ablauf in deinem Unternehmen geht, beschreibe ihn bitte kurz im Kontaktformular: kontakt.html#kontaktformular';
+const CHAT_FALLBACK_MESSAGE = 'Dazu kann ich hier keine verlässliche Antwort geben. Der Assistent ist auf allgemeine Fragen zur Webseite und auf digitale Abläufe, Automatisierung, interne Tools, Formulare, PDFs, OCR, Workflows, Schnittstellen und Prozessoptimierung begrenzt. Wenn es um einen konkreten Ablauf in deinem Unternehmen geht, beschreibe ihn bitte kurz über das Kontaktformular.';
+
+const CHAT_SITE_LINKS = {
+  'index.html#hero': 'Startseite öffnen',
+  'index.html#faq': 'FAQ ansehen',
+  'index.html#workflow-check': 'Schnellcheck öffnen',
+  'leistungen.html#leistungen-ueberblick': 'Leistungen ansehen',
+  'leistungen.html#apps': 'Interne Apps ansehen',
+  'leistungen.html#automatisierung': 'Workflow-Automatisierung ansehen',
+  'leistungen.html#ocr': 'OCR & Dokumente ansehen',
+  'leistungen.html#pdf': 'PDF-Erstellung ansehen',
+  'leistungen.html#schnittstellen': 'Schnittstellen ansehen',
+  'leistungen.html#analyse': 'Analyse & Planung ansehen',
+  'beispiele.html#animierte-ablaeufe': 'Praxisbeispiele ansehen',
+  'beispiele.html#beispiel-schluesseldienst-app': 'Schlüsseldienst-Beispiel ansehen',
+  'einsatzbereiche.html#einsatz-ueberblick': 'Einsatzbereiche ansehen',
+  'ueber-mich.html#arbeitsweise': 'Arbeitsweise ansehen',
+  'kontakt.html#kontaktformular': 'Kontaktformular öffnen'
+};
 
 const CHAT_WEBSITE_CONTEXT = `
 Wichtige Seiten und erlaubte Links der Webseite:
@@ -66,7 +84,7 @@ Antwortregeln:
 - Wenn du unsicher bist, sage das klar und verweise auf kontakt.html#kontaktformular.
 - Keine erfundenen Details.
 - Keine HTML-Ausgabe, kein Markdown mit Tabellen.
-- Wenn es zur Antwort passt, füge am Ende „Siehe auch:“ mit 1 bis 3 passenden Links aus der folgenden Website-Liste hinzu. Nutze nur exakt diese Linkpfade und erfinde keine anderen Anker.
+- Wenn es zur Antwort passt, füge am Ende einen Abschnitt „Siehe auch:“ mit 1 bis 3 passenden Linkpfaden aus der folgenden Website-Liste hinzu. Nutze nur exakt diese Linkpfade und erfinde keine anderen Anker. Die Webseite stellt diese Links später als Buttons dar.
 
 ${CHAT_WEBSITE_CONTEXT}`;
 
@@ -140,7 +158,7 @@ async function handleChatRequest(request, env, ctx) {
   }
 
   if (!isAllowedChatTopic(messages)) {
-    return json({ ok: true, reply: CHAT_FALLBACK_MESSAGE, limited: true }, 200, headers);
+    return json({ ok: true, reply: CHAT_FALLBACK_MESSAGE, links: getChatLinks(['kontakt.html#kontaktformular']), limited: true }, 200, headers);
   }
 
   const rateLimitResponse = await checkChatRateLimit(request, env, headers);
@@ -183,18 +201,20 @@ async function handleChatRequest(request, env, ctx) {
     return json({ ok: false, message: 'Die Antwort des Assistenten konnte nicht verarbeitet werden.' }, 502, headers);
   }
 
-  const reply = cleanAiReply(extractOpenAiText(result));
+  const rawReply = cleanAiReply(extractOpenAiText(result));
+  const links = extractRecommendedLinks(rawReply);
+  const reply = stripRecommendedLinkSection(rawReply);
 
   if (!reply) {
-    return json({ ok: true, reply: CHAT_FALLBACK_MESSAGE, limited: true }, 200, headers);
+    return json({ ok: true, reply: CHAT_FALLBACK_MESSAGE, links: getChatLinks(['kontakt.html#kontaktformular']), limited: true }, 200, headers);
   }
 
-  const chatRecord = buildChatRecord(request, messages, reply);
+  const chatRecord = buildChatRecord(request, messages, reply, links);
   if (env.N8N_CHAT_WEBHOOK_URL && ctx?.waitUntil) {
     ctx.waitUntil(sendChatToN8N(chatRecord, env.N8N_CHAT_WEBHOOK_URL, env.N8N_CHAT_SECRET).catch(() => {}));
   }
 
-  return json({ ok: true, reply }, 200, headers);
+  return json({ ok: true, reply, links }, 200, headers);
 }
 
 function normalizeChatMessages(messages) {
@@ -274,7 +294,51 @@ function cleanAiReply(value) {
     .trim();
 }
 
-function buildChatRecord(request, messages, reply) {
+function normalizeChatLink(value) {
+  const raw = clean(value, 260).replace(/[).,;:!?]+$/, '');
+  if (CHAT_SITE_LINKS[raw]) return raw;
+
+  try {
+    const url = new URL(raw, 'https://deppmeyer-workflow-solutions.pages.dev');
+    const href = `${url.pathname.replace(/^\//, '')}${url.hash}`;
+    return CHAT_SITE_LINKS[href] ? href : '';
+  } catch {
+    return '';
+  }
+}
+
+function getChatLinks(values) {
+  const seen = new Set();
+  return values
+    .map(normalizeChatLink)
+    .filter((href) => {
+      if (!href || seen.has(href)) return false;
+      seen.add(href);
+      return true;
+    })
+    .slice(0, 3)
+    .map((href) => ({ href, label: CHAT_SITE_LINKS[href] }));
+}
+
+function extractRecommendedLinks(reply) {
+  const matches = String(reply || '').match(/(?:[\w-]+\.html(?:#[\w-]+)?|https?:\/\/[^\s)]+|\/[\w-]+\.html(?:#[\w-]+)?)/g) || [];
+  return getChatLinks(matches);
+}
+
+function stripRecommendedLinkSection(reply) {
+  let cleaned = String(reply || '').replace(/(?:\n|^)[ \t]*(?:siehe auch|passende seiten|mehr dazu|links?)\s*:\s*[\s\S]*$/i, '');
+
+  for (const href of Object.keys(CHAT_SITE_LINKS)) {
+    const escaped = href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    cleaned = cleaned.replace(new RegExp(`(?:https?:\\/\\/[^\\s]+\\/)?${escaped}`, 'gi'), '');
+  }
+
+  return cleanMultiline(cleaned, 1800)
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function buildChatRecord(request, messages, reply, links = []) {
   return {
     id: `chat:${new Date().toISOString()}:${crypto.randomUUID()}`,
     submittedAt: new Date().toISOString(),
@@ -283,7 +347,8 @@ function buildChatRecord(request, messages, reply) {
     origin: request.headers.get('Origin') || '',
     source: 'website-chat-assistant',
     messages,
-    reply
+    reply,
+    links
   };
 }
 
