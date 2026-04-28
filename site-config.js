@@ -11,5 +11,7 @@ window.siteConfig = {
   legalName: "Max Deppmeyer",
   street: "[Straße und Hausnummer ergänzen]",
   cityZip: "[PLZ und Ort ergänzen]",
-  domain: "https://deine-domain.de"
+  domain: "https://deine-domain.de",
+  // Optional: Cloudflare Turnstile Site Key für das Kontaktformular. Leer lassen, bis Turnstile in Cloudflare eingerichtet ist.
+  turnstileSiteKey: ""
 };

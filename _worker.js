@@ -2,6 +2,17 @@ const DEFAULT_CONTACT_TTL_SECONDS = 60 * 60 * 24 * 90;
 const DEFAULT_CHAT_RATE_LIMIT_WINDOW_SECONDS = 60;
 const DEFAULT_CHAT_RATE_LIMIT_MAX_REQUESTS = 8;
 const DEFAULT_CHAT_MODEL = 'gpt-4.1-mini';
+const DEFAULT_CONTACT_MAX_BODY_BYTES = 25 * 1024;
+const DEFAULT_CHAT_MAX_BODY_BYTES = 15 * 1024;
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), interest-cohort=()',
+  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self'; upgrade-insecure-requests"
+};
 
 const CHAT_FALLBACK_MESSAGE = 'Dazu kann ich hier keine sichere Einschätzung geben. Wenn es um eine digitale Lösung, Webseite, App, Automatisierung, PDF, OCR, Schnittstelle oder einen konkreten Ablauf geht, beschreibe den Bedarf bitte kurz über das Kontaktformular.';
 
@@ -109,26 +120,54 @@ export default {
 
     if (url.pathname === '/api/chat') {
       if (request.method === 'OPTIONS') {
-        return handleOptions(request, env);
+        return handleOptions(request, env, 'chat');
       }
 
       if (request.method === 'POST') {
         return handleChatRequest(request, env, ctx);
       }
 
-      return json({ ok: false, message: 'Methode nicht erlaubt.' }, 405, corsHeaders(request, env));
+      return json({ ok: false, message: 'Methode nicht erlaubt.' }, 405, corsHeaders(request, env, 'chat'));
     }
 
-    if (request.method === 'POST' && url.pathname === '/api/contact') {
-      return handleContactSubmission(request, env);
+    if (url.pathname === '/api/contact') {
+      if (request.method === 'OPTIONS') {
+        return handleOptions(request, env, 'contact');
+      }
+
+      if (request.method === 'POST') {
+        return handleContactSubmission(request, env);
+      }
+
+      return json({ ok: false, message: 'Methode nicht erlaubt.' }, 405, corsHeaders(request, env, 'contact'));
     }
 
-    return env.ASSETS.fetch(request);
+    const response = await env.ASSETS.fetch(request);
+    return withSecurityHeaders(response, request);
   }
 };
 
+
+function withSecurityHeaders(response, request) {
+  const next = new Response(response.body, response);
+  Object.entries(SECURITY_HEADERS).forEach(([key, value]) => next.headers.set(key, value));
+
+  const url = new URL(request.url);
+  if (url.protocol === 'https:') {
+    next.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+
+  return next;
+}
+
 async function handleChatRequest(request, env, ctx) {
-  const headers = corsHeaders(request, env);
+  const headers = corsHeaders(request, env, 'chat');
+
+  const originError = validateApiOrigin(request, env, 'chat');
+  if (originError) return json({ ok: false, message: originError }, 403, headers);
+
+  const sizeError = validateRequestSize(request, parsePositiveInteger(env.CHAT_MAX_BODY_BYTES, DEFAULT_CHAT_MAX_BODY_BYTES));
+  if (sizeError) return json({ ok: false, message: sizeError }, 413, headers);
 
   if (!env.OPENAI_API_KEY) {
     return json({ ok: false, message: 'Der Chat-Assistent ist noch nicht vollständig eingerichtet.' }, 500, headers);
@@ -440,15 +479,27 @@ async function sendChatToN8N(record, webhookUrl, secret) {
 }
 
 async function handleContactSubmission(request, env) {
+  const headers = corsHeaders(request, env, 'contact');
+
+  const originError = validateApiOrigin(request, env, 'contact');
+  if (originError) return json({ ok: false, message: originError }, 403, headers);
+
+  const sizeError = validateRequestSize(request, parsePositiveInteger(env.CONTACT_MAX_BODY_BYTES, DEFAULT_CONTACT_MAX_BODY_BYTES));
+  if (sizeError) return json({ ok: false, message: sizeError }, 413, headers);
+
   if (!env.CONTACT_FORMS) {
-    return json({ ok: false, message: 'Das Kontaktformular ist noch nicht vollständig eingerichtet.' }, 500);
+    return json({ ok: false, message: 'Das Kontaktformular ist noch nicht vollständig eingerichtet.' }, 500, headers);
+  }
+
+  if (!env.N8N_WEBHOOK_URL) {
+    return json({ ok: false, message: 'Das Kontaktformular ist noch nicht vollständig mit dem Anfrage-Workflow verbunden.' }, 500, headers);
   }
 
   let payload;
   try {
     payload = await request.json();
   } catch {
-    return json({ ok: false, message: 'Ungültige Anfrage.' }, 400);
+    return json({ ok: false, message: 'Ungültige Anfrage.' }, 400, headers);
   }
 
   const data = {
@@ -463,45 +514,51 @@ async function handleContactSubmission(request, env) {
     callbackRequested: payload.callbackRequested === true,
     consent: payload.consent === true,
     assessment: cleanMultiline(payload.assessment, 1500),
-    website: clean(payload.website, 200)
+    website: clean(payload.website, 200),
+    turnstileToken: clean(payload.turnstileToken, 2048)
   };
 
   // Honeypot: echte Nutzer sehen dieses Feld nicht.
   if (data.website) {
-    return json({ ok: true, message: 'Anfrage erfolgreich abgesendet.' }, 202);
+    return json({ ok: true, message: 'Anfrage erfolgreich abgesendet.' }, 202, headers);
+  }
+
+  const turnstileResult = await verifyTurnstile(data.turnstileToken, request, env);
+  if (!turnstileResult.ok) {
+    return json({ ok: false, message: turnstileResult.message }, 400, headers);
   }
 
   const allowedGenderValues = ['', 'male', 'female', 'other', 'diverse'];
   if (!allowedGenderValues.includes(data.gender)) {
-    return json({ ok: false, message: 'Bitte eine gültige Anrede auswählen.' }, 400);
+    return json({ ok: false, message: 'Bitte eine gültige Anrede auswählen.' }, 400, headers);
   }
 
   if (!data.firstName) {
-    return json({ ok: false, message: 'Bitte den Vornamen angeben.' }, 400);
+    return json({ ok: false, message: 'Bitte den Vornamen angeben.' }, 400, headers);
   }
 
   if (!data.name) {
-    return json({ ok: false, message: 'Bitte den Nachnamen angeben.' }, 400);
+    return json({ ok: false, message: 'Bitte den Nachnamen angeben.' }, 400, headers);
   }
 
   if (!isValidEmail(data.email)) {
-    return json({ ok: false, message: 'Bitte eine gültige E-Mail-Adresse eingeben.' }, 400);
+    return json({ ok: false, message: 'Bitte eine gültige E-Mail-Adresse eingeben.' }, 400, headers);
   }
 
   if (!data.topic) {
-    return json({ ok: false, message: 'Bitte ein Thema auswählen.' }, 400);
+    return json({ ok: false, message: 'Bitte ein Thema auswählen.' }, 400, headers);
   }
 
   if (!data.message || data.message.length < 20) {
-    return json({ ok: false, message: 'Bitte den Ablauf kurz mit mindestens 20 Zeichen beschreiben.' }, 400);
+    return json({ ok: false, message: 'Bitte den Ablauf kurz mit mindestens 20 Zeichen beschreiben.' }, 400, headers);
   }
 
   if (data.callbackRequested && !isValidPhone(data.phone)) {
-    return json({ ok: false, message: 'Bitte eine Telefonnummer für den Rückruf angeben.' }, 400);
+    return json({ ok: false, message: 'Bitte eine Telefonnummer für den Rückruf angeben.' }, 400, headers);
   }
 
   if (!data.consent) {
-    return json({ ok: false, message: 'Bitte die Datenschutzhinweise bestätigen.' }, 400);
+    return json({ ok: false, message: 'Bitte die Datenschutzhinweise bestätigen.' }, 400, headers);
   }
 
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
@@ -511,11 +568,12 @@ async function handleContactSubmission(request, env) {
   const lastSubmission = await env.CONTACT_FORMS.get(rateKey);
 
   if (lastSubmission && Date.now() - Number(lastSubmission) < 60000) {
-    return json({ ok: false, message: 'Bitte warten Sie einen Moment, bevor Sie eine weitere Anfrage senden.' }, 429);
+    return json({ ok: false, message: 'Bitte warten Sie einen Moment, bevor Sie eine weitere Anfrage senden.' }, 429, headers);
   }
 
   const submittedAt = new Date().toISOString();
   const entryId = `contact:${submittedAt}:${crypto.randomUUID()}`;
+  const { turnstileToken, website, ...safeData } = data;
   const record = {
     id: entryId,
     submittedAt,
@@ -523,7 +581,7 @@ async function handleContactSubmission(request, env) {
     userAgent,
     origin,
     source: 'website-contact-form',
-    ...data
+    ...safeData
   };
 
   await Promise.all([
@@ -531,26 +589,36 @@ async function handleContactSubmission(request, env) {
     env.CONTACT_FORMS.put(rateKey, String(Date.now()), { expirationTtl: 120 })
   ]);
 
-  const webhookUrl = env.N8N_WEBHOOK_URL || 'https://maxde.app.n8n.cloud/webhook/cloudflare-contact';
-
   try {
-    await sendToN8N(record, webhookUrl, env.N8N_CONTACT_SECRET);
+    await sendToN8N(record, env.N8N_WEBHOOK_URL, env.N8N_CONTACT_SECRET);
   } catch {
     return json(
       {
         ok: false,
         message: 'Anfrage wurde gespeichert, aber die Weiterleitung an den Workflow hat nicht funktioniert.'
       },
-      502
+      502,
+      headers
     );
   }
 
-  return json({ ok: true, message: 'Anfrage erfolgreich abgesendet.' }, 200);
+  return json({ ok: true, message: 'Anfrage erfolgreich abgesendet.' }, 200, headers);
 }
 
 async function sendToN8N(record, webhookUrl, secret) {
   if (!webhookUrl) {
     throw new Error('n8n webhook missing');
+  }
+
+  let url;
+  try {
+    url = new URL(webhookUrl);
+  } catch {
+    throw new Error('n8n webhook invalid');
+  }
+
+  if (url.protocol !== 'https:') {
+    throw new Error('n8n webhook must use https');
   }
 
   const headers = {
@@ -561,7 +629,7 @@ async function sendToN8N(record, webhookUrl, secret) {
     headers['X-Contact-Secret'] = secret;
   }
 
-  const response = await fetch(webhookUrl, {
+  const response = await fetch(url.toString(), {
     method: 'POST',
     headers,
     body: JSON.stringify(record)
@@ -573,26 +641,92 @@ async function sendToN8N(record, webhookUrl, secret) {
   }
 }
 
-function handleOptions(request, env) {
+function handleOptions(request, env, type = 'chat') {
   return new Response(null, {
     status: 204,
-    headers: corsHeaders(request, env)
+    headers: corsHeaders(request, env, type)
   });
 }
 
-function corsHeaders(request, env) {
+function corsHeaders(request, env, type = 'chat') {
   const origin = request.headers.get('Origin') || '';
   const requestHost = new URL(request.url).origin;
-  const allowedOrigin = clean(env.CHAT_ALLOWED_ORIGIN, 300) || requestHost;
-  const responseOrigin = origin && origin === allowedOrigin ? origin : requestHost;
+  const allowedOrigins = getAllowedOrigins(request, env, type);
+  const responseOrigin = origin && allowedOrigins.includes(origin) ? origin : requestHost;
 
   return {
     'Access-Control-Allow-Origin': responseOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, CF-Turnstile-Response',
     'Vary': 'Origin'
   };
 }
+
+function getAllowedOrigins(request, env, type = 'chat') {
+  const requestHost = new URL(request.url).origin;
+  const configured = type === 'contact'
+    ? (env.CONTACT_ALLOWED_ORIGIN || env.ALLOWED_ORIGIN || '')
+    : (env.CHAT_ALLOWED_ORIGIN || env.ALLOWED_ORIGIN || '');
+
+  const origins = String(configured || '')
+    .split(',')
+    .map((origin) => origin.trim().replace(/\/$/, ''))
+    .filter(Boolean);
+
+  if (!origins.includes(requestHost)) origins.push(requestHost);
+  return origins;
+}
+
+function validateApiOrigin(request, env, type = 'chat') {
+  const origin = request.headers.get('Origin') || '';
+  if (!origin) return '';
+  const normalizedOrigin = origin.replace(/\/$/, '');
+  const allowedOrigins = getAllowedOrigins(request, env, type);
+  return allowedOrigins.includes(normalizedOrigin) ? '' : 'Diese Anfrage kommt nicht von einer erlaubten Webseite.';
+}
+
+function validateRequestSize(request, maxBytes) {
+  const rawLength = request.headers.get('Content-Length');
+  if (!rawLength) return '';
+  const length = Number(rawLength);
+  if (!Number.isFinite(length)) return '';
+  return length > maxBytes ? 'Die Anfrage ist zu groß. Bitte kürze den Text.' : '';
+}
+
+async function verifyTurnstile(token, request, env) {
+  if (!env.TURNSTILE_SECRET_KEY) return { ok: true };
+
+  if (!token) {
+    return { ok: false, message: 'Bitte bestätige den Formularschutz und sende die Anfrage erneut.' };
+  }
+
+  const formData = new FormData();
+  formData.append('secret', env.TURNSTILE_SECRET_KEY);
+  formData.append('response', token);
+  const ip = request.headers.get('CF-Connecting-IP') || '';
+  if (ip) formData.append('remoteip', ip);
+
+  let verificationResponse;
+  try {
+    verificationResponse = await fetch(TURNSTILE_VERIFY_URL, {
+      method: 'POST',
+      body: formData
+    });
+  } catch {
+    return { ok: false, message: 'Der Formularschutz konnte gerade nicht geprüft werden. Bitte versuche es erneut.' };
+  }
+
+  if (!verificationResponse.ok) {
+    return { ok: false, message: 'Der Formularschutz konnte gerade nicht geprüft werden. Bitte versuche es erneut.' };
+  }
+
+  const result = await verificationResponse.json().catch(() => null);
+  return result?.success
+    ? { ok: true }
+    : { ok: false, message: 'Der Formularschutz wurde nicht bestätigt. Bitte versuche es erneut.' };
+}
+
+function clean
 
 function clean(value, maxLength = 500) {
   return String(value || '').trim().replace(/\s+/g, ' ').slice(0, maxLength);
@@ -625,6 +759,7 @@ function json(payload, status, extraHeaders = {}) {
   return new Response(JSON.stringify(payload), {
     status,
     headers: {
+      ...SECURITY_HEADERS,
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
       ...extraHeaders
