@@ -2330,6 +2330,13 @@
       contactLink.href = `kontakt.html?${params.toString()}#kontaktformular`;
     };
 
+    const closeAssistantFromLink = (target) => {
+      const link = target instanceof Element ? target.closest('a') : null;
+      if (!link) return;
+      if (!root.contains(link) || link.hasAttribute('data-chat-toggle') || link.hasAttribute('data-chat-close')) return;
+      setOpen(false);
+    };
+
     const renderConversation = () => {
       messagesBox.innerHTML = '';
       conversation.forEach((message) => addMessage(message.role, message.content, { save: false, links: message.links, scroll: 'none' }));
@@ -2404,6 +2411,9 @@
 
     toggleButton.addEventListener('click', () => setOpen(!root.classList.contains('is-open')));
     closeButton.addEventListener('click', () => setOpen(false));
+    panel.addEventListener('click', (event) => {
+      closeAssistantFromLink(event.target);
+    });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && root.classList.contains('is-open')) setOpen(false);
     });
