@@ -8081,3 +8081,72 @@ html body [tabindex]:focus-visible{
     animation:none !important;
   }
 }
+
+
+/* final fixes for current revision */
+body[data-page="index.html"] .faq-explorer .faq-search.search-shell{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  justify-items:center !important;
+  align-items:start !important;
+  gap:12px !important;
+  width:min(100%, 680px) !important;
+  max-width:680px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  overflow:visible !important;
+}
+body[data-page="index.html"] .faq-explorer .faq-search > input[data-faq-search]{
+  width:100% !important;
+  max-width:560px !important;
+  min-height:54px !important;
+  box-sizing:border-box !important;
+  flex:0 0 auto !important;
+  justify-self:center !important;
+}
+body[data-page="index.html"] .faq-explorer .faq-search > .faq-search-results{
+  position:static !important;
+  inset:auto !important;
+  width:min(100%, 860px) !important;
+  max-width:860px !important;
+  min-width:0 !important;
+  margin:2px auto 0 !important;
+  justify-self:center !important;
+  box-sizing:border-box !important;
+}
+body[data-page="index.html"] .faq-explorer.faq-search-mode .faq-search.search-shell{
+  width:min(100%, 860px) !important;
+  max-width:860px !important;
+}
+body[data-page="index.html"] .faq-explorer.faq-search-mode .faq-search > input[data-faq-search]{
+  max-width:560px !important;
+}
+body[data-page="beispiele.html"] [data-example-card],
+body[data-page="beispiele.html"] .flow-demo-card{
+  scroll-margin-top:calc(var(--topbar-offset, 96px) + 34px) !important;
+}
+body[data-page="kontakt.html"] .contact-form-wrap{
+  row-gap:26px !important;
+}
+body[data-page="kontakt.html"] .contact-intro{
+  margin-bottom:0 !important;
+}
+body[data-page="kontakt.html"] .contact-intro p{
+  margin-bottom:0 !important;
+}
+body[data-page="kontakt.html"] .contact-prefill{
+  margin-top:0 !important;
+  margin-bottom:22px !important;
+  position:relative !important;
+  z-index:1 !important;
+}
+@media (max-width:760px){
+  body[data-page="index.html"] .faq-explorer .faq-search.search-shell,
+  body[data-page="index.html"] .faq-explorer.faq-search-mode .faq-search.search-shell{
+    width:100% !important;
+    max-width:none !important;
+  }
+  body[data-page="index.html"] .faq-explorer .faq-search > input[data-faq-search]{
+    max-width:none !important;
+  }
+}
