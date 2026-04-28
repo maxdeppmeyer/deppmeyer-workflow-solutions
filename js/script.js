@@ -1891,12 +1891,166 @@
 
   initLeistungenNetwork();
 
+  const initSolutionFinder = () => {
+    const root = document.querySelector('[data-solution-finder]');
+    if (!root) return;
+
+    const data = {
+      excel: {
+        label: 'Excel-Listen',
+        title: 'Excel-Chaos wird zum Dashboard.',
+        copy: 'Daten werden einmal sauber erfasst, automatisch geprüft und als übersichtliche Ansicht nutzbar gemacht.',
+        bullets: ['Daten einmal erfassen', 'Regeln automatisch prüfen', 'Ergebnis als Übersicht nutzen'],
+        link: 'leistungen.html#apps',
+        linkText: 'Interne Apps ansehen'
+      },
+      email: {
+        label: 'E-Mails',
+        title: 'Aus Postfach-Chaos wird ein klarer Workflow.',
+        copy: 'Wiederkehrende Anfragen können erkannt, sortiert und für die nächste Reaktion vorbereitet werden.',
+        bullets: ['Anfrage erkennen', 'Priorität oder Thema setzen', 'Antwort oder Aufgabe vorbereiten'],
+        link: 'leistungen.html#automatisierung',
+        linkText: 'Workflows ansehen'
+      },
+      forms: {
+        label: 'Formulare',
+        title: 'Aus losen Angaben wird strukturierte Datenerfassung.',
+        copy: 'Formulare sammeln die wichtigen Informationen direkt richtig ein und geben sie an den nächsten Schritt weiter.',
+        bullets: ['Pflichtdaten abfragen', 'Fehler reduzieren', 'Daten weiterleiten'],
+        link: 'leistungen.html#apps',
+        linkText: 'Formularlösungen ansehen'
+      },
+      pdf: {
+        label: 'PDFs/Rechnungen',
+        title: 'Aus Eingaben entstehen automatisch fertige Dokumente.',
+        copy: 'Rechnungen, Angebote oder Nachweise können aus vorhandenen Daten vorbereitet und als PDF erzeugt werden.',
+        bullets: ['Daten übernehmen', 'Vorlage befüllen', 'PDF bereitstellen'],
+        link: 'leistungen.html#pdf',
+        linkText: 'PDF-Erstellung ansehen'
+      },
+      web: {
+        label: 'Webseite',
+        title: 'Aus einer Webseite wird ein geschäftlicher Prozess.',
+        copy: 'Wenn eine Webseite nicht nur informieren, sondern Anfragen, Formulare oder Abläufe auslösen soll, kann eine digitale Lösung geprüft werden.',
+        bullets: ['Ziel klären', 'Formular oder Ablauf einbinden', 'Anfrage strukturiert weitergeben'],
+        link: 'leistungen.html#apps',
+        linkText: 'Webbasierte Lösungen ansehen'
+      },
+      internal: {
+        label: 'Interne Abläufe',
+        title: 'Aus Übergaben wird ein nachvollziehbarer Prozess.',
+        copy: 'Status, Zuständigkeiten und nächste Schritte werden sichtbar, statt in Nachrichten oder Notizen verloren zu gehen.',
+        bullets: ['Status festlegen', 'Team informieren', 'Aufgaben nachvollziehbar machen'],
+        link: 'beispiele.html#animierte-ablaeufe',
+        linkText: 'Beispiele ansehen'
+      }
+    };
+
+    const chips = [...root.querySelectorAll('[data-finder-key]')];
+    const label = root.querySelector('[data-finder-label]');
+    const title = root.querySelector('[data-finder-title]');
+    const copy = root.querySelector('[data-finder-copy]');
+    const bullets = root.querySelector('[data-finder-bullets]');
+    const link = root.querySelector('[data-finder-link]');
+
+    const render = (key) => {
+      const item = data[key] || data.excel;
+      chips.forEach((chip) => chip.classList.toggle('is-active', chip.dataset.finderKey === key));
+      if (label) label.textContent = item.label;
+      if (title) title.textContent = item.title;
+      if (copy) copy.textContent = item.copy;
+      if (bullets) {
+        bullets.innerHTML = '';
+        item.bullets.forEach((text) => {
+          const li = document.createElement('li');
+          li.textContent = text;
+          bullets.appendChild(li);
+        });
+      }
+      if (link) {
+        link.href = item.link;
+        link.textContent = item.linkText;
+      }
+    };
+
+    chips.forEach((chip) => chip.addEventListener('click', () => render(chip.dataset.finderKey)));
+  };
+
+  initSolutionFinder();
+
+  const initContactConfigurator = () => {
+    const root = document.querySelector('[data-contact-configurator]');
+    if (!root) return;
+
+    const map = {
+      app: {
+        topic: 'Individuelle App / internes Tool',
+        prefix: 'Ich möchte prüfen lassen, ob eine App oder ein internes Tool sinnvoll ist.',
+        example: 'Aktuell werden Daten mehrfach erfasst oder intern per Nachricht weitergegeben.'
+      },
+      workflow: {
+        topic: 'Workflow-Automatisierung',
+        prefix: 'Ich möchte prüfen lassen, ob ein Workflow automatisiert werden kann.',
+        example: 'Aktuell werden E-Mails, Statusmeldungen oder Aufgaben manuell sortiert und weitergegeben.'
+      },
+      pdf: {
+        topic: 'Rechnung / Angebot / PDF-Erstellung',
+        prefix: 'Ich möchte prüfen lassen, ob Rechnungen, Angebote oder PDFs automatisch erstellt werden können.',
+        example: 'Aktuell werden Daten erst gesammelt und später manuell in Vorlagen übertragen.'
+      },
+      ocr: {
+        topic: 'OCR / Dokumentenerfassung',
+        prefix: 'Ich möchte prüfen lassen, ob Daten aus Dokumenten oder Fotos automatisch erkannt werden können.',
+        example: 'Aktuell werden Informationen aus Dokumenten manuell abgetippt oder kopiert.'
+      },
+      website: {
+        topic: 'Kontaktformular / Kundenanfragen',
+        prefix: 'Ich möchte prüfen lassen, ob eine Webseite, Landingpage oder ein Formular mit einem digitalen Ablauf verbunden werden kann.',
+        example: 'Aktuell sollen Anfragen über die Webseite strukturierter erfasst und weiterverarbeitet werden.'
+      }
+    };
+
+    let activeKey = 'app';
+    const chips = [...root.querySelectorAll('[data-config-topic]')];
+    const configText = root.querySelector('[data-contact-config-text]');
+    const insertButton = root.querySelector('[data-contact-config-insert]');
+    const topicField = document.querySelector('#topic');
+    const messageField = document.querySelector('#message');
+    const form = document.querySelector('[data-contact-form]');
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        activeKey = chip.dataset.configTopic || 'app';
+        chips.forEach((item) => item.classList.toggle('is-active', item === chip));
+      });
+    });
+
+    insertButton?.addEventListener('click', () => {
+      const item = map[activeKey] || map.app;
+      const detail = String(configText?.value || '').trim() || item.example;
+      if (topicField) {
+        const option = [...topicField.options].find((entry) => entry.textContent.trim() === item.topic);
+        if (option) topicField.value = option.value || option.textContent;
+        topicField.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      if (messageField) {
+        const text = `${item.prefix}\n\nAktueller Ablauf:\n${detail}`;
+        messageField.value = messageField.value.trim() ? `${messageField.value.trim()}\n\n${text}` : text;
+        messageField.dispatchEvent(new Event('input', { bubbles: true }));
+        messageField.focus();
+      }
+      form?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    });
+  };
+
+  initContactConfigurator();
+
   const initChatAssistant = () => {
     if (document.querySelector('[data-chat-assistant]')) return;
 
     const storageKey = 'deppmeyerChatAssistantConversationV2';
     const openStorageKey = 'deppmeyerChatAssistantOpenV2';
-    const greeting = 'Hallo, ich bin dein KI-Assistent für digitale Abläufe. Ich beantworte Fragen zur Webseite und kann grob einschätzen, welche Lösung zu deinem manuellen Prozess passen könnte.';
+    const greeting = 'Hallo, ich bin dein Ablauf-Assistent. Ich beantworte kurze Fragen zur Webseite und kann grob einschätzen, welche digitale Lösung zu deinem Ablauf passen könnte.';
     const linkLabels = {
       'index.html#hero': 'Startseite öffnen',
       'index.html#faq': 'FAQ ansehen',
@@ -1927,7 +2081,7 @@
       <div class="chat-assistant-panel" id="chat-assistant-panel" data-chat-panel hidden>
         <div class="chat-assistant-head">
           <div>
-            <span class="chat-assistant-kicker">KI-Assistent</span>
+            <span class="chat-assistant-kicker">Ablauf-Assistent</span>
             <h2>Wie kann ich dir helfen?</h2>
           </div>
           <button class="chat-assistant-close" data-chat-close type="button" aria-label="Assistent schließen">×</button>
@@ -2073,7 +2227,13 @@
       bubble.appendChild(group);
     };
 
-    const addMessage = (role, text, { save = true, links = [] } = {}) => {
+    const scrollMessageToTop = (bubble, behavior = 'smooth') => {
+      if (!bubble) return;
+      const top = Math.max(0, bubble.offsetTop - 10);
+      messagesBox.scrollTo({ top, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : behavior });
+    };
+
+    const addMessage = (role, text, { save = true, links = [], scroll = 'bottom' } = {}) => {
       const linkCards = role === 'assistant' ? uniqueLinks(links.length ? links : extractLinksFromText(text)) : [];
       const displayText = role === 'assistant' ? stripLinkReferences(text) : String(text || '').trim();
       const bubble = document.createElement('div');
@@ -2086,7 +2246,8 @@
       bubble.append(label, content);
       addLinkCards(bubble, linkCards);
       messagesBox.appendChild(bubble);
-      messagesBox.scrollTop = messagesBox.scrollHeight;
+      if (scroll === 'bottom') messagesBox.scrollTop = messagesBox.scrollHeight;
+      if (scroll === 'top') requestAnimationFrame(() => scrollMessageToTop(bubble));
       if (save) saveConversation();
       return bubble;
     };
@@ -2098,7 +2259,6 @@
       typingBubble.setAttribute('aria-label', 'Assistent schreibt');
       typingBubble.innerHTML = '<span class="chat-message-label">Assistent</span><div class="chat-typing-dots" aria-hidden="true"><span></span><span></span><span></span></div>';
       messagesBox.appendChild(typingBubble);
-      messagesBox.scrollTop = messagesBox.scrollHeight;
     };
 
     const hideTyping = () => {
@@ -2125,7 +2285,8 @@
 
     const renderConversation = () => {
       messagesBox.innerHTML = '';
-      conversation.forEach((message) => addMessage(message.role, message.content, { save: false, links: message.links }));
+      conversation.forEach((message) => addMessage(message.role, message.content, { save: false, links: message.links, scroll: 'none' }));
+      messagesBox.scrollTop = messagesBox.scrollHeight;
       updateContactHref();
     };
 
@@ -2139,9 +2300,10 @@
       sendButton.classList.add('is-disabled');
       setStatus('Assistent denkt nach ...', 'loading');
       conversation.push({ role: 'user', content: userText, links: [] });
-      addMessage('user', userText);
+      const userBubble = addMessage('user', userText, { scroll: 'top' });
       updateContactHref();
       showTyping();
+      requestAnimationFrame(() => scrollMessageToTop(userBubble));
 
       try {
         const response = await fetch('/api/chat', {
@@ -2165,14 +2327,16 @@
         hideTyping();
         const assistantMessage = { role: 'assistant', content: stripLinkReferences(reply), links };
         conversation.push(assistantMessage);
-        addMessage('assistant', assistantMessage.content, { links });
+        addMessage('assistant', assistantMessage.content, { links, scroll: 'none' });
+        requestAnimationFrame(() => scrollMessageToTop(userBubble, 'auto'));
         setStatus(result.limited ? 'Bei konkreten Abläufen hilft das Kontaktformular weiter.' : 'Du kannst jederzeit nachfragen.', result.limited ? 'limited' : 'ready');
       } catch (error) {
         const fallback = 'Der Assistent ist gerade nicht erreichbar. Bitte nutze alternativ das Kontaktformular.';
         const fallbackLinks = uniqueLinks(['kontakt.html#kontaktformular']);
         hideTyping();
         conversation.push({ role: 'assistant', content: fallback, links: fallbackLinks });
-        addMessage('assistant', fallback, { links: fallbackLinks });
+        addMessage('assistant', fallback, { links: fallbackLinks, scroll: 'none' });
+        requestAnimationFrame(() => scrollMessageToTop(userBubble, 'auto'));
         setStatus('Verbindung fehlgeschlagen.', 'error');
       } finally {
         isSending = false;
