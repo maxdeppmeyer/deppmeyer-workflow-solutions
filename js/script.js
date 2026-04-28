@@ -1687,6 +1687,19 @@
         submitButton.classList.toggle('is-disabled', !canProceed);
       }
     };
+
+    const applyChatAssistantPrefill = () => {
+      const params = new URLSearchParams(window.location.search);
+      const chatText = String(params.get('chat') || '').trim().slice(0, 1200);
+      if (!chatText || !messageField) return;
+      const nextMessage = `Vorbereitung durch den Ablauf-Assistenten:\n\n${chatText}`;
+      if (!String(messageField.value || '').trim()) messageField.value = nextMessage;
+      if (topicField && !String(topicField.value || '').trim()) topicField.value = 'Ich bin mir noch nicht sicher';
+      setResponseNote('Die Zusammenfassung aus dem Ablauf-Assistenten wurde in die Beschreibung übernommen. Du kannst sie vor dem Absenden noch anpassen.');
+    };
+
+    applyChatAssistantPrefill();
+
     contactForm.addEventListener('input', () => {
       shouldRevealValidationHint = true;
       if (!isSubmitting) updateSummary();
@@ -1877,6 +1890,172 @@
   };
 
   initLeistungenNetwork();
+
+  const initChatAssistant = () => {
+    const blockedPages = new Set(['impressum.html', 'datenschutz.html', '404.html']);
+    if (blockedPages.has(body.dataset.page || '') || document.querySelector('[data-chat-assistant]')) return;
+
+    const root = document.createElement('section');
+    root.className = 'chat-assistant';
+    root.setAttribute('data-chat-assistant', '');
+    root.setAttribute('aria-label', 'KI-Assistent für digitale Abläufe');
+    root.innerHTML = `
+      <button class="chat-assistant-toggle" data-chat-toggle type="button" aria-expanded="false" aria-controls="chat-assistant-panel">
+        <span class="chat-toggle-icon" aria-hidden="true">✦</span>
+        <span class="chat-toggle-text">Ablauf-Assistent</span>
+      </button>
+      <div class="chat-assistant-panel" id="chat-assistant-panel" data-chat-panel hidden>
+        <div class="chat-assistant-head">
+          <div>
+            <span class="chat-assistant-kicker">KI-Assistent</span>
+            <h2>Frag nach einem groben Lösungsweg.</h2>
+          </div>
+          <button class="chat-assistant-close" data-chat-close type="button" aria-label="Assistent schließen">×</button>
+        </div>
+        <p class="chat-assistant-note">Begrenzt auf Automatisierung, Workflows, Apps, OCR, PDFs, Formulare, Dashboards und Prozessoptimierung.</p>
+        <div class="chat-assistant-messages" data-chat-messages aria-live="polite"></div>
+        <div class="chat-assistant-prompts" aria-label="Beispielfragen">
+          <button type="button" data-chat-prompt="Wir bekommen viele Anfragen per E-Mail und tragen Daten danach manuell in Excel ein. Welcher Lösungsweg wäre grob sinnvoll?">E-Mail → Excel</button>
+          <button type="button" data-chat-prompt="Wir erstellen Angebote oder PDFs aktuell manuell aus vorhandenen Daten. Wie könnte man das vereinfachen?">PDFs automatisch</button>
+          <button type="button" data-chat-prompt="Wir erfassen Informationen aus Dokumenten oder Fotos manuell. Wäre OCR dafür sinnvoll?">OCR prüfen</button>
+          <button type="button" data-chat-prompt="Wir brauchen ein kleines internes Tool für wiederkehrende Abläufe. Was wäre ein sinnvoller erster Schritt?">Internes Tool</button>
+        </div>
+        <form class="chat-assistant-form" data-chat-form>
+          <textarea data-chat-input aria-label="Frage an den Ablauf-Assistenten" maxlength="900" rows="3" placeholder="Beschreibe kurz deinen Ablauf, z. B. was aktuell manuell passiert."></textarea>
+          <div class="chat-assistant-actions">
+            <span class="chat-assistant-status" data-chat-status>Keine verbindliche Beratung – nur eine erste Orientierung.</span>
+            <button class="btn btn-small" data-chat-send type="submit">Frage senden</button>
+          </div>
+        </form>
+        <div class="chat-assistant-footer">
+          <a class="chat-contact-link" data-chat-contact href="kontakt.html#kontaktformular">Ablauf ins Kontaktformular übernehmen</a>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(root);
+
+    const toggleButton = root.querySelector('[data-chat-toggle]');
+    const panel = root.querySelector('[data-chat-panel]');
+    const closeButton = root.querySelector('[data-chat-close]');
+    const messagesBox = root.querySelector('[data-chat-messages]');
+    const form = root.querySelector('[data-chat-form]');
+    const input = root.querySelector('[data-chat-input]');
+    const status = root.querySelector('[data-chat-status]');
+    const sendButton = root.querySelector('[data-chat-send]');
+    const contactLink = root.querySelector('[data-chat-contact]');
+    const conversation = [];
+    let isSending = false;
+
+    const setOpen = (nextOpen) => {
+      root.classList.toggle('is-open', nextOpen);
+      toggleButton.setAttribute('aria-expanded', String(nextOpen));
+      panel.hidden = !nextOpen;
+      if (nextOpen) window.setTimeout(() => input.focus(), 80);
+    };
+
+    const setStatus = (text, state = '') => {
+      status.textContent = text;
+      status.dataset.state = state;
+    };
+
+    const addMessage = (role, text) => {
+      const bubble = document.createElement('div');
+      bubble.className = `chat-message chat-message--${role}`;
+      const label = document.createElement('span');
+      label.className = 'chat-message-label';
+      label.textContent = role === 'user' ? 'Du' : 'Assistent';
+      const content = document.createElement('p');
+      content.textContent = text;
+      bubble.append(label, content);
+      messagesBox.appendChild(bubble);
+      messagesBox.scrollTop = messagesBox.scrollHeight;
+    };
+
+    const buildContactText = () => {
+      const userMessages = conversation.filter((message) => message.role === 'user').map((message) => message.content).slice(-3);
+      const lastReply = [...conversation].reverse().find((message) => message.role === 'assistant')?.content || '';
+      const parts = [];
+      if (userMessages.length) parts.push(`Beschriebener Ablauf:\n${userMessages.join('\n\n')}`);
+      if (lastReply) parts.push(`Erste grobe Einschätzung des Assistenten:\n${lastReply}`);
+      return (parts.join('\n\n') || 'Ich möchte einen manuellen Ablauf prüfen lassen.').slice(0, 1200);
+    };
+
+    const updateContactHref = () => {
+      const params = new URLSearchParams();
+      params.set('chat', buildContactText());
+      contactLink.href = `kontakt.html?${params.toString()}#kontaktformular`;
+    };
+
+    const sendMessage = async (text) => {
+      const userText = String(text || '').trim();
+      if (userText.length < 3 || isSending) return;
+      isSending = true;
+      input.value = '';
+      input.style.height = '';
+      sendButton.disabled = true;
+      sendButton.classList.add('is-disabled');
+      setStatus('Antwort wird erstellt...', 'loading');
+      conversation.push({ role: 'user', content: userText });
+      addMessage('user', userText);
+      updateContactHref();
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({ messages: conversation.slice(-8) })
+        });
+        const result = await response.json().catch(() => ({}));
+        const reply = result.reply || result.message || 'Der Assistent konnte gerade keine Antwort erstellen. Bitte nutze alternativ das Kontaktformular.';
+        conversation.push({ role: 'assistant', content: reply });
+        addMessage('assistant', reply);
+        setStatus(result.limited ? 'Thema begrenzt – bei konkreten Abläufen bitte Kontaktformular nutzen.' : 'Du kannst nachfragen oder den Ablauf ins Kontaktformular übernehmen.', result.limited ? 'limited' : 'ready');
+      } catch (error) {
+        const fallback = 'Der Assistent ist gerade nicht erreichbar. Bitte nutze alternativ das Kontaktformular.';
+        conversation.push({ role: 'assistant', content: fallback });
+        addMessage('assistant', fallback);
+        setStatus('Verbindung fehlgeschlagen.', 'error');
+      } finally {
+        isSending = false;
+        sendButton.disabled = false;
+        sendButton.classList.remove('is-disabled');
+        updateContactHref();
+      }
+    };
+
+    addMessage('assistant', 'Hallo! Beschreibe kurz einen manuellen oder unübersichtlichen Ablauf. Ich schlage dir dann grob vor, ob eher App, Workflow, OCR, PDF-Automatisierung oder Schnittstelle sinnvoll wäre.');
+    updateContactHref();
+
+    toggleButton.addEventListener('click', () => setOpen(!root.classList.contains('is-open')));
+    closeButton.addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && root.classList.contains('is-open')) setOpen(false);
+    });
+
+    root.querySelectorAll('[data-chat-prompt]').forEach((button) => {
+      button.addEventListener('click', () => {
+        input.value = button.getAttribute('data-chat-prompt') || '';
+        input.focus();
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+    });
+
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = `${Math.min(input.scrollHeight, 160)}px`;
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      sendMessage(input.value);
+    });
+  };
+
+  initChatAssistant();
 
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth > 1024) {
     document.querySelectorAll('.card,.workflow-node,.problem-card,.service-card,.usage-card,.contact-card,.contact-form,.example-card,.timeline-card,.step-card,.dashboard-shell,.overview-card,.workflow-current,.cta-panel,.quote-box').forEach((el) => {
