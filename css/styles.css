@@ -9535,3 +9535,118 @@ body[data-theme="dark"] .turnstile-wrap{
   .turnstile-wrap{padding:14px;border-radius:18px}
   .turnstile-box{transform-origin:left center;max-width:100%;overflow:auto}
 }
+
+
+/* v027 - mobile/header/contact cleanup */
+body[data-page="kontakt.html"] .contact-prefill,
+body[data-page="kontakt.html"] .contact-summary-panel,
+body[data-page="kontakt.html"] .contact-summary,
+body[data-page="kontakt.html"] [data-contact-note],
+body[data-page="kontakt.html"] [data-contact-submit-hint]{
+  display:none !important;
+}
+body[data-page="kontakt.html"] .contact-response--solo{
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  gap:12px;
+  margin-top:20px;
+}
+body[data-page="kontakt.html"] .contact-response--solo .btn{
+  width:auto;
+  min-width:320px;
+}
+body[data-page="kontakt.html"] .turnstile-wrap{
+  margin-top:16px;
+}
+body[data-page="kontakt.html"] .form-grid{
+  align-items:start;
+}
+body[data-page="kontakt.html"] .form-grid > .field{
+  display:flex;
+  flex-direction:column;
+  align-self:stretch;
+}
+body[data-page="kontakt.html"] .form-grid > .field:not(.field-full){
+  min-height:132px;
+}
+body[data-page="kontakt.html"] .form-grid > .field .field-help{
+  display:block;
+  min-height:2.9em;
+  margin-top:10px;
+}
+body[data-page="kontakt.html"] .form-grid > .field.field-full{
+  min-height:0;
+}
+.header-search .search-input,
+.mobile-search .search-input{
+  padding-left:48px !important;
+  padding-right:14px !important;
+}
+.header-search .search-icon,
+.mobile-search .search-icon{
+  left:16px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:16px;
+  height:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
+  pointer-events:none;
+}
+@media (max-width:760px){
+  .topbar .nav{
+    grid-template-columns:minmax(0,1fr);
+    gap:14px;
+  }
+  .nav-actions{
+    width:100%;
+    min-width:0;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    gap:10px;
+    align-items:center;
+  }
+  .header-search{
+    width:100% !important;
+    min-width:0;
+    margin-left:0;
+  }
+  .header-search .search-input{
+    min-width:0;
+    width:100%;
+    font-size:16px;
+  }
+  .theme-toggle{
+    min-width:0;
+  }
+  .footer-grid{
+    grid-template-columns:1fr !important;
+    justify-items:center;
+    text-align:center;
+  }
+  .footer-box,
+  .footer-brand,
+  .footer-links,
+  .footer-links--legal{
+    justify-items:center;
+    justify-content:center;
+    text-align:center;
+    width:100%;
+  }
+  .footer-brand{
+    justify-content:center;
+  }
+  body[data-page="kontakt.html"] .contact-response--solo .btn{
+    width:100%;
+    min-width:0;
+  }
+  body[data-page="kontakt.html"] .form-grid{
+    grid-template-columns:1fr;
+  }
+  body[data-page="kontakt.html"] .form-grid > .field:not(.field-full){
+    min-height:0;
+  }
+}
