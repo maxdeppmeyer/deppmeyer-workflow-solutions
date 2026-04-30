@@ -9769,3 +9769,222 @@ body[data-page="kontakt.html"] .contact-intro--simple .eyebrow{
     gap:7px;
   }
 }
+
+/* v034 - Mobile: einheitlich zentriert und ohne Bewegungseffekte */
+@media (max-width:760px){
+  html,
+  body{
+    overflow-x:hidden !important;
+  }
+
+  *,
+  *::before,
+  *::after{
+    animation:none !important;
+    transition:none !important;
+    scroll-behavior:auto !important;
+  }
+
+  .cursor-glow,
+  .scroll-progress{
+    display:none !important;
+  }
+
+  .reveal,
+  .reveal.visible,
+  .tilt-ready,
+  .magnetic-ready,
+  .workflow-node.active,
+  .workflow-current,
+  .chat-assistant-panel{
+    opacity:1 !important;
+    transform:none !important;
+  }
+
+  main,
+  section,
+  .container,
+  .hero-copy,
+  .page-copy,
+  .section-head,
+  .section-head-centered,
+  .compact-center,
+  .contact-intro,
+  .contact-intro--simple,
+  .cta-panel,
+  .solution-final-cta,
+  .proof-section .section-head,
+  .problem-overview-section .section-head{
+    text-align:center !important;
+    justify-items:center !important;
+    align-items:center !important;
+  }
+
+  .hero-copy,
+  .page-copy,
+  .section-head,
+  .contact-intro,
+  .contact-intro--simple,
+  .cta-panel,
+  .solution-final-cta{
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  .lead,
+  .eyebrow,
+  .mini-label,
+  .section-head p,
+  .page-copy p,
+  .hero-copy p,
+  .contact-intro p,
+  .contact-intro--simple p,
+  .cta-panel p,
+  .solution-card p,
+  .overview-card p,
+  .service-card p,
+  .usage-card p,
+  .example-card p,
+  .flow-demo-copy p,
+  .flow-demo-copy h3,
+  .solution-outcome-card p,
+  .footer-copy{
+    text-align:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  .page-hero h1,
+  .hero-copy h1,
+  .contact-intro--simple h1,
+  .section-head h2,
+  .cta-panel h2{
+    max-width:11.5ch !important;
+  }
+
+  .lead,
+  .section-head p,
+  .page-copy p,
+  .hero-copy p,
+  .contact-intro p,
+  .contact-intro--simple p,
+  .cta-panel p{
+    max-width:34ch !important;
+  }
+
+  .btn-row,
+  .contact-points,
+  .tag-row,
+  .footer-links,
+  .centered-links,
+  .solution-card-grid,
+  .overview-grid,
+  .service-grid,
+  .usage-grid,
+  .problem-grid,
+  .compare-grid,
+  .value-grid,
+  .three-grid,
+  .benefit-grid,
+  .kicker-grid,
+  .hero-notes,
+  .metric-grid,
+  .example-meta,
+  .flow-demo-meta{
+    justify-items:center !important;
+    justify-content:center !important;
+    text-align:center !important;
+  }
+
+  .solution-card,
+  .overview-card,
+  .service-card,
+  .usage-card,
+  .problem-card,
+  .compare-card,
+  .value-card,
+  .benefit-card,
+  .metric-card,
+  .step-card,
+  .timeline-card,
+  .example-card,
+  .flow-demo-card,
+  .solution-outcome-card,
+  .quote-box,
+  .highlight-box,
+  .panel,
+  .card{
+    text-align:center !important;
+    justify-items:center !important;
+    align-items:center !important;
+  }
+
+  .feature-item,
+  .list-item,
+  .clean-list li,
+  .solution-check-list li,
+  .compare-list li{
+    justify-content:center !important;
+    text-align:center !important;
+  }
+
+  .feature-item .tick,
+  .list-item .tick,
+  .clean-list li::before{
+    margin-left:0 !important;
+  }
+
+  .hero-visual,
+  .premium-hero-visual,
+  .workflow-dashboard,
+  .dashboard-shell,
+  .flow-demo-dashboard,
+  .hero-system-grid,
+  .app-showcase-visual{
+    transform:none !important;
+  }
+
+  .workflow-link,
+  .workflow-current::before,
+  .hero-visual::before,
+  .hero-visual::after,
+  .dashboard-shell::before,
+  .dashboard-shell::after,
+  .card::before,
+  .service-card::before,
+  .overview-card::before,
+  .solution-card::before,
+  .usage-card::before,
+  .problem-card::before,
+  .cta-panel::before,
+  .quote-box::before{
+    animation:none !important;
+  }
+
+  .workflow-node.active,
+  .workflow-node.done,
+  .workflow-current,
+  .chat-assistant-toggle:hover,
+  .chat-link-card:hover,
+  .search-result:hover{
+    transform:none !important;
+  }
+
+  body[data-page="kontakt.html"] .field,
+  body[data-page="kontakt.html"] .consent-wrap{
+    text-align:left !important;
+    align-items:stretch !important;
+  }
+
+  body[data-page="kontakt.html"] .field label,
+  body[data-page="kontakt.html"] .field-help,
+  body[data-page="kontakt.html"] .consent-check,
+  body[data-page="kontakt.html"] .consent-wrap .field-help{
+    text-align:left !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+}
