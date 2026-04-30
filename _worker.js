@@ -341,7 +341,7 @@ function normalizeChatLink(value) {
   if (CHAT_SITE_LINKS[raw]) return raw;
 
   try {
-    const url = new URL(raw, 'https://deppmeyer-workflow-solutions.pages.dev');
+    const url = new URL(raw, 'https://deppflow.de');
     const href = `${url.pathname.replace(/^\//, '')}${url.hash}`;
     return CHAT_SITE_LINKS[href] ? href : '';
   } catch {
