@@ -9988,3 +9988,59 @@ body[data-page="kontakt.html"] .contact-intro--simple .eyebrow{
     margin-right:0 !important;
   }
 }
+
+/* v036 - Hero allgemein ohne Visual + Theme-Button ohne Emoji */
+html body[data-page="index.html"] .premium-hero-visual{
+  display:none !important;
+}
+html body[data-page="index.html"] .premium-hero-inner{
+  display:grid !important;
+  grid-template-columns:minmax(0, 1fr) !important;
+  justify-items:center !important;
+  align-items:center !important;
+  text-align:center !important;
+  max-width:1180px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+html body[data-page="index.html"] .premium-hero-copy{
+  width:100% !important;
+  max-width:1120px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+}
+html body[data-page="index.html"] .premium-hero-eyebrow,
+html body[data-page="index.html"] .premium-hero h1,
+html body[data-page="index.html"] .premium-hero-lead,
+html body[data-page="index.html"] .premium-hero-actions,
+html body[data-page="index.html"] .hero-signal-row{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+  justify-content:center !important;
+}
+html body[data-page="index.html"] .premium-hero h1{
+  max-width:1060px !important;
+  font-size:clamp(3rem, 5.15vw, 5.25rem) !important;
+  line-height:1.02 !important;
+}
+html body[data-page="index.html"] .premium-hero-lead{
+  max-width:760px !important;
+}
+html body .theme-toggle-icon{
+  display:none !important;
+}
+html body .theme-toggle{
+  gap:0 !important;
+}
+@media (max-width:760px){
+  html body[data-page="index.html"] .premium-hero h1{
+    max-width:100% !important;
+    font-size:clamp(2.05rem, 8.6vw, 2.85rem) !important;
+    line-height:1.06 !important;
+  }
+  html body[data-page="index.html"] .premium-hero-lead{
+    max-width:34ch !important;
+  }
+}
