@@ -10122,3 +10122,61 @@ body[data-page="index.html"] main .proof-card,
 body[data-page="index.html"] main .mini-case-card{
   align-items:center !important;
 }
+
+/* v039 - final homepage intro centering and FAQ question alignment */
+body[data-page="index.html"] .problem-overview-section .section-head,
+body[data-page="index.html"] .proof-section .section-head,
+body[data-page="index.html"] .problem-overview-section .section-head.section-head-centered,
+body[data-page="index.html"] .proof-section .section-head.section-head-centered,
+body[data-page="index.html"] .problem-overview-section .section-head.compact-center,
+body[data-page="index.html"] .proof-section .section-head.compact-center{
+  width:100% !important;
+  max-width:880px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+  align-items:center !important;
+  justify-content:center !important;
+  justify-items:center !important;
+}
+body[data-page="index.html"] .problem-overview-section .section-head > *,
+body[data-page="index.html"] .proof-section .section-head > *,
+body[data-page="index.html"] .problem-overview-section .section-head h2,
+body[data-page="index.html"] .proof-section .section-head h2,
+body[data-page="index.html"] .problem-overview-section .section-head p,
+body[data-page="index.html"] .proof-section .section-head p{
+  text-align:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] .problem-overview-section .section-head p,
+body[data-page="index.html"] .proof-section .section-head p{
+  max-width:68ch !important;
+}
+body[data-page="index.html"] .problem-overview-section .section-head::after,
+body[data-page="index.html"] .proof-section .section-head::after{
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] main .faq-question,
+body[data-page="index.html"] #faq .faq-question,
+body[data-page="index.html"] #faq .faq-visible-list .faq-question,
+body[data-page="index.html"] #faq .faq-topic-grid .faq-question{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:center !important;
+  justify-content:stretch !important;
+  gap:16px !important;
+  text-align:left !important;
+}
+body[data-page="index.html"] main .faq-question,
+body[data-page="index.html"] main .faq-question *:not(span:last-child),
+body[data-page="index.html"] #faq .faq-question,
+body[data-page="index.html"] #faq .faq-question *:not(span:last-child){
+  text-align:left !important;
+}
+body[data-page="index.html"] #faq .faq-question > span:last-child{
+  justify-self:end !important;
+  align-self:center !important;
+  text-align:center !important;
+}
