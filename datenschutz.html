@@ -53,7 +53,7 @@
 <div class="container reveal">
 <span class="eyebrow">Datenschutz</span>
 <h1>Datenschutzerklärung</h1>
-<p class="lead">Diese Datenschutzhinweise sind als professionelle Grundlage vorbereitet. Vor dem finalen Livegang sollten die Angaben zu Adresse, Domain, Speicherdauer und eingesetzten Dienstleistern rechtlich geprüft werden.</p>
+<p class="lead">Informationen zur Verarbeitung personenbezogener Daten auf dieser Webseite.</p>
 </div>
 </section>
 <section class="section section-tight legal">
@@ -62,8 +62,8 @@
 <h2>1. Verantwortlicher</h2>
 <p><strong data-config="legalName">Max Deppmeyer</strong><br/>
 <span data-config="companyName">Deppmeyer Workflow Solutions</span><br/>
-<span data-config="street">[Straße und Hausnummer ergänzen]</span><br/>
-<span data-config="cityZip">[PLZ und Ort ergänzen]</span><br/>
+<span data-config="street">Steinbergstraße 16</span><br/>
+<span data-config="cityZip">30559 Hannover</span><br/>
 E-Mail: <a data-config="email" href="mailto:info@deppflow.de">info@deppflow.de</a></p>
 
 <h2>2. Hosting und technische Bereitstellung</h2>
@@ -72,29 +72,27 @@ E-Mail: <a data-config="email" href="mailto:info@deppflow.de">info@deppflow.de</
 
 <h2>3. Kontaktformular</h2>
 <p>Wenn das Kontaktformular genutzt wird, werden die dort eingegebenen Angaben verarbeitet. Dazu gehören insbesondere Anrede, Vorname, Nachname, Unternehmen, E-Mail-Adresse, Telefonnummer bei Rückrufwunsch, Thema, Nachricht und eine mögliche vom KI-Assistenten übernommene Zusammenfassung.</p>
-<p>Die Anfrage wird serverseitig über einen Cloudflare Worker geprüft. Dazu gehören Pflichtfeldprüfung, Spam-/Missbrauchsschutz, Rate-Limit-Prüfung und optional Cloudflare Turnstile. Anschließend kann die Anfrage an einen verbundenen n8n-Workflow übergeben werden.</p>
+<p>Die Anfrage wird serverseitig über einen Cloudflare Worker geprüft. Dazu gehören Pflichtfeldprüfung, Spam-/Missbrauchsschutz, Rate-Limit-Prüfung und Cloudflare Turnstile. Anschließend kann die Anfrage an einen verbundenen n8n-Workflow übergeben werden.</p>
 
 <h2>4. KI-/Ablauf-Assistent</h2>
 <p>Der KI-/Ablauf-Assistent beantwortet allgemeine Fragen zur Webseite und gibt eine grobe Orientierung zu digitalen Abläufen, Automatisierung, Apps, OCR, PDF-Erstellung, Formularen, Schnittstellen und ähnlichen Themen. Er ersetzt keine verbindliche Beratung.</p>
 <p>Bei Nutzung des Assistenten können die eingegebenen Chat-Nachrichten, technische Metadaten wie IP-Adresse, Zeitpunkt, Browserinformationen und die erzeugte Antwort verarbeitet werden. Die Verarbeitung erfolgt über einen Cloudflare Worker und eine angebundene KI-Schnittstelle. API-Schlüssel werden nicht im Browser gespeichert oder angezeigt.</p>
 
 <h2>5. Cloudflare Turnstile</h2>
-<p>Zum Schutz vor Spam und automatisiertem Missbrauch kann Cloudflare Turnstile eingesetzt werden. Dabei wird ein technischer Prüfwert erzeugt und serverseitig validiert. Die konkrete Aktivierung erfolgt erst, wenn ein Turnstile Site Key im Frontend und ein Turnstile Secret im Cloudflare Worker hinterlegt sind.</p>
+<p>Zum Schutz vor Spam und automatisiertem Missbrauch wird Cloudflare Turnstile eingesetzt. Dabei wird ein technischer Prüfwert erzeugt und serverseitig validiert, damit automatisierte Formularanfragen reduziert werden.</p>
 
 <h2>6. Zweck der Verarbeitung</h2>
 <p>Die Daten werden verarbeitet, um Anfragen zu beantworten, Rückfragen zu ermöglichen, den beschriebenen Ablauf fachlich einzuordnen, den KI-Assistenten bereitzustellen, Missbrauch zu verhindern und die Webseite sicher zu betreiben.</p>
 
 <h2>7. Speicherdauer</h2>
-<p>Kontaktanfragen und technische Prüfdatensätze sollten nur so lange gespeichert werden, wie sie für Bearbeitung, Nachvollziehbarkeit, Missbrauchsvermeidung und gesetzliche Pflichten erforderlich sind. Im Worker ist eine technische Ablaufzeit für gespeicherte Kontaktanfragen vorbereitet. Die konkrete Dauer sollte vor dem Livegang final festgelegt werden.</p>
+<p>Kontaktanfragen und technische Prüfdatensätze werden nur so lange gespeichert, wie sie für Bearbeitung, Nachvollziehbarkeit, Missbrauchsvermeidung und gesetzliche Pflichten erforderlich sind.</p>
 
 <h2>8. Weitergabe an n8n und externe Dienstleister</h2>
-<p>Zur automatisierten Bearbeitung kann die Anfrage an n8n übergeben werden. Für den KI-Assistenten kann eine KI-Schnittstelle genutzt werden. Die konkrete n8n-Instanz, Auftragsverarbeitungsverträge, mögliche Drittlandübermittlungen und die genutzte KI-Schnittstelle müssen vor dem finalen Livegang geprüft und dokumentiert werden.</p>
+<p>Zur automatisierten Bearbeitung kann die Anfrage an einen n8n-Workflow übergeben werden. Für den KI-Assistenten kann eine externe KI-Schnittstelle genutzt werden. Die Verarbeitung erfolgt ausschließlich zum Zweck der Bearbeitung, technischen Bereitstellung und Absicherung der Anfrage bzw. Chatfunktion.</p>
 
 <h2>9. Rechte betroffener Personen</h2>
 <p>Betroffene Personen können Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Widerspruch nach den gesetzlichen Vorgaben verlangen. Außerdem besteht das Recht, sich bei einer zuständigen Datenschutzaufsichtsbehörde zu beschweren.</p>
 
-<h2>10. Hinweis vor Veröffentlichung</h2>
-<p>Diese Datenschutzerklärung ersetzt keine individuelle Rechtsberatung. Vor der finalen Veröffentlichung müssen alle Platzhalter und technischen Angaben geprüft und ergänzt werden.</p>
 </div>
 </div>
 </section>
