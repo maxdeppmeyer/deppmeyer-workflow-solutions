@@ -10044,3 +10044,81 @@ html body .theme-toggle{
     max-width:34ch !important;
   }
 }
+
+
+/* v037 - final homepage centering and legal cleanup */
+body[data-page="index.html"] .hero,
+body[data-page="index.html"] .hero .container,
+body[data-page="index.html"] .hero-grid,
+body[data-page="index.html"] .hero-copy{
+  text-align:center !important;
+  justify-items:center !important;
+  align-items:center !important;
+}
+body[data-page="index.html"] .hero-grid{
+  grid-template-columns:minmax(0,1fr) !important;
+  max-width:980px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] .hero-visual,
+body[data-page="index.html"] .premium-hero-visual,
+body[data-page="index.html"] .premium-flow-card,
+body[data-page="index.html"] .dashboard-shell[data-workflow="hero"],
+body[data-page="index.html"] .hero-orbit,
+body[data-page="index.html"] .hero-dashboard{
+  display:none !important;
+}
+body[data-page="index.html"] .hero-copy h1,
+body[data-page="index.html"] .hero-copy .lead,
+body[data-page="index.html"] .hero-copy p,
+body[data-page="index.html"] .btn-row,
+body[data-page="index.html"] .hero-actions,
+body[data-page="index.html"] .trust-row{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+  justify-content:center !important;
+}
+body[data-page="index.html"] .hero-copy h1{
+  max-width:920px !important;
+}
+body[data-page="index.html"] .hero-copy .lead{
+  max-width:760px !important;
+}
+.theme-toggle-icon{
+  display:none !important;
+}
+
+/* v038 - homepage-wide clean centering */
+body[data-page="index.html"] main .section-head,
+body[data-page="index.html"] main .section-head *,
+body[data-page="index.html"] main .solution-card,
+body[data-page="index.html"] main .process-step,
+body[data-page="index.html"] main .proof-card,
+body[data-page="index.html"] main .mini-case-card,
+body[data-page="index.html"] main .cta-panel,
+body[data-page="index.html"] main .faq-question,
+body[data-page="index.html"] main .faq-answer-inner{
+  text-align:center !important;
+}
+body[data-page="index.html"] main .section-head,
+body[data-page="index.html"] main .compact-center,
+body[data-page="index.html"] main .section-head-centered,
+body[data-page="index.html"] main .btn-row,
+body[data-page="index.html"] main .tag-row,
+body[data-page="index.html"] main .proof-grid,
+body[data-page="index.html"] main .solution-card-grid,
+body[data-page="index.html"] main .process-strip{
+  justify-content:center !important;
+  justify-items:center !important;
+  align-items:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body[data-page="index.html"] main .solution-card,
+body[data-page="index.html"] main .process-step,
+body[data-page="index.html"] main .proof-card,
+body[data-page="index.html"] main .mini-case-card{
+  align-items:center !important;
+}
