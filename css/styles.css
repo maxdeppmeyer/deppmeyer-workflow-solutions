@@ -10181,179 +10181,197 @@ body[data-page="index.html"] #faq .faq-question > span:last-child{
   text-align:center !important;
 }
 
-
-/* v040 - FakturaFlow Praxisbeispiel mit Browser-Mockup */
-.case-showcase-section{
-  padding-top:42px;
+/* v040/v041 - FakturaFlow showcase */
+.fakturaflow-section .section-head{
+  max-width: 960px;
 }
-.case-showcase-card{
-  display:grid;
-  grid-template-columns:minmax(280px,.86fr) minmax(420px,1.14fr);
-  gap:26px;
+.fakturaflow-highlights{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  margin:28px auto 0;
+  max-width:980px;
+}
+.fakturaflow-highlight{
+  display:inline-flex;
   align-items:center;
-  padding:28px;
-  border-radius:34px;
-  border:1px solid rgba(91,137,197,.18);
-  background:linear-gradient(180deg, rgba(255,255,255,.82), rgba(238,247,255,.74));
-  box-shadow:0 26px 80px rgba(18,52,96,.13);
-  overflow:hidden;
+  justify-content:center;
+  padding:12px 16px;
+  border-radius:999px;
+  border:1px solid var(--border-color);
+  background: color-mix(in srgb, var(--panel) 92%, white 8%);
+  color:var(--text-muted);
+  font-size:.95rem;
+  text-align:center;
 }
-body[data-theme="dark"] .case-showcase-card{
-  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-  border-color:rgba(220,234,255,.14);
-}
-.case-showcase-copy{
+.fakturaflow-showcase{
+  margin-top:32px;
   display:grid;
-  gap:16px;
-  align-content:center;
+  grid-template-columns:minmax(0, 300px) minmax(0, 1fr);
+  gap:24px;
+  align-items:start;
 }
-.case-showcase-copy h2{
-  margin:0;
-  font-size:clamp(2rem,3.7vw,3.55rem);
-  line-height:1.04;
-  max-width:11ch;
-}
-.case-showcase-copy p{
-  max-width:58ch;
-  margin:0;
-}
-.case-snapshot--wide{
+.fakturaflow-step-nav{
+  display:grid;
   grid-template-columns:1fr;
   gap:10px;
-  margin-top:2px;
 }
-.case-snapshot--wide span{
-  justify-content:flex-start;
+.fakturaflow-step{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:12px;
+  align-items:center;
+  width:100%;
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid var(--border-color);
+  background:var(--panel);
+  color:var(--text-color);
+  text-align:left;
+  cursor:pointer;
+  transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
 }
-.case-browser-mockup{
-  min-width:0;
+.fakturaflow-step:hover,
+.fakturaflow-step:focus-visible{
+  transform:translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border-color));
+  box-shadow:0 14px 30px rgba(17, 24, 39, .08);
+}
+.fakturaflow-step.active{
+  background: color-mix(in srgb, var(--panel) 84%, var(--accent-soft) 16%);
+  border-color: color-mix(in srgb, var(--accent) 52%, var(--border-color));
+  box-shadow:0 18px 36px rgba(17, 24, 39, .1);
+}
+.fakturaflow-step strong{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:var(--ink);
+  color:#fff;
+  font-size:.9rem;
+  letter-spacing:.06em;
+}
+.fakturaflow-step.active strong{
+  background:linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 72%, var(--ink)));
+}
+.fakturaflow-step span{
+  font-weight:700;
+  line-height:1.35;
+}
+.fakturaflow-stage-card{
+  padding:24px;
   border-radius:28px;
-  overflow:hidden;
-  border:1px solid rgba(91,137,197,.20);
-  background:#0f1726;
-  box-shadow:0 24px 70px rgba(9,28,61,.20);
+  border:1px solid var(--border-color);
+  background:var(--panel);
+  box-shadow:0 24px 60px rgba(17, 24, 39, .08);
 }
-.case-browser-top{
+.fakturaflow-stage-head{
+  display:grid;
+  gap:12px;
+  margin-bottom:18px;
+}
+.fakturaflow-stage-label{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 12px;
+  border-radius:999px;
+  border:1px solid var(--border-color);
+  color:var(--text-muted);
+  font-size:.83rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.fakturaflow-stage-head h3{
+  margin:10px 0 0;
+}
+.fakturaflow-stage-head p{
+  margin:0;
+  max-width:70ch;
+}
+.fakturaflow-browser-frame{
+  overflow:hidden;
+  border-radius:24px;
+  border:1px solid color-mix(in srgb, var(--border-color) 82%, white 18%);
+  background:linear-gradient(180deg, rgba(255,255,255,.6), rgba(234, 240, 251, .55));
+}
+.fakturaflow-browser-top{
   display:flex;
   align-items:center;
-  gap:8px;
-  min-height:48px;
-  padding:0 16px;
-  background:linear-gradient(180deg,#f8fbff,#edf4fd);
-  border-bottom:1px solid rgba(91,137,197,.18);
-  color:#102044;
+  gap:14px;
+  padding:14px 16px;
+  border-bottom:1px solid color-mix(in srgb, var(--border-color) 88%, white 12%);
+  background:linear-gradient(180deg, rgba(255,255,255,.86), rgba(247, 249, 255, .86));
 }
-.case-browser-top span{
+.fakturaflow-browser-dots{
+  display:flex;
+  gap:8px;
+}
+.fakturaflow-browser-dots span{
   width:10px;
   height:10px;
   border-radius:50%;
-  background:#d7e3f4;
+  background:rgba(87, 105, 138, .3);
 }
-.case-browser-top strong{
-  margin-left:8px;
-  font-size:.82rem;
-  letter-spacing:.03em;
-  color:#526a8d;
+.fakturaflow-browser-url{
+  flex:1;
+  min-width:0;
+  padding:10px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.9);
+  border:1px solid color-mix(in srgb, var(--border-color) 85%, white 15%);
+  color:var(--text-muted);
+  font-size:.92rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
-.case-browser-screen{
-  position:relative;
-  aspect-ratio:16/10;
-  display:grid;
-  place-items:center;
-  background:radial-gradient(circle at 50% 40%, rgba(47,124,255,.16), transparent 48%), #121827;
-  padding:14px;
+.fakturaflow-browser-media{
+  aspect-ratio:16 / 10;
+  min-height:360px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:
+    radial-gradient(circle at top right, rgba(134, 174, 255, .12), transparent 32%),
+    linear-gradient(180deg, rgba(245,248,255,.92), rgba(234, 240, 251, .92));
 }
-.case-browser-screen img{
+.fakturaflow-browser-media img{
+  display:block;
   width:100%;
   height:100%;
   object-fit:contain;
-  border-radius:14px;
-  background:#eef4fb;
-  box-shadow:0 12px 38px rgba(0,0,0,.24);
-  transition:opacity .18s ease;
+  object-position:center;
+  border-radius:18px;
+  box-shadow:0 20px 50px rgba(17, 24, 39, .12);
+  background:#fff;
 }
-.case-shot-strip{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:10px;
-  padding:12px;
-  background:linear-gradient(180deg,#101827,#0d1422);
-}
-.case-shot{
-  display:grid;
-  gap:6px;
-  min-width:0;
-  padding:8px;
-  border-radius:14px;
-  border:1px solid rgba(226,237,255,.10);
-  background:rgba(255,255,255,.045);
-  color:#eaf4ff;
-  cursor:pointer;
-  text-align:left;
-  transition:transform var(--transition), border-color var(--transition), background var(--transition);
-}
-.case-shot:hover,
-.case-shot.is-active{
-  border-color:rgba(67,150,255,.56);
-  background:rgba(47,124,255,.16);
-  transform:translateY(-1px);
-}
-.case-shot img{
-  width:100%;
-  aspect-ratio:16/9;
-  object-fit:cover;
-  border-radius:10px;
-  background:#eef4fb;
-}
-.case-shot span{
-  display:block;
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-  font-size:.72rem;
-  font-weight:850;
-  letter-spacing:.01em;
-}
-@media (max-width:1024px){
-  .case-showcase-card{
+@media (max-width: 1100px){
+  .fakturaflow-showcase{
     grid-template-columns:1fr;
-    text-align:center;
   }
-  .case-showcase-copy,
-  .case-showcase-copy h2,
-  .case-showcase-copy p{
-    margin-left:auto;
-    margin-right:auto;
-    text-align:center;
-  }
-  .case-snapshot--wide span{
-    justify-content:center;
+  .fakturaflow-step-nav{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
   }
 }
-@media (max-width:760px){
-  .case-showcase-card{
+@media (max-width: 760px){
+  .fakturaflow-step-nav{
+    grid-template-columns:1fr;
+  }
+  .fakturaflow-stage-card{
     padding:18px;
-    border-radius:26px;
   }
-  .case-browser-top strong{
-    max-width:190px;
-    overflow:hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
+  .fakturaflow-browser-top{
+    padding:12px;
   }
-  .case-browser-screen{
-    aspect-ratio:4/3;
-    padding:10px;
+  .fakturaflow-browser-url{
+    font-size:.84rem;
   }
-  .case-shot-strip{
-    display:flex;
-    overflow-x:auto;
-    scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;
-  }
-  .case-shot{
-    width:132px;
-    flex:0 0 132px;
-    scroll-snap-align:start;
+  .fakturaflow-browser-media{
+    min-height:250px;
+    padding:12px;
   }
 }
