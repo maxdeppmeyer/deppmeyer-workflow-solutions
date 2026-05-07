@@ -804,6 +804,7 @@
   const searchItems = [
     { title: 'Digitale Lösungen', text: 'Individuelle Apps, Automatisierungen und Tools für konkrete Probleme im Arbeitsalltag.', url: 'index.html#hero', keywords: 'app business app workflow automatisierung tool lösung problem' },
     { title: 'Schlüsseldienst-App', text: 'Ausweis per OCR scannen, Kundendaten übernehmen und Rechnungen direkt vor Ort als PDF erstellen.', url: 'beispiele.html#beispiel-schluesseldienst-app', keywords: 'schlüsseldienst schluesseldienst ocr ausweis rechnung pdf app' },
+    { title: 'Angebote und Rechnungen digital', text: 'Praxisbeispiel für eine Webanwendung mit Kundendaten, Leistungen, PDF-Angeboten, PDF-Rechnungen und Umsatzübersicht.', url: 'beispiele.html#beispiel-angebote-rechnungen', keywords: 'angebot angebote rechnung rechnungen pdf webanwendung dashboard umsatz fakturaflow' },
     { title: 'Business-Apps', text: 'Kleine Web- oder App-Lösungen für interne Abläufe, Außendienst und Datenerfassung.', url: 'leistungen.html#apps', keywords: 'app tool webapp intern außendienst aussendienst' },
     { title: 'Workflow-Automatisierung', text: 'Wiederkehrende Aufgaben automatisieren, Anfragen sortieren und Informationen weiterleiten.', url: 'leistungen.html#automatisierung', keywords: 'workflow n8n automatisierung email formular webhook' },
     { title: 'OCR und Dokumente', text: 'Daten aus Ausweisen, Formularen oder Dokumenten erfassen und weiterverarbeiten.', url: 'leistungen.html#ocr', keywords: 'ocr scan ausweis dokumente erfassung' },
@@ -2462,6 +2463,31 @@
   };
 
   initChatAssistant();
+
+
+  const initCaseGalleries = () => {
+    document.querySelectorAll('[data-case-gallery]').forEach((gallery) => {
+      const mainImage = gallery.querySelector('[data-case-main-image]');
+      const buttons = [...gallery.querySelectorAll('[data-case-image]')];
+      if (!mainImage || !buttons.length) return;
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const nextSrc = button.dataset.caseImage;
+          if (!nextSrc) return;
+          buttons.forEach((entry) => entry.classList.remove('is-active'));
+          button.classList.add('is-active');
+          mainImage.style.opacity = '0';
+          window.setTimeout(() => {
+            mainImage.src = nextSrc;
+            mainImage.alt = button.dataset.caseAlt || button.dataset.caseTitle || '';
+            mainImage.style.opacity = '1';
+          }, 120);
+        });
+      });
+    });
+  };
+
+  initCaseGalleries();
 
   const focusHashTarget = (hash = window.location.hash, behavior = 'smooth') => {
     if (!hash || hash.length < 2) return;
