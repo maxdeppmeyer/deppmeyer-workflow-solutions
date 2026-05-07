@@ -804,7 +804,6 @@
   const searchItems = [
     { title: 'Digitale Lösungen', text: 'Individuelle Apps, Automatisierungen und Tools für konkrete Probleme im Arbeitsalltag.', url: 'index.html#hero', keywords: 'app business app workflow automatisierung tool lösung problem' },
     { title: 'Schlüsseldienst-App', text: 'Ausweis per OCR scannen, Kundendaten übernehmen und Rechnungen direkt vor Ort als PDF erstellen.', url: 'beispiele.html#beispiel-schluesseldienst-app', keywords: 'schlüsseldienst schluesseldienst ocr ausweis rechnung pdf app' },
-    { title: 'Angebote und Rechnungen digital', text: 'Praxisbeispiel für eine Webanwendung mit Kundendaten, Leistungen, PDF-Angeboten, PDF-Rechnungen und Umsatzübersicht.', url: 'beispiele.html#beispiel-angebote-rechnungen', keywords: 'angebot angebote rechnung rechnungen pdf webanwendung dashboard umsatz fakturaflow' },
     { title: 'Business-Apps', text: 'Kleine Web- oder App-Lösungen für interne Abläufe, Außendienst und Datenerfassung.', url: 'leistungen.html#apps', keywords: 'app tool webapp intern außendienst aussendienst' },
     { title: 'Workflow-Automatisierung', text: 'Wiederkehrende Aufgaben automatisieren, Anfragen sortieren und Informationen weiterleiten.', url: 'leistungen.html#automatisierung', keywords: 'workflow n8n automatisierung email formular webhook' },
     { title: 'OCR und Dokumente', text: 'Daten aus Ausweisen, Formularen oder Dokumenten erfassen und weiterverarbeiten.', url: 'leistungen.html#ocr', keywords: 'ocr scan ausweis dokumente erfassung' },
@@ -2464,30 +2463,52 @@
 
   initChatAssistant();
 
+  const initFakturaflowShowcase = () => {
+    const showcase = document.querySelector('[data-fakturaflow-showcase]');
+    if (!showcase) return;
 
-  const initCaseGalleries = () => {
-    document.querySelectorAll('[data-case-gallery]').forEach((gallery) => {
-      const mainImage = gallery.querySelector('[data-case-main-image]');
-      const buttons = [...gallery.querySelectorAll('[data-case-image]')];
-      if (!mainImage || !buttons.length) return;
-      buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-          const nextSrc = button.dataset.caseImage;
-          if (!nextSrc) return;
-          buttons.forEach((entry) => entry.classList.remove('is-active'));
-          button.classList.add('is-active');
-          mainImage.style.opacity = '0';
-          window.setTimeout(() => {
-            mainImage.src = nextSrc;
-            mainImage.alt = button.dataset.caseAlt || button.dataset.caseTitle || '';
-            mainImage.style.opacity = '1';
-          }, 120);
-        });
+    const steps = [...showcase.querySelectorAll('[data-fakturaflow-step]')];
+    const image = showcase.querySelector('[data-fakturaflow-image]');
+    const title = showcase.querySelector('[data-fakturaflow-title]');
+    const text = showcase.querySelector('[data-fakturaflow-text]');
+    if (!steps.length || !image || !title || !text) return;
+
+    const activateStep = (step) => {
+      steps.forEach((button) => {
+        const isActive = button === step;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-selected', String(isActive));
+      });
+      image.src = step.getAttribute('data-image') || image.src;
+      image.alt = step.getAttribute('data-alt') || image.alt;
+      title.textContent = step.getAttribute('data-title') || '';
+      text.textContent = step.getAttribute('data-text') || '';
+    };
+
+    steps.forEach((step) => {
+      step.addEventListener('click', () => activateStep(step));
+      step.addEventListener('keydown', (event) => {
+        const currentIndex = steps.indexOf(step);
+        if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+          event.preventDefault();
+          const next = steps[(currentIndex + 1) % steps.length];
+          activateStep(next);
+          next.focus();
+        }
+        if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+          event.preventDefault();
+          const previous = steps[(currentIndex - 1 + steps.length) % steps.length];
+          activateStep(previous);
+          previous.focus();
+        }
       });
     });
+
+    activateStep(steps.find((step) => step.classList.contains('active')) || steps[0]);
   };
 
-  initCaseGalleries();
+  initFakturaflowShowcase();
+
 
   const focusHashTarget = (hash = window.location.hash, behavior = 'smooth') => {
     if (!hash || hash.length < 2) return;
