@@ -1,8 +1,10 @@
 // Zentrale Unternehmensdaten für sichtbare Kontakt- und Rechtsangaben.
 window.siteConfig = {
   companyName: "Deppmeyer Workflow Solutions",
+  brandName: "DeppFlow",
+  alternateNames: ["DeppFlow", "DeppFlow Hannover"],
   shortName: "Deppmeyer",
-  tagline: "Digitale Lösungen, Automatisierungen und Business-Apps",
+  tagline: "Digitale Lösungen, Automatisierungen und Business-Apps aus Hannover",
   email: "info@deppflow.de",
   phone: "",
   location: "Deutschlandweit digital, Standort Hannover",
