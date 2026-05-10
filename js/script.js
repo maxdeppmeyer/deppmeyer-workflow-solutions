@@ -1381,13 +1381,13 @@
     const validatePhoneValue = (value) => {
       const trimmed = String(value || '').trim();
       if (!trimmed) {
-        return { valid: false, state: 'empty', message: 'Bitte eine Telefonnummer für den Rückruf angeben.' };
+        return { valid: false, state: 'empty', message: 'Bitte gib eine Telefonnummer ein, wenn du einen Rückruf möchtest.' };
       }
       const normalized = trimmed.replace(/[^\d+]/g, '');
       if (normalized.length < 7) {
-        return { valid: false, state: 'invalid', message: 'Bitte eine Telefonnummer mit ausreichend Stellen angeben.' };
+        return { valid: false, state: 'invalid', message: 'Bitte prüfe die Telefonnummer für den Rückruf. Sie scheint zu kurz zu sein.' };
       }
-      return { valid: true, state: 'valid', message: 'Telefonnummer für den Rückruf hinterlegt.' };
+      return { valid: true, state: 'valid', message: 'Telefonnummer für den Rückruf ist hinterlegt.' };
     };
     const prefillBox = contactForm.querySelector('[data-contact-prefill]');
     const prefillText = contactForm.querySelector('[data-contact-prefill-text]');
@@ -1686,7 +1686,7 @@
       }
       if (callbackRequested && !phoneState.valid) {
         validationIssues.push(phoneState.state === 'empty'
-          ? 'Telefonnummer für den Rückruf angeben'
+          ? 'Telefonnummer für den Rückruf eintragen'
           : 'Telefonnummer für den Rückruf prüfen');
       }
       if (!consentGiven) {
@@ -2462,52 +2462,6 @@
   };
 
   initChatAssistant();
-
-  const initFakturaflowShowcase = () => {
-    const showcase = document.querySelector('[data-fakturaflow-showcase]');
-    if (!showcase) return;
-
-    const steps = [...showcase.querySelectorAll('[data-fakturaflow-step]')];
-    const image = showcase.querySelector('[data-fakturaflow-image]');
-    const title = showcase.querySelector('[data-fakturaflow-title]');
-    const text = showcase.querySelector('[data-fakturaflow-text]');
-    if (!steps.length || !image || !title || !text) return;
-
-    const activateStep = (step) => {
-      steps.forEach((button) => {
-        const isActive = button === step;
-        button.classList.toggle('active', isActive);
-        button.setAttribute('aria-selected', String(isActive));
-      });
-      image.src = step.getAttribute('data-image') || image.src;
-      image.alt = step.getAttribute('data-alt') || image.alt;
-      title.textContent = step.getAttribute('data-title') || '';
-      text.textContent = step.getAttribute('data-text') || '';
-    };
-
-    steps.forEach((step) => {
-      step.addEventListener('click', () => activateStep(step));
-      step.addEventListener('keydown', (event) => {
-        const currentIndex = steps.indexOf(step);
-        if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
-          event.preventDefault();
-          const next = steps[(currentIndex + 1) % steps.length];
-          activateStep(next);
-          next.focus();
-        }
-        if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
-          event.preventDefault();
-          const previous = steps[(currentIndex - 1 + steps.length) % steps.length];
-          activateStep(previous);
-          previous.focus();
-        }
-      });
-    });
-
-    activateStep(steps.find((step) => step.classList.contains('active')) || steps[0]);
-  };
-
-  initFakturaflowShowcase();
 
 
   const focusHashTarget = (hash = window.location.hash, behavior = 'smooth') => {
