@@ -802,16 +802,16 @@
   document.querySelectorAll('[data-workflow]').forEach(initWorkflow);
 
   const searchItems = [
-    { title: 'Digitale Lösungen', text: 'Individuelle Apps, Automatisierungen und Tools für konkrete Probleme im Arbeitsalltag.', url: 'index.html#hero', keywords: 'app business app workflow automatisierung tool lösung problem' },
-    { title: 'Schlüsseldienst-App', text: 'Ausweis per OCR scannen, Kundendaten übernehmen und Rechnungen direkt vor Ort als PDF erstellen.', url: 'beispiele.html#beispiel-schluesseldienst-app', keywords: 'schlüsseldienst schluesseldienst ocr ausweis rechnung pdf app' },
-    { title: 'Business-Apps', text: 'Kleine Web- oder App-Lösungen für interne Abläufe, Außendienst und Datenerfassung.', url: 'leistungen.html#apps', keywords: 'app tool webapp intern außendienst aussendienst' },
-    { title: 'Workflow-Automatisierung', text: 'Wiederkehrende Aufgaben automatisieren, Anfragen sortieren und Informationen weiterleiten.', url: 'leistungen.html#automatisierung', keywords: 'workflow n8n automatisierung email formular webhook' },
-    { title: 'OCR und Dokumente', text: 'Daten aus Ausweisen, Formularen oder Dokumenten erfassen und weiterverarbeiten.', url: 'leistungen.html#ocr', keywords: 'ocr scan ausweis dokumente erfassung' },
-    { title: 'Rechnungen und PDFs', text: 'Aus einmal erfassten Daten automatisch Rechnungen, Angebote oder PDF-Dokumente erzeugen.', url: 'leistungen.html#pdf', keywords: 'rechnung angebot pdf dokument' },
-    { title: 'Schnittstellen', text: 'Bestehende Tools verbinden, damit Daten nicht doppelt übertragen werden müssen.', url: 'leistungen.html#schnittstellen', keywords: 'schnittstelle api tool verbinden' },
-    { title: 'Praxisbeispiele', text: 'Konkrete Beispiele für Apps, OCR, Dokumentenprozesse, Kontaktformulare und Automatisierungen.', url: 'beispiele.html', keywords: 'beispiele use cases lösungen' },
-    { title: 'Einsatzbereiche', text: 'Handwerk, Dienstleister, Außendienst, Büros mit vielen Anfragen und interne Abläufe.', url: 'einsatzbereiche.html', keywords: 'handwerk dienstleister außendienst office dokumente' },
-    { title: 'Kontaktformular', text: 'Anfrage mit Thema, Beschreibung, Rückrufoption und n8n-Anbindung senden.', url: 'kontakt.html#kontaktformular', keywords: 'kontakt anfrage formular rückruf n8n' },
+    { title: 'Digitale Lösungen', text: 'Individuelle Apps, Automatisierungen und Tools für konkrete Probleme im Arbeitsalltag.', url: '/#hero', keywords: 'app business app workflow automatisierung tool lösung problem' },
+    { title: 'Schlüsseldienst-App', text: 'Ausweis per OCR scannen, Kundendaten übernehmen und Rechnungen direkt vor Ort als PDF erstellen.', url: '/beispiele#beispiel-schluesseldienst-app', keywords: 'schlüsseldienst schluesseldienst ocr ausweis rechnung pdf app' },
+    { title: 'Business-Apps', text: 'Kleine Web- oder App-Lösungen für interne Abläufe, Außendienst und Datenerfassung.', url: '/leistungen#apps', keywords: 'app tool webapp intern außendienst aussendienst' },
+    { title: 'Workflow-Automatisierung', text: 'Wiederkehrende Aufgaben automatisieren, Anfragen sortieren und Informationen weiterleiten.', url: '/leistungen#automatisierung', keywords: 'workflow n8n automatisierung email formular webhook' },
+    { title: 'OCR und Dokumente', text: 'Daten aus Ausweisen, Formularen oder Dokumenten erfassen und weiterverarbeiten.', url: '/leistungen#ocr', keywords: 'ocr scan ausweis dokumente erfassung' },
+    { title: 'Rechnungen und PDFs', text: 'Aus einmal erfassten Daten automatisch Rechnungen, Angebote oder PDF-Dokumente erzeugen.', url: '/leistungen#pdf', keywords: 'rechnung angebot pdf dokument' },
+    { title: 'Schnittstellen', text: 'Bestehende Tools verbinden, damit Daten nicht doppelt übertragen werden müssen.', url: '/leistungen#schnittstellen', keywords: 'schnittstelle api tool verbinden' },
+    { title: 'Praxisbeispiele', text: 'Konkrete Beispiele für Apps, OCR, Dokumentenprozesse, Kontaktformulare und Automatisierungen.', url: '/beispiele', keywords: 'beispiele use cases lösungen' },
+    { title: 'Einsatzbereiche', text: 'Handwerk, Dienstleister, Außendienst, Büros mit vielen Anfragen und interne Abläufe.', url: '/einsatzbereiche', keywords: 'handwerk dienstleister außendienst office dokumente' },
+    { title: 'Kontaktformular', text: 'Anfrage mit Thema, Beschreibung, Rückrufoption und n8n-Anbindung senden.', url: '/kontakt#kontaktformular', keywords: 'kontakt anfrage formular rückruf n8n' },
   ];
 
   document.querySelectorAll('.search-input').forEach((input) => {
@@ -1066,35 +1066,35 @@
         copy: 'Ihre Antworten deuten darauf hin, dass eingehende Nachrichten, Standardanfragen oder wiederkehrende Rückfragen im Postfach besonders viel Zeit binden. Ein durchdachter E-Mail-Workflow sorgt dafür, dass Anfragen schneller sortiert, zugewiesen und mit einer passenden Erstantwort vorbereitet werden.',
         bullets: ['Typisch sinnvoll bei vielen ähnlichen Kundenanfragen oder zentralen Funktionspostfächern.', 'Möglich sind automatische Sortierung, Erstantwort, Anhänge, Weiterleitung und Statuslogik.', 'Gerade im Tagesgeschäft sinken Rückfragen und unnötige manuelle Zwischenschritte spürbar.'],
         topic: 'E-Mail- und Postfachprozesse',
-        examples: 'beispiele.html#beispiel-email-sortierung'
+        examples: '/beispiele#beispiel-email-sortierung'
       },
       termine: {
         title: 'Besonders sinnvoll: Automatische Terminbuchung und Rückmeldelogik',
         copy: 'Ihre Antworten passen besonders gut zu einem Ablauf, der Terminwünsche übernimmt, freie Zeiten prüft und Bestätigungen oder Erinnerungen automatisch vorbereitet. So wird aus einem zeitaufwendigen Hin und Her ein verlässlicher Prozess.',
         bullets: ['Typisch sinnvoll bei Beratungs-, Service- oder Vor-Ort-Terminen.', 'Möglich sind Terminabgleich, Bestätigung, Erinnerungen und saubere Dokumentation.', 'Gerade bei wiederkehrenden Terminprozessen lassen sich viele Minuten pro Vorgang sparen.'],
         topic: 'Automatische Terminbuchung',
-        examples: 'beispiele.html#beispiel-terminprozess'
+        examples: '/beispiele#beispiel-terminprozess'
       },
       dokumente: {
         title: 'Besonders sinnvoll: Angebots- und Dokumentenabläufe strukturieren',
         copy: 'Ihre Antworten zeigen, dass Angebotsdaten, Dokumente oder Anhänge besser vorbereitet und übergeben werden können. Ein sauberer Workflow übernimmt Informationen, strukturiert Inhalte und reduziert manuelle Nacharbeit.',
         bullets: ['Typisch sinnvoll bei Angeboten, Anhängen, Unterlagen und standardisierten Dokumenten.', 'Möglich sind Vorbereitung von Angebotsdaten, Benennung, Ablage und Statusweitergabe.', 'So entstehen weniger Rückfragen und eine deutlich geordnetere Bearbeitung im Alltag.'],
         topic: 'Angebots- und Antwortvorbereitung',
-        examples: 'beispiele.html#beispiel-angebotsvorbereitung'
+        examples: '/beispiele#beispiel-angebotsvorbereitung'
       },
       intern: {
         title: 'Besonders sinnvoll: Interne Weiterleitungen und Zuständigkeiten ordnen',
         copy: 'Ihre Antworten deuten darauf hin, dass vor allem interne Übergaben, Freigaben oder Rückmeldungen geordneter laufen sollten. Ein strukturierter Ablauf bündelt Informationen, weist Zuständigkeiten sauber zu und hält den aktuellen Stand sichtbar.',
         bullets: ['Typisch sinnvoll bei internen Anfragen, Freigaben oder Rückmeldungen zwischen Teams.', 'Möglich sind Zuständigkeitslogik, Statusmeldungen und nachvollziehbare Übergaben.', 'Dadurch sinken Suchaufwand, Abstimmungsrunden und personengebundene Sonderwege.'],
         topic: 'Interne Weiterleitungen und Zuständigkeiten',
-        examples: 'beispiele.html#beispiel-interne-freigabe'
+        examples: '/beispiele#beispiel-interne-freigabe'
       },
       mix: {
         title: 'Besonders sinnvoll: Mit einem kleinen Kern-Workflow starten',
         copy: 'Ihre Antworten zeigen, dass nicht nur ein einzelner Schritt Zeit kostet, sondern mehrere kleine Abläufe zusammenspielen. In solchen Fällen ist meist ein Start mit dem größten Engpass am sinnvollsten, damit Entlastung schnell spürbar wird und später sinnvoll erweitert werden kann.',
         bullets: ['Typisch sinnvoll, wenn E-Mails, Termine, Dokumente und Übergaben gleichzeitig eine Rolle spielen.', 'Empfohlen wird ein schlanker Start mit dem größten Zeitfresser und einer sinnvollen Ausbauperspektive.', 'So entsteht keine unnötig große Lösung, sondern ein Schritt, der im Alltag sofort hilft.'],
         topic: 'Allgemeine Prozessoptimierung',
-        examples: 'beispiele.html#beispiel-schluesseldienst-app'
+        examples: '/beispiele#beispiel-schluesseldienst-app'
       }
     };
 
@@ -1191,7 +1191,7 @@
       resultBullets.innerHTML = result.bullets.map((entry) => `<li>${entry}</li>`).join('');
       if (contactLink) {
         const params = new URLSearchParams({ assessment: result.title, summary: result.copy, topic: result.topic });
-        contactLink.href = `kontakt.html?${params.toString()}#kontaktformular`;
+        contactLink.href = `/kontakt?${params.toString()}#kontaktformular`;
       }
       if (exampleLink) exampleLink.href = result.examples;
       resultBox.hidden = false;
@@ -1613,13 +1613,9 @@
       const callbackRequested = Boolean(formData.get('callbackRequested'));
       if (callbackHintNote) callbackHintNote.hidden = !callbackRequested;
       const phoneState = callbackRequested ? validatePhoneValue(formData.get('phone')) : { valid: true, state: 'idle', message: 'Rückruf ist optional.' };
-      const genderValue = String(formData.get('gender') || '').trim();
-      const firstNameValue = String(formData.get('firstName') || '').trim();
-      const lastNameValue = String(formData.get('name') || '').trim();
+      const fullName = String(formData.get('name') || '').trim();
       const companyValue = String(formData.get('company') || '').trim();
-      const fullName = [firstNameValue, lastNameValue].filter(Boolean).join(' ').trim();
-      const salutation = genderValue === 'male' ? 'Herr' : (genderValue === 'female' ? 'Frau' : '');
-      const compactName = fullName ? (salutation ? `${salutation} ${fullName}` : fullName) : '—';
+      const compactName = fullName || '—';
       const compactContact = companyValue ? `${compactName} · ${companyValue}` : compactName;
       const lines = [
         ['Kontakt', compactContact],
@@ -1773,8 +1769,8 @@
             'Accept': 'application/json'
           },
           body: JSON.stringify({
-  gender: String(formData.get('gender') || '').trim(),
-  firstName: String(formData.get('firstName') || '').trim(),
+  gender: '',
+  firstName: '',
   name: String(formData.get('name') || '').trim(),
   company: String(formData.get('company') || '').trim(),
   email: String(formData.get('email') || '').trim(),
@@ -1825,8 +1821,8 @@
     updateSummary();
   }
 
-  document.querySelectorAll('a.btn[href="kontakt.html"]').forEach((link) => {
-    link.setAttribute('href', 'kontakt.html#kontaktformular');
+  document.querySelectorAll('a.btn[href="/kontakt"], a.btn[href="kontakt.html"]').forEach((link) => {
+    link.setAttribute('href', '/kontakt#kontaktformular');
   });
 
   if (body.dataset.page === 'kontakt.html' && window.location.hash === '#kontaktformular') {
@@ -1844,7 +1840,7 @@
 
 
   const alignExampleHashTarget = () => {
-    if (body.dataset.page !== 'beispiele.html' || !window.location.hash) return;
+    if (body.dataset.page !== '/beispiele' || !window.location.hash) return;
     let target = null;
     try {
       target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
@@ -1948,7 +1944,7 @@
         title: 'Excel-Chaos wird zum Dashboard.',
         copy: 'Daten werden einmal sauber erfasst, automatisch geprüft und als übersichtliche Ansicht nutzbar gemacht.',
         bullets: ['Daten einmal erfassen', 'Regeln automatisch prüfen', 'Ergebnis als Übersicht nutzen'],
-        link: 'leistungen.html#apps',
+        link: '/leistungen#apps',
         linkText: 'Interne Apps ansehen'
       },
       email: {
@@ -1956,7 +1952,7 @@
         title: 'Aus Postfach-Chaos wird ein klarer Workflow.',
         copy: 'Wiederkehrende Anfragen können erkannt, sortiert und für die nächste Reaktion vorbereitet werden.',
         bullets: ['Anfrage erkennen', 'Priorität oder Thema setzen', 'Antwort oder Aufgabe vorbereiten'],
-        link: 'leistungen.html#automatisierung',
+        link: '/leistungen#automatisierung',
         linkText: 'Workflows ansehen'
       },
       forms: {
@@ -1964,7 +1960,7 @@
         title: 'Aus losen Angaben wird strukturierte Datenerfassung.',
         copy: 'Formulare sammeln die wichtigen Informationen direkt richtig ein und geben sie an den nächsten Schritt weiter.',
         bullets: ['Pflichtdaten abfragen', 'Fehler reduzieren', 'Daten weiterleiten'],
-        link: 'leistungen.html#apps',
+        link: '/leistungen#apps',
         linkText: 'Formularlösungen ansehen'
       },
       pdf: {
@@ -1972,7 +1968,7 @@
         title: 'Aus Eingaben entstehen automatisch fertige Dokumente.',
         copy: 'Rechnungen, Angebote oder Nachweise können aus vorhandenen Daten vorbereitet und als PDF erzeugt werden.',
         bullets: ['Daten übernehmen', 'Vorlage befüllen', 'PDF bereitstellen'],
-        link: 'leistungen.html#pdf',
+        link: '/leistungen#pdf',
         linkText: 'PDF-Erstellung ansehen'
       },
       web: {
@@ -1980,7 +1976,7 @@
         title: 'Aus einer Webseite wird ein geschäftlicher Prozess.',
         copy: 'Wenn eine Webseite nicht nur informieren, sondern Anfragen, Formulare oder Abläufe auslösen soll, kann eine digitale Lösung geprüft werden.',
         bullets: ['Ziel klären', 'Formular oder Ablauf einbinden', 'Anfrage strukturiert weitergeben'],
-        link: 'leistungen.html#apps',
+        link: '/leistungen#apps',
         linkText: 'Webbasierte Lösungen ansehen'
       },
       internal: {
@@ -1988,7 +1984,7 @@
         title: 'Aus Übergaben wird ein nachvollziehbarer Prozess.',
         copy: 'Status, Zuständigkeiten und nächste Schritte werden sichtbar, statt in Nachrichten oder Notizen verloren zu gehen.',
         bullets: ['Status festlegen', 'Team informieren', 'Aufgaben nachvollziehbar machen'],
-        link: 'beispiele.html#animierte-ablaeufe',
+        link: '/beispiele#animierte-ablaeufe',
         linkText: 'Beispiele ansehen'
       }
     };
@@ -2099,20 +2095,20 @@
     const openStorageKey = 'deppmeyerChatAssistantOpenV4';
     const greeting = 'Hallo, ich bin dein Ablauf-Assistent. Ich beantworte kurze Fragen zur Webseite und kann grob einschätzen, welche digitale Lösung zu deinem Ablauf passen könnte.';
     const linkLabels = {
-      'index.html#hero': 'Startseite öffnen',
-      'index.html#faq': 'FAQ ansehen',
-      'leistungen.html#leistungen-ueberblick': 'Leistungen ansehen',
-      'leistungen.html#apps': 'Interne Apps ansehen',
-      'leistungen.html#automatisierung': 'Workflow-Automatisierung ansehen',
-      'leistungen.html#ocr': 'OCR & Dokumente ansehen',
-      'leistungen.html#pdf': 'PDF-Erstellung ansehen',
-      'leistungen.html#schnittstellen': 'Schnittstellen ansehen',
-      'leistungen.html#analyse': 'Analyse & Planung ansehen',
-      'beispiele.html#animierte-ablaeufe': 'Praxisbeispiele ansehen',
-      'beispiele.html#beispiel-schluesseldienst-app': 'Schlüsseldienst-Beispiel ansehen',
-      'einsatzbereiche.html#einsatz-ueberblick': 'Einsatzbereiche ansehen',
-      'ueber-mich.html#arbeitsweise': 'Arbeitsweise ansehen',
-      'kontakt.html#kontaktformular': 'Kontaktformular öffnen'
+      '/#hero': 'Startseite öffnen',
+      '/#faq': 'FAQ ansehen',
+      '/leistungen#leistungen-ueberblick': 'Leistungen ansehen',
+      '/leistungen#apps': 'Interne Apps ansehen',
+      '/leistungen#automatisierung': 'Workflow-Automatisierung ansehen',
+      '/leistungen#ocr': 'OCR & Dokumente ansehen',
+      '/leistungen#pdf': 'PDF-Erstellung ansehen',
+      '/leistungen#schnittstellen': 'Schnittstellen ansehen',
+      '/leistungen#analyse': 'Analyse & Planung ansehen',
+      '/beispiele#animierte-ablaeufe': 'Praxisbeispiele ansehen',
+      '/beispiele#beispiel-schluesseldienst-app': 'Schlüsseldienst-Beispiel ansehen',
+      '/einsatzbereiche#einsatz-ueberblick': 'Einsatzbereiche ansehen',
+      '/ueber-mich#arbeitsweise': 'Arbeitsweise ansehen',
+      '/kontakt#kontaktformular': 'Kontaktformular öffnen'
     };
 
     const root = document.createElement('section');
@@ -2141,8 +2137,8 @@
           </div>
         </form>
         <div class="chat-assistant-footer">
-          <a class="chat-contact-link" data-chat-contact href="kontakt.html#kontaktformular">Kontaktformular öffnen</a>
-          <a class="chat-contact-link chat-contact-link--transfer" data-chat-transfer href="kontakt.html#kontaktformular" aria-disabled="true">Chat in Anfrage übernehmen</a>
+          <a class="chat-contact-link" data-chat-contact href="/kontakt#kontaktformular">Kontaktformular öffnen</a>
+          <a class="chat-contact-link chat-contact-link--transfer" data-chat-transfer href="/kontakt#kontaktformular" aria-disabled="true">Chat in Anfrage übernehmen</a>
         </div>
       </div>
     `;
@@ -2168,7 +2164,8 @@
       if (linkLabels[raw]) return raw;
       try {
         const url = new URL(raw, window.location.origin);
-        const href = `${url.pathname.replace(/^\//, '')}${url.hash}`;
+        const pathname = url.pathname === '/' ? '/' : url.pathname.replace(/\.html$/, '');
+        const href = `${pathname}${url.hash}`;
         return linkLabels[href] ? href : '';
       } catch (error) {
         return '';
@@ -2191,7 +2188,7 @@
 
     const extractLinksFromText = (text) => {
       const safeText = String(text || '');
-      const matches = safeText.match(/(?:[\w-]+\.html(?:#[\w-]+)?|https?:\/\/[^\s)]+|\/[\w-]+\.html(?:#[\w-]+)?)/g) || [];
+      const matches = safeText.match(/(?:https?:\/\/[^\s)]+|\/[\w-]+\.html(?:#[\w-]+)?|[\w-]+\.html(?:#[\w-]+)?|\/[\w-]+(?:#[\w-]+)?)/g) || [];
       return uniqueLinks(matches);
     };
 
@@ -2336,16 +2333,16 @@
 
     const updateContactHref = () => {
       const transferText = buildContactText();
-      if (contactLink) contactLink.href = 'kontakt.html#kontaktformular';
+      if (contactLink) contactLink.href = '/kontakt#kontaktformular';
       if (!transferLink) return;
       if (transferText) {
         const params = new URLSearchParams();
         params.set('chat', transferText);
-        transferLink.href = `kontakt.html?${params.toString()}#kontaktformular`;
+        transferLink.href = `/kontakt?${params.toString()}#kontaktformular`;
         transferLink.removeAttribute('aria-disabled');
         transferLink.classList.remove('is-disabled');
       } else {
-        transferLink.href = 'kontakt.html#kontaktformular';
+        transferLink.href = '/kontakt#kontaktformular';
         transferLink.setAttribute('aria-disabled', 'true');
         transferLink.classList.add('is-disabled');
       }
@@ -2411,7 +2408,7 @@
         setStatus(result.limited ? 'Bei konkreten Abläufen hilft das Kontaktformular weiter.' : 'Du kannst jederzeit nachfragen.', result.limited ? 'limited' : 'ready');
       } catch (error) {
         const fallback = 'Der Assistent ist gerade nicht erreichbar. Bitte nutze alternativ das Kontaktformular.';
-        const fallbackLinks = uniqueLinks(['kontakt.html#kontaktformular']);
+        const fallbackLinks = uniqueLinks(['/kontakt#kontaktformular']);
         hideTyping();
         conversation.push({ role: 'assistant', content: fallback, links: fallbackLinks });
         addMessage('assistant', fallback, { links: fallbackLinks, scroll: 'none' });
