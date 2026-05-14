@@ -10673,3 +10673,11 @@ body[data-page="ueber-mich.html"] .ueber-callout .btn-row{justify-content:center
     max-width:13ch !important;
   }
 }
+
+
+.optional-marker{
+  margin-left:6px;
+  font-size:.82rem;
+  font-weight:700;
+  color:var(--muted-2);
+}
