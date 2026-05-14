@@ -8,13 +8,13 @@
 <link href="css/styles.css" rel="stylesheet"/>
 <link href="favicon.png" rel="icon" type="image/png"/>
 <link href="favicon.ico" rel="shortcut icon"/>
-<link href="https://deppflow.de/kontakt.html" rel="canonical"/>
-<meta content="https://deppflow.de/kontakt.html" property="og:url"/>
+<link href="https://deppflow.de/kontakt" rel="canonical"/>
+<meta content="https://deppflow.de/kontakt" property="og:url"/>
 <meta content="https://deppflow.de/assets/og-deppflow.png" property="og:image"/>
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
 <meta content="DeppFlow – Digitale Workflows und Business-Apps aus Hannover" property="og:image:alt"/>
-<script type="application/ld+json" data-schema="deppflow">[{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Startseite","item":"https://deppflow.de/"},{"@type":"ListItem","position":2,"name":"Kontakt","item":"https://deppflow.de/kontakt.html"}]},{"@context":"https://schema.org","@type":"ContactPage","@id":"https://deppflow.de/kontakt.html#contactpage","url":"https://deppflow.de/kontakt.html","name":"Kontakt zu DeppFlow","about":{"@id":"https://deppflow.de/#deppflow"}}]</script>
+<script type="application/ld+json" data-schema="deppflow">[{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Startseite","item":"https://deppflow.de/"},{"@type":"ListItem","position":2,"name":"Kontakt","item":"https://deppflow.de/kontakt"}]},{"@context":"https://schema.org","@type":"ContactPage","@id":"https://deppflow.de/kontakt#contactpage","url":"https://deppflow.de/kontakt","name":"Kontakt zu DeppFlow","about":{"@id":"https://deppflow.de/#deppflow"}}]</script>
 <meta content="#101b3e" name="theme-color"/>
 <meta content="website" property="og:type"/>
 <meta content="de_DE" property="og:locale"/>
@@ -30,11 +30,11 @@
 <div aria-hidden="true" class="cursor-glow"></div>
 <header class="topbar">
 <div class="container nav">
-<a aria-label="Startseite" class="brand" href="index.html">
+<a aria-label="Startseite" class="brand" href="/">
 <img alt="Deppmeyer Logo" class="brand-icon" decoding="async" src="assets/logo-icon.png"/>
 <span class="brand-text"><span class="brand-name">Deppmeyer</span><span class="brand-sub">Workflow Solutions</span></span>
 </a>
-<nav aria-label="Hauptnavigation" class="nav-links"><a class="" href="index.html">Start</a><a class="" href="leistungen.html">Leistungen</a><a class="" href="beispiele.html">Beispiele</a><a class="" href="einsatzbereiche.html">Einsatzbereiche</a><a class="" href="ueber-mich.html">Über mich</a><a class="active" href="kontakt.html">Kontakt</a></nav>
+<nav aria-label="Hauptnavigation" class="nav-links"><a class="" href="/">Start</a><a class="" href="/leistungen">Leistungen</a><a class="" href="/beispiele">Beispiele</a><a class="" href="/einsatzbereiche">Einsatzbereiche</a><a class="" href="/ueber-mich">Über mich</a><a class="active" href="/kontakt">Kontakt</a></nav>
 <div class="nav-actions">
 <div class="header-search search-shell" data-search-root="">
 <span class="search-icon">⌕</span>
@@ -51,7 +51,7 @@
 <input aria-label="Website durchsuchen" class="search-input" data-search-input="" placeholder="Suche" type="search"/>
 <div class="search-results hidden" data-search-results=""></div>
 </div>
-<nav aria-label="Mobile Hauptnavigation" class="mobile-links"><a class="" href="index.html">Start</a><a class="" href="leistungen.html">Leistungen</a><a class="" href="beispiele.html">Beispiele</a><a class="" href="einsatzbereiche.html">Einsatzbereiche</a><a class="" href="ueber-mich.html">Über mich</a><a class="active" href="kontakt.html">Kontakt</a></nav>
+<nav aria-label="Mobile Hauptnavigation" class="mobile-links"><a class="" href="/">Start</a><a class="" href="/leistungen">Leistungen</a><a class="" href="/beispiele">Beispiele</a><a class="" href="/einsatzbereiche">Einsatzbereiche</a><a class="" href="/ueber-mich">Über mich</a><a class="active" href="/kontakt">Kontakt</a></nav>
 </div>
 </header>
 
@@ -61,19 +61,17 @@
 <div class="contact-intro contact-intro--simple">
 <span class="eyebrow">Kontakt</span>
 <h1>Ablauf kurz beschreiben</h1>
-<p>Schreib kurz, was aktuell manuell oder zeitaufwendig ist. Ich prüfe dann, welcher digitale erste Schritt sinnvoll sein könnte.</p>
+<p>Schreib kurz, welcher Ablauf aktuell manuell, langsam oder unübersichtlich ist. Name, E-Mail, Beschreibung und Datenschutz reichen für die erste Prüfung aus.</p>
 </div>
 
 <form class="contact-form solution-contact-form" data-contact-form="">
 <div class="form-grid">
-<div class="field"><label for="gender">Anrede</label><select id="gender" name="gender"><option value="">Keine Angabe</option><option value="female">Frau</option><option value="male">Herr</option><option value="other">Divers / keine Angabe</option></select></div>
-<div class="field" data-required-field=""><label for="firstName">Vorname</label><input id="firstName" name="firstName" autocomplete="given-name" required="" type="text"/></div>
-<div class="field" data-required-field=""><label for="name">Nachname</label><input id="name" name="name" autocomplete="family-name" required="" type="text"/></div>
+<div class="field" data-required-field=""><label for="name">Name</label><input id="name" name="name" autocomplete="name" required="" type="text"/></div>
 <div class="field"><label for="company">Firma</label><input id="company" name="company" autocomplete="organization" type="text"/></div>
 <div class="field" data-required-field=""><label for="email">E-Mail</label><input id="email" name="email" autocomplete="email" required="" type="email"/><span class="field-help" id="email-feedback" data-email-feedback="">Bitte eine gültige E-Mail-Adresse angeben.</span></div>
 <div class="field"><label for="phone">Telefon</label><input id="phone" name="phone" autocomplete="tel" type="tel"/><span class="field-help" data-callback-feedback="">Optional: Für einen Rückruf bitte Telefonnummer angeben und Rückruf aktivieren.</span></div>
-<div class="field field-full" data-required-field=""><label for="topic">Thema</label><select id="topic" name="topic" required="">
-<option value="">Bitte auswählen</option>
+<div class="field field-full"><label for="topic">Thema <span class="optional-marker">optional</span></label><select id="topic" name="topic">
+<option value="">Noch nicht sicher / keine Angabe</option>
 <option>Individuelle App / internes Tool</option>
 <option>Workflow-Automatisierung</option>
 <option>OCR / Dokumentenerfassung</option>
@@ -132,7 +130,7 @@
 <footer class="footer">
 <div class="container footer-grid">
 <div class="footer-box">
-<a aria-label="Startseite" class="footer-brand" href="index.html">
+<a aria-label="Startseite" class="footer-brand" href="/">
 <img alt="Deppmeyer Logo" class="brand-icon" decoding="async" src="assets/logo-icon.png"/>
 <span class="brand-text"><span class="brand-name">Deppmeyer</span><span class="brand-sub">Workflow Solutions</span></span>
 </a>
@@ -143,8 +141,8 @@
 <span data-config="location">Deutschlandweit digital, Standort Hannover</span>
 </div>
 <div class="footer-links footer-links--legal small">
-<a href="impressum.html">Impressum</a>
-<a href="datenschutz.html">Datenschutz</a>
+<a href="/impressum">Impressum</a>
+<a href="/datenschutz">Datenschutz</a>
 </div>
 </div>
 </div>

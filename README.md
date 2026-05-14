@@ -37,8 +37,12 @@ Typische Worker-Variablen/Bindings:
 
 - `TURNSTILE_SECRET_KEY`: Secret Key für Cloudflare Turnstile
 - `OPENAI_API_KEY`: API-Key für den KI-/Ablauf-Assistenten
-- `CONTACT_WEBHOOK_URL`: n8n Webhook für Kontaktanfragen
-- optionales KV Binding für Rate Limit / Kontaktprotokollierung, je nach Worker-Konfiguration
+- `N8N_WEBHOOK_URL`: n8n Webhook für Kontaktanfragen
+- `N8N_CONTACT_SECRET`: optionales Secret, das beim Weiterleiten an n8n als `X-Contact-Secret` gesendet wird
+- `CONTACT_FORMS`: KV Binding für Kontaktformular-Speicherung und Rate-Limit-Prüfung
+- `CONTACT_ALLOWED_ORIGIN` oder `ALLOWED_ORIGIN`: erlaubte Origin für das Kontaktformular
+- `CHAT_ALLOWED_ORIGIN` oder `ALLOWED_ORIGIN`: erlaubte Origin für den Chat-Assistenten
+- optional `CONTACT_TTL_SECONDS`, `CONTACT_MAX_BODY_BYTES`, `CHAT_MAX_BODY_BYTES`, `CHAT_MODEL`, `CHAT_RATE_LIMIT_MAX_REQUESTS` und `CHAT_RATE_LIMIT_WINDOW_SECONDS`
 
 ## Entfernte Altlasten
 
@@ -50,7 +54,7 @@ Vor dem Veröffentlichen sollten diese Punkte geprüft werden:
 
 1. Seite lokal oder über Cloudflare Preview öffnen.
 2. Startseite, Leistungen, Beispiele, Einsatzbereiche, Über mich, Kontakt, Impressum und Datenschutz testen.
-3. Kontaktformular inklusive Turnstile testen.
+3. Kontaktformular inklusive Turnstile testen: Name, E-Mail, Beschreibung, Datenschutz; Thema und Telefon bleiben optional.
 4. Chat-Assistent testen.
 5. `sitemap.xml` öffnen und prüfen.
 6. In der Google Search Console die Startseite und Sitemap neu einreichen.
@@ -58,4 +62,4 @@ Vor dem Veröffentlichen sollten diese Punkte geprüft werden:
 
 ## SEO-Hinweis
 
-Die Seite enthält Canonical-Tags, Open-Graph-Bild, strukturierte Daten und natürliche Erwähnungen von DeppFlow und Hannover. Eine hohe Google-Position kann dadurch unterstützt, aber nicht garantiert werden. Wichtig sind zusätzlich Indexierung, Google-Unternehmensprofil, lokale Signale, externe Erwähnungen und regelmäßige echte Inhalte.
+Die Seite nutzt saubere URLs ohne `.html`, Canonical-Tags, Open-Graph-Bild, strukturierte Daten und natürliche Erwähnungen von DeppFlow und Hannover. Eine hohe Google-Position kann dadurch unterstützt, aber nicht garantiert werden. Wichtig sind zusätzlich Indexierung, Google-Unternehmensprofil, lokale Signale, externe Erwähnungen und regelmäßige echte Inhalte.

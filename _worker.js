@@ -17,38 +17,38 @@ const SECURITY_HEADERS = {
 const CHAT_FALLBACK_MESSAGE = 'Dabei kann ich hier nicht helfen. Ich bin auf Fragen zu digitalen Abläufen, Automatisierung, Webseiten mit geschäftlicher Funktion, Apps, Formularen, PDFs, OCR, Schnittstellen und dieser Webseite begrenzt.';
 
 const CHAT_SITE_LINKS = {
-  'index.html#hero': 'Startseite öffnen',
-  'index.html#faq': 'FAQ ansehen',
-  'leistungen.html#leistungen-ueberblick': 'Leistungen ansehen',
-  'leistungen.html#apps': 'Interne Apps ansehen',
-  'leistungen.html#automatisierung': 'Workflow-Automatisierung ansehen',
-  'leistungen.html#ocr': 'OCR & Dokumente ansehen',
-  'leistungen.html#pdf': 'PDF-Erstellung ansehen',
-  'leistungen.html#schnittstellen': 'Schnittstellen ansehen',
-  'leistungen.html#analyse': 'Analyse & Planung ansehen',
-  'beispiele.html#animierte-ablaeufe': 'Praxisbeispiele ansehen',
-  'beispiele.html#beispiel-schluesseldienst-app': 'Schlüsseldienst-Beispiel ansehen',
-  'einsatzbereiche.html#einsatz-ueberblick': 'Einsatzbereiche ansehen',
-  'ueber-mich.html#arbeitsweise': 'Arbeitsweise ansehen',
-  'kontakt.html#kontaktformular': 'Kontaktformular öffnen'
+  '/#hero': 'Startseite öffnen',
+  '/#faq': 'FAQ ansehen',
+  '/leistungen#leistungen-ueberblick': 'Leistungen ansehen',
+  '/leistungen#apps': 'Interne Apps ansehen',
+  '/leistungen#automatisierung': 'Workflow-Automatisierung ansehen',
+  '/leistungen#ocr': 'OCR & Dokumente ansehen',
+  '/leistungen#pdf': 'PDF-Erstellung ansehen',
+  '/leistungen#schnittstellen': 'Schnittstellen ansehen',
+  '/leistungen#analyse': 'Analyse & Planung ansehen',
+  '/beispiele#animierte-ablaeufe': 'Praxisbeispiele ansehen',
+  '/beispiele#beispiel-schluesseldienst-app': 'Schlüsseldienst-Beispiel ansehen',
+  '/einsatzbereiche#einsatz-ueberblick': 'Einsatzbereiche ansehen',
+  '/ueber-mich#arbeitsweise': 'Arbeitsweise ansehen',
+  '/kontakt#kontaktformular': 'Kontaktformular öffnen'
 };
 
 const CHAT_WEBSITE_CONTEXT = `
 Wichtige Seiten und erlaubte Links der Webseite:
-- Startseite / Überblick: index.html#hero
-- FAQ und weitere Fragen: index.html#faq
-- Leistungen allgemein: leistungen.html#leistungen-ueberblick
-- Webseiten, Landingpages mit Funktion, interne Apps und kleine Business-Tools: leistungen.html#apps
-- Workflow-Automatisierung: leistungen.html#automatisierung
-- OCR und Dokumentenverarbeitung: leistungen.html#ocr
-- PDF-Erstellung, Rechnungen, Angebote und Nachweise: leistungen.html#pdf
-- Schnittstellen und Datenübertragung: leistungen.html#schnittstellen
-- Analyse und Planung: leistungen.html#analyse
-- Praxisbeispiele und animierte Abläufe: beispiele.html#animierte-ablaeufe
-- Beispiel Schlüsseldienst-App: beispiele.html#beispiel-schluesseldienst-app
-- Einsatzbereiche: einsatzbereiche.html#einsatz-ueberblick
-- Arbeitsweise / Über mich: ueber-mich.html#arbeitsweise
-- Kontaktformular: kontakt.html#kontaktformular
+- Startseite / Überblick: /#hero
+- FAQ und weitere Fragen: /#faq
+- Leistungen allgemein: /leistungen#leistungen-ueberblick
+- Webseiten, Landingpages mit Funktion, interne Apps und kleine Business-Tools: /leistungen#apps
+- Workflow-Automatisierung: /leistungen#automatisierung
+- OCR und Dokumentenverarbeitung: /leistungen#ocr
+- PDF-Erstellung, Rechnungen, Angebote und Nachweise: /leistungen#pdf
+- Schnittstellen und Datenübertragung: /leistungen#schnittstellen
+- Analyse und Planung: /leistungen#analyse
+- Praxisbeispiele und animierte Abläufe: /beispiele#animierte-ablaeufe
+- Beispiel Schlüsseldienst-App: /beispiele#beispiel-schluesseldienst-app
+- Einsatzbereiche: /einsatzbereiche#einsatz-ueberblick
+- Arbeitsweise / Über mich: /ueber-mich#arbeitsweise
+- Kontaktformular: /kontakt#kontaktformular
 `;
 
 const CHAT_SYSTEM_PROMPT = `Du bist der begrenzte Website-Assistent von Deppmeyer Workflow Solutions.
@@ -92,11 +92,11 @@ Antwortregeln:
 - Wenn etwas nicht der Hauptschwerpunkt ist, sage kurz: „Das ist nicht der Hauptschwerpunkt, kann aber geprüft werden, wenn es zum Ziel passt.“
 - Bei Prozessfragen: Nenne höchstens einen einfachen Ablauf wie „Daten erfassen, prüfen, Ergebnis erstellen und speichern oder versenden“.
 - Nenne OCR nur, wenn es wirklich um Scans, Fotos, PDFs oder Dokumente geht. Bei normalen E-Mails nicht von OCR sprechen.
-- Wenn Informationen fehlen, stelle höchstens 1 kurze Rückfrage oder verweise auf kontakt.html#kontaktformular.
-- Bei Preisfragen: Keine konkreten Preise nennen. Kurz sagen, dass Preise individuell nach Umfang, Aufwand und gewünschtem Ergebnis kalkuliert werden. Immer auf kontakt.html#kontaktformular verweisen.
+- Wenn Informationen fehlen, stelle höchstens 1 kurze Rückfrage oder verweise auf /kontakt#kontaktformular.
+- Bei Preisfragen: Keine konkreten Preise nennen. Kurz sagen, dass Preise individuell nach Umfang, Aufwand und gewünschtem Ergebnis kalkuliert werden. Immer auf /kontakt#kontaktformular verweisen.
 - Bei Smalltalk: Antworte freundlich in 1 bis 2 Sätzen und biete danach Hilfe zu digitalen Abläufen oder Fragen zur Webseite an.
 - Wenn eine Frage nicht in die erlaubten Themen passt, lehne freundlich kurz ab. Verweise dabei nicht auf das Kontaktformular, außer die Frage hat klar mit digitalen Lösungen oder der Webseite zu tun.
-- Wenn du unsicher bist, sage das klar und verweise nur dann auf kontakt.html#kontaktformular, wenn das Thema grundsätzlich zu digitalen Lösungen passt.
+- Wenn du unsicher bist, sage das klar und verweise nur dann auf /kontakt#kontaktformular, wenn das Thema grundsätzlich zu digitalen Lösungen passt.
 - Keine erfundenen Details.
 - Keine HTML-Ausgabe, keine Markdown-Tabellen und möglichst keine langen Markdown-Listen.
 - Wenn es zur Antwort passt, füge am Ende einen Abschnitt „Siehe auch:“ mit 1 bis 3 wirklich unterschiedlichen Linkpfaden aus der folgenden Website-Liste hinzu. Nutze nur exakt diese Linkpfade und erfinde keine anderen Anker. Die Webseite stellt diese Links später als Buttons dar. Wähle nicht drei sehr ähnliche Links, wenn ein Kontaktformular-Link oder eine Beispielseite besser passt.
@@ -144,11 +144,41 @@ export default {
       return json({ ok: false, message: 'Methode nicht erlaubt.' }, 405, corsHeaders(request, env, 'contact'));
     }
 
-    const response = await env.ASSETS.fetch(request);
+    const cleanRedirect = getCleanUrlRedirect(request);
+    if (cleanRedirect) return withSecurityHeaders(cleanRedirect, request);
+
+    const response = await fetchAssetWithCleanUrlFallback(request, env);
     return withSecurityHeaders(response, request);
   }
 };
 
+
+function getCleanUrlRedirect(request) {
+  if (!['GET', 'HEAD'].includes(request.method)) return null;
+
+  const url = new URL(request.url);
+  if (!url.pathname.endsWith('.html')) return null;
+
+  const cleanPath = url.pathname === '/index.html'
+    ? '/'
+    : url.pathname.replace(/\.html$/, '');
+
+  url.pathname = cleanPath;
+  return Response.redirect(url.toString(), 301);
+}
+
+async function fetchAssetWithCleanUrlFallback(request, env) {
+  const url = new URL(request.url);
+  const directResponse = await env.ASSETS.fetch(request);
+
+  if (directResponse.status !== 404 || url.pathname === '/' || url.pathname.includes('.')) {
+    return directResponse;
+  }
+
+  const htmlUrl = new URL(request.url);
+  htmlUrl.pathname = `${url.pathname}.html`;
+  return env.ASSETS.fetch(new Request(htmlUrl.toString(), request));
+}
 
 function withSecurityHeaders(response, request) {
   const next = new Response(response.body, response);
@@ -250,7 +280,7 @@ async function handleChatRequest(request, env, ctx) {
   const links = inferRecommendedLinks(messages, reply, initialLinks);
 
   if (!reply) {
-    return json({ ok: true, reply: CHAT_FALLBACK_MESSAGE, links: getChatLinks(['kontakt.html#kontaktformular']), limited: true }, 200, headers);
+    return json({ ok: true, reply: CHAT_FALLBACK_MESSAGE, links: getChatLinks(['/kontakt#kontaktformular']), limited: true }, 200, headers);
   }
 
   const chatRecord = buildChatRecord(request, messages, reply, links);
@@ -344,7 +374,8 @@ function normalizeChatLink(value) {
 
   try {
     const url = new URL(raw, 'https://deppflow.de');
-    const href = `${url.pathname.replace(/^\//, '')}${url.hash}`;
+    const pathname = url.pathname === '/' ? '/' : url.pathname.replace(/\.html$/, '');
+    const href = `${pathname}${url.hash}`;
     return CHAT_SITE_LINKS[href] ? href : '';
   } catch {
     return '';
@@ -365,7 +396,7 @@ function getChatLinks(values) {
 }
 
 function extractRecommendedLinks(reply) {
-  const matches = String(reply || '').match(/(?:[\w-]+\.html(?:#[\w-]+)?|https?:\/\/[^\s)]+|\/[\w-]+\.html(?:#[\w-]+)?)/g) || [];
+  const matches = String(reply || '').match(/(?:https?:\/\/[^\s)]+|\/[\w-]+\.html(?:#[\w-]+)?|[\w-]+\.html(?:#[\w-]+)?|\/[\w-]+(?:#[\w-]+)?)/g) || [];
   return getChatLinks(matches);
 }
 
@@ -412,42 +443,42 @@ function inferRecommendedLinks(messages, reply, currentLinks = []) {
   };
 
   if (/preis|preise|kosten|kostet|budget|angebot|pauschale|stundensatz/.test(combinedText)) {
-    add('kontakt.html#kontaktformular', 'leistungen.html#leistungen-ueberblick');
+    add('/kontakt#kontaktformular', '/leistungen#leistungen-ueberblick');
   }
 
   if (/webseite|webseiten|website|landingpage|homepage|internetauftritt|web-app|webapp/.test(combinedText)) {
-    add('leistungen.html#apps', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
+    add('/leistungen#apps', '/beispiele#animierte-ablaeufe', '/kontakt#kontaktformular');
   }
 
   if (/rechnung|rechnungen|pdf|angebot|angebote|nachweis/.test(combinedText)) {
-    add('leistungen.html#pdf', 'beispiele.html#beispiel-schluesseldienst-app', 'kontakt.html#kontaktformular');
+    add('/leistungen#pdf', '/beispiele#beispiel-schluesseldienst-app', '/kontakt#kontaktformular');
   }
 
   if (/ocr|scan|ausweis|dokument|dokumente|foto/.test(combinedText)) {
-    add('leistungen.html#ocr', 'beispiele.html#beispiel-schluesseldienst-app', 'kontakt.html#kontaktformular');
+    add('/leistungen#ocr', '/beispiele#beispiel-schluesseldienst-app', '/kontakt#kontaktformular');
   }
 
   if (/app|apps|tool|interne lösung|internes system|dashboard|kundenportal/.test(combinedText)) {
-    add('leistungen.html#apps', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
+    add('/leistungen#apps', '/beispiele#animierte-ablaeufe', '/kontakt#kontaktformular');
   }
 
   if (/e-mail|email|postfach|workflow|automatis|formular|anfrage|benachrichtigung/.test(combinedText)) {
-    add('leistungen.html#automatisierung', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
+    add('/leistungen#automatisierung', '/beispiele#animierte-ablaeufe', '/kontakt#kontaktformular');
   }
 
   if (/schnittstelle|api|import|export|datenübertragung/.test(combinedText)) {
-    add('leistungen.html#schnittstellen', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
+    add('/leistungen#schnittstellen', '/beispiele#animierte-ablaeufe', '/kontakt#kontaktformular');
   }
 
   if (/excel|daten|dashboard|liste|auswertung/.test(combinedText)) {
-    add('leistungen.html#apps', 'leistungen.html#automatisierung', 'kontakt.html#kontaktformular');
+    add('/leistungen#apps', '/leistungen#automatisierung', '/kontakt#kontaktformular');
   }
 
   if (!existing.length && !inferred.length) {
-    add('leistungen.html#leistungen-ueberblick', 'beispiele.html#animierte-ablaeufe', 'kontakt.html#kontaktformular');
+    add('/leistungen#leistungen-ueberblick', '/beispiele#animierte-ablaeufe', '/kontakt#kontaktformular');
   }
 
-  return getChatLinks([...existing, ...inferred, 'kontakt.html#kontaktformular']);
+  return getChatLinks([...existing, ...inferred, '/kontakt#kontaktformular']);
 }
 
 function buildChatRecord(request, messages, reply, links = []) {
@@ -535,21 +566,14 @@ async function handleContactSubmission(request, env) {
     return json({ ok: false, message: 'Bitte eine gültige Anrede auswählen.' }, 400, headers);
   }
 
-  if (!data.firstName) {
-    return json({ ok: false, message: 'Bitte den Vornamen angeben.' }, 400, headers);
-  }
-
   if (!data.name) {
-    return json({ ok: false, message: 'Bitte den Nachnamen angeben.' }, 400, headers);
+    return json({ ok: false, message: 'Bitte den Namen angeben.' }, 400, headers);
   }
 
   if (!isValidEmail(data.email)) {
     return json({ ok: false, message: 'Bitte eine gültige E-Mail-Adresse eingeben.' }, 400, headers);
   }
 
-  if (!data.topic) {
-    return json({ ok: false, message: 'Bitte ein Thema auswählen.' }, 400, headers);
-  }
 
   if (!data.message || data.message.length < 20) {
     return json({ ok: false, message: 'Bitte den Ablauf kurz mit mindestens 20 Zeichen beschreiben.' }, 400, headers);

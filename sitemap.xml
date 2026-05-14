@@ -2,49 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://deppflow.de/</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-05-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://deppflow.de/leistungen.html</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://deppflow.de/leistungen</loc>
+    <lastmod>2026-05-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://deppflow.de/beispiele.html</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://deppflow.de/beispiele</loc>
+    <lastmod>2026-05-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://deppflow.de/einsatzbereiche.html</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://deppflow.de/einsatzbereiche</loc>
+    <lastmod>2026-05-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://deppflow.de/ueber-mich.html</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://deppflow.de/ueber-mich</loc>
+    <lastmod>2026-05-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://deppflow.de/kontakt.html</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://deppflow.de/kontakt</loc>
+    <lastmod>2026-05-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://deppflow.de/impressum.html</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://deppflow.de/impressum</loc>
+    <lastmod>2026-05-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://deppflow.de/datenschutz.html</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://deppflow.de/datenschutz</loc>
+    <lastmod>2026-05-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
